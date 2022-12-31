@@ -3,8 +3,11 @@ package com.accenture.tamalli.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,7 +28,11 @@ public class Order {
     private Customer customer;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-    private Set<OrderDetail> ordersDetail;
+    private List<OrderDetail> ordersDetail;
+
+    public Order(){
+        this.ordersDetail=new ArrayList<>();
+    }
 
     public Long getOrderId() {
         return orderId;
@@ -67,11 +74,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public Set<OrderDetail> getOrdersDetail() {
+    public List<OrderDetail> getOrdersDetail() {
         return ordersDetail;
     }
 
-    public void setOrdersDetail(Set<OrderDetail> ordersDetail) {
+    public void setOrdersDetail(List<OrderDetail> ordersDetail) {
         this.ordersDetail = ordersDetail;
     }
 }

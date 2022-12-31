@@ -5,7 +5,8 @@ import java.math.BigDecimal;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public  class Product {
+@Table(name="products")
+public abstract class Product {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -14,8 +15,15 @@ public  class Product {
     //private String productLine;
     private String flavor;
     private BigDecimal price;
+    @Transient
+    private String productType;
+    public String getProductType() {
+        return productType;
+    }
 
-
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
 
     public Long getProductId() {
         return productId;

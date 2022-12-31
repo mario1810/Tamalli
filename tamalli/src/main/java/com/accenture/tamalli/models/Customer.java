@@ -3,6 +3,8 @@ package com.accenture.tamalli.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,7 +23,11 @@ public class Customer {
     private String address;
 
     @OneToMany (fetch=FetchType.LAZY, mappedBy = "customer")
-    private Set<Order> orders;
+    private List<Order> orders;
+
+    public Customer(){
+        this.orders=new ArrayList<>();
+    }
 
     public Long getCustomerId() {
         return customerId;
@@ -79,11 +85,11 @@ public class Customer {
         this.address = address;
     }
 
-    public Set<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(Set<Order> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 

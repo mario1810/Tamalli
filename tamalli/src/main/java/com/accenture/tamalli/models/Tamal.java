@@ -11,6 +11,9 @@ public class Tamal extends Product {
 
     private double weightGrams;
 
+    public Tamal(){
+        super.setProductType("Food");
+    }
     public double getWeightGrams() {
         return weightGrams;
     }
