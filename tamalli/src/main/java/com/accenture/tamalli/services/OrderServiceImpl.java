@@ -3,6 +3,7 @@ package com.accenture.tamalli.services;
 import com.accenture.tamalli.dto.orderDetails.OrderDetailDTO;
 import com.accenture.tamalli.dto.orders.OrderDTO;
 import com.accenture.tamalli.dto.orders.OrderHistoryDTO;
+import com.accenture.tamalli.dto.orders.ShoppingCartDTO;
 import com.accenture.tamalli.exceptions.CustomerException;
 import com.accenture.tamalli.exceptions.OrderException;
 import com.accenture.tamalli.models.Customer;
@@ -81,7 +82,7 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     @Override
-    public List<OrderDetailDTO> getShoppingCart(Long customerId) {
+    public ShoppingCartDTO getShoppingCart(Long customerId) {
         Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
         Order shoppingCartOrder = customer.getOrders().stream().filter((order)->!order.getPaid()).limit(1).collect(Collectors.toList()).get(0);
@@ -91,8 +92,17 @@ public class OrderServiceImpl implements IOrderService{
             createEmptyOrder(customer);
             throw  new OrderException("Customer with id: "+customer.getCustomerId()+" didn't have a order to be bought, a empty order for adding products has been created for him/her");
         }
-        //Is shoppingCartOrder empty?
-        return  listOrderDetailToOrderDetailDTO(shoppingCartOrder.getOrdersDetail());
+        //get shopping list
+        List<OrderDetailDTO> orderDetailDTOS = listOrderDetailToOrderDetailDTO(shoppingCartOrder.getOrdersDetail());
+        BigDecimal sumCost= new BigDecimal("0.0");
+        //Get temporary total cost
+        orderDetailDTOS.forEach(order->sumCost.add(sumCost).add(order.getProductPriceOrdered()));
+        //Sets DTO
+        ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();
+        shoppingCartDTO.setShoppingCartList(orderDetailDTOS);
+        shoppingCartDTO.setTotalCost(sumCost);
+
+        return  shoppingCartDTO;
     }
 
     private List<OrderDetailDTO> listOrderDetailToOrderDetailDTO(List<OrderDetail> orderDetails){
