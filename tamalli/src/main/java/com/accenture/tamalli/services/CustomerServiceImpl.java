@@ -121,13 +121,13 @@ public class CustomerServiceImpl implements ICustomerService{
       //Does the ID exist?
       Customer currentCustomer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
       //Update fields
-      updatedCustomerFields(currentCustomer, customerChanges);
+      updateCustomerFields(currentCustomer, customerChanges);
       //Commit changes
       Customer customer =iCustomerRepository.saveAndFlush(currentCustomer);
       return CustomerToCustomerDTO(customer);
    }
 
-   private void updatedCustomerFields(Customer customer, Map<String,Object>changes){
+   private void updateCustomerFields(Customer customer, Map<String,Object>changes){
 
       changes.forEach((change,value)->{
          switch (change) {
