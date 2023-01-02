@@ -15,7 +15,6 @@ public abstract class Product {
     //private String productLine;
     private String flavor;
     private BigDecimal price;
-    @Transient
     private String productType;
     public String getProductType() {
         return productType;
