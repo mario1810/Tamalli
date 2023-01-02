@@ -20,23 +20,17 @@ public class CustomerController {
 
     @GetMapping("/all")
     public List<CustomerDTO> getApiCustomers(){
-        List<Customer> customers= iCustomerService.getAllCustomers();
-        List<CustomerDTO> customersDTO=customers.stream()
-                                                .map((customer)->filterCustomer(customer))
-                                                .collect(Collectors.toList());
-        return customersDTO;
+        return  iCustomerService.getAllCustomers();
     }
 
     @GetMapping("/{id}")
     public CustomerDTO getApiCustomer(@PathVariable Long id){
-        Customer customer= iCustomerService.getCustomerById(id);
-        return filterCustomer(customer);
+        return  iCustomerService.getCustomerById(id);
     }
 
     @GetMapping("/getId")
     public CustomerDTO getApiIdCustomer(@RequestBody Customer customer){
-        customer =iCustomerService.getCustomerId(customer.getEmail(), customer.getPassword());
-        return filterCustomer(customer);
+        return iCustomerService.getCustomerId(customer.getEmail(), customer.getPassword());
     }
 
     @DeleteMapping("delete/{id}")
@@ -46,38 +40,20 @@ public class CustomerController {
 
     @PostMapping("/add")
     public CustomerDTO addApiNewCustomer(@RequestBody Customer customer){
-         customer= iCustomerService.addNewCustomer(customer);
-        return filterCustomer(customer);
-
+         return iCustomerService.addNewCustomer(customer);
     }
 
     @PutMapping("/update")
     public CustomerDTO updateApiCustomer(@RequestBody Customer customer){
-        customer=  iCustomerService.fullUpdateCustomer(customer);
-        return filterCustomer(customer);
+        return  iCustomerService.fullUpdateCustomer(customer);
     }
 
     @PatchMapping("/partial/update/{id}")
     public CustomerDTO updateApiPartialCustomer(@RequestBody Map<String, Object> changes, @PathVariable Long id){
-        Customer customer=  iCustomerService.partialUpdateCustomer(changes,id);
-        return filterCustomer(customer);
+        return iCustomerService.partialUpdateCustomer(changes,id);
+
     }
 
-    /***
-     *  Map a Customer Object into A costumerDTO object (hidden fields )
-     * @param customer object to be mapped
-     * @return A CustomerDTO Object
-     */
-    private CustomerDTO filterCustomer(Customer customer){
-        CustomerDTO filteredCustomer = new CustomerDTO();
-        filteredCustomer.setCustomerId(customer.getCustomerId());
-        filteredCustomer.setFirstName(customer.getFirstName());
-        filteredCustomer.setLastName(customer.getLastName());
-        filteredCustomer.setEmail(customer.getEmail());
-        filteredCustomer.setPhoneNumber(customer.getPhoneNumber());
-        filteredCustomer.setAddress(customer.getAddress());
-        return filteredCustomer;
-    }
 
 
 

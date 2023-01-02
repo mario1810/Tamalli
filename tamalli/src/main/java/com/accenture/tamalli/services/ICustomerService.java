@@ -1,5 +1,6 @@
 package com.accenture.tamalli.services;
 
+import com.accenture.tamalli.dto.customers.CustomerDTO;
 import com.accenture.tamalli.models.Customer;
 
 import java.util.List;
@@ -8,18 +9,18 @@ import java.util.Optional;
 
 public interface ICustomerService {
 
-    List<Customer> getAllCustomers();
+    List<CustomerDTO> getAllCustomers();
 
-    Customer getCustomerById(Long id);
+    CustomerDTO getCustomerById(Long id);
 
-    Customer addNewCustomer(Customer customer);
+    CustomerDTO addNewCustomer(Customer customer);
 
     void deleteCustomerById(Long id);
 
-    Customer fullUpdateCustomer(Customer updatedCustomer);
+    CustomerDTO fullUpdateCustomer(Customer updatedCustomer);
 
-    Customer partialUpdateCustomer(Map<String,Object> customerChanges, Long customerId);
+    CustomerDTO partialUpdateCustomer(Map<String,Object> customerChanges, Long customerId);
 
-    Customer getCustomerId(String email, String password);
+    CustomerDTO getCustomerId(String email, String password);
 
 }
