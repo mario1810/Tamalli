@@ -17,4 +17,6 @@ public interface IOrderService {
     public List<OrderDetailDTO> getShoppingCart(Long customerId);
 
     List<OrderHistoryDTO> getShoppingHistory(Long customerId);
+
+    List<OrderDTO> getAllOrdersPaid();
 }

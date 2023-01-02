@@ -32,5 +32,9 @@ public class OrderController {
         return  iOrderService.getShoppingHistory(idCustomer);
     }
 
-    
+    @GetMapping("/all/paid")
+    public List<OrderDTO> getAllOrdersPaidApi(@PathVariable Long idCustomer){
+        return iOrderService.getAllOrdersPaid();
+    }
+
 }

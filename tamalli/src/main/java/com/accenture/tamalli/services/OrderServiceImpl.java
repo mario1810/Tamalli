@@ -133,4 +133,12 @@ public class OrderServiceImpl implements IOrderService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<OrderDTO> getAllOrdersPaid() {
+        List<Order> orders= iOrderRepository.findByPaidTrue();
+        return orders.stream()
+                    .map(order -> OrderToOrderDTO(order))
+                    .collect(Collectors.toList());
+    }
+
 }
