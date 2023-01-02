@@ -135,7 +135,7 @@ public class CustomerServiceImpl implements ICustomerService{
                if(value!=null)
                   customer.setFirstName((String)value);
                break;
-            case "lastname":
+            case "lastName":
                if(value!=null)
                   customer.setLastName((String)value);
                break;
