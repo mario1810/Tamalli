@@ -1,6 +1,6 @@
 package com.accenture.tamalli.services;
 
-import com.accenture.tamalli.customExceptions.CustomerException;
+import com.accenture.tamalli.exceptions.CustomerException;
 import com.accenture.tamalli.dto.customers.CustomerDTO;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.models.Order;
@@ -185,7 +185,7 @@ public class CustomerServiceImpl implements ICustomerService{
       filteredCustomer.setAddress(customer.getAddress());
 
       //find order
-      Order order = iOrderRepository.findByCustomerCustomerIdAndPaidFalse(customer.getCustomerId()).orElse(null);
+      Order order = iOrderRepository.findFirstByCustomerCustomerIdAndPaidFalse(customer.getCustomerId()).orElse(null);
       filteredCustomer.setOrderId(order.getOrderId());
       return filteredCustomer;
    }

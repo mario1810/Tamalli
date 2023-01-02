@@ -1,4 +1,4 @@
-package com.accenture.tamalli.customExceptions;
+package com.accenture.tamalli.exceptions;
 
 public class CustomerException extends RuntimeException{
 
