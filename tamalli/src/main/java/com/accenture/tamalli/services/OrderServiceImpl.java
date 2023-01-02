@@ -11,6 +11,7 @@ import com.accenture.tamalli.models.OrderDetail;
 import com.accenture.tamalli.repositories.ICustomerRepository;
 import com.accenture.tamalli.repositories.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderServiceImpl implements IOrderService{
 
     @Autowired
