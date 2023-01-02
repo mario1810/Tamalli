@@ -24,7 +24,7 @@ public class Order {
     private Boolean paid;
 
     @ManyToOne (fetch=FetchType.LAZY)
-    @JoinColumn(name="customerId")
+    @JoinColumn(name="customer_id")
     private Customer customer;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
