@@ -2,8 +2,13 @@ package com.accenture.tamalli.repositories;
 
 import com.accenture.tamalli.models.Drink;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+
+
+import java.util.List;
+import java.util.Optional;
 
 
 public interface IDrinkRepository extends JpaRepository<Drink, Long> {
+    Optional<Drink> findByDrinkId(Long drinkId);
+    List<Drink> findAll();
 }

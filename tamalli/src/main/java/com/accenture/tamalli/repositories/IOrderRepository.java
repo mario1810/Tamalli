@@ -14,6 +14,5 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
 
     // findBy[field's name at order entity][field's name at Customer entity]And[field at order entity]
     Optional<Order> findFirstByCustomerCustomerIdAndPaidFalse(Long customerId);
-
     List<Order> findByPaidTrue();
 }
