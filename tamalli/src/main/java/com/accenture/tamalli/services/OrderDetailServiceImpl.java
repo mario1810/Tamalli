@@ -118,36 +118,36 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public ProductOrderDTO changeProductQuantity(Long customerId, Long productId, Integer quantity) {
+    public ProductOrderDTO changeProductQuantity(Long customerId, Long productId, Integer newQuantity) {
         //find the order
         Order shoppingCart=findOrder(customerId);
         //Find the order detail that contains the idProduct
-        OrderDetail newShoppingCartDetail= shoppingCart.getOrdersDetail().stream()
+        OrderDetail currentShoppingCartDetail= shoppingCart.getOrdersDetail().stream()
                                                         .filter(shoppingCartDetail ->productId.equals(shoppingCartDetail.getProduct().getProductId() ))
                                                         .findFirst()
                                                         .orElseThrow(()-> new OrderDetailException("There is no a product with id:"+productId+" in the shopping cart"));
         //¨perform the quantity update
-        return changeOrderDetailQuantity(newShoppingCartDetail, quantity, shoppingCart.getOrderId());
+        return changeOrderDetailQuantity(currentShoppingCartDetail, newQuantity, shoppingCart.getOrderId());
     }
 
 
-    private ProductOrderDTO changeOrderDetailQuantity(OrderDetail newOrderDetail, Integer quantity, Long orderId){
-        if((int)quantity<= 0 || (int)quantity>MAX_QUANTITY || quantity==null)
+    private ProductOrderDTO changeOrderDetailQuantity(OrderDetail currentOrderDetail, Integer newQuantity, Long orderId){
+        if((int)newQuantity<= 0 || (int)newQuantity>MAX_QUANTITY || newQuantity==null)
             throw new ProductException("Quantity is no valid, please choose a value between 1 and "+MAX_QUANTITY);
         //update orderDetail
-        newOrderDetail.setQuantityOrdered(quantity);
-        newOrderDetail=iOrderDetailRepository.saveAndFlush(newOrderDetail);
+        currentOrderDetail.setQuantityOrdered(newQuantity);
+        currentOrderDetail=iOrderDetailRepository.saveAndFlush(currentOrderDetail);
 
         //setting DTO
-        ProductOrderDTO newOrderDetailDTO = new ProductOrderDTO();
-        newOrderDetailDTO.setOrderId(orderId);
-        newOrderDetailDTO.setDetailOrderId(newOrderDetail.getDetailOrderId());
-        newOrderDetailDTO.setQuantityOrdered(newOrderDetail.getQuantityOrdered());
-        newOrderDetailDTO.setProductLine(newOrderDetail.getProductLine());
-        newOrderDetailDTO.setProductPriceOrdered(newOrderDetail.getProductPriceOrdered());
-        newOrderDetailDTO.setProductOrdered(newOrderDetail.getProductOrdered());
+        ProductOrderDTO currentOrderDetailDTO = new ProductOrderDTO();
+        currentOrderDetailDTO.setOrderId(orderId);
+        currentOrderDetailDTO.setDetailOrderId(currentOrderDetail.getDetailOrderId());
+        currentOrderDetailDTO.setQuantityOrdered(currentOrderDetail.getQuantityOrdered());
+        currentOrderDetailDTO.setProductLine(currentOrderDetail.getProductLine());
+        currentOrderDetailDTO.setProductPriceOrdered(currentOrderDetail.getProductPriceOrdered());
+        currentOrderDetailDTO.setProductOrdered(currentOrderDetail.getProductOrdered());
 
-        return  newOrderDetailDTO;
+        return  currentOrderDetailDTO;
 
     }
 }
