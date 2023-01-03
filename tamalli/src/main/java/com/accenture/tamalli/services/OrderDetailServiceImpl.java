@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @Service
-public class OrderDetailImpl implements IOrderDetailService {
+public class OrderDetailServiceImpl implements IOrderDetailService {
 
     private static final int MAX_QUANTITY= 30;
 
