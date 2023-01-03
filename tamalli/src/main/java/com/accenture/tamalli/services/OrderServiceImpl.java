@@ -85,7 +85,7 @@ public class OrderServiceImpl implements IOrderService{
     public ShoppingCartDTO getShoppingCart(Long customerId) {
         Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
-        Order shoppingCartOrder = customer.getOrders().stream().filter((order)->!order.getPaid()).limit(1).collect(Collectors.toList()).get(0);
+        Order shoppingCartOrder = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
         //Does shopping cart exist?
         if(shoppingCartOrder==null){
             //if not
