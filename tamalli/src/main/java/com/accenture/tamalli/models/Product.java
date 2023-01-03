@@ -13,7 +13,6 @@ public abstract class Product {
     private Long productId;
     private String productName;
     //private String productLine;
-    private String flavor;
     private BigDecimal price;
     private String productType;
     public String getProductType() {
@@ -38,15 +37,6 @@ public abstract class Product {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-
-    public String getFlavor() {
-        return flavor;
-    }
-
-    public void setFlavor(String flavor) {
-        this.flavor = flavor;
     }
 
     public BigDecimal getPrice() {
