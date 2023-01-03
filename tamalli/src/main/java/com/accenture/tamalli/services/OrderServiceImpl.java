@@ -38,7 +38,7 @@ public class OrderServiceImpl implements IOrderService{
         iOrderRepository.saveAndFlush(emptyOrder);
     }
 
-    private OrderDTO OrderToOrderDTO(Order order){
+    private OrderDTO orderToOrderDTO(Order order){
         OrderDTO orderDTO= new OrderDTO();
 
         orderDTO.setOrderId(order.getOrderId());
@@ -78,7 +78,7 @@ public class OrderServiceImpl implements IOrderService{
         //Assign an empty order ( new shopping cart)
         createEmptyOrder(customer);
 
-        return OrderToOrderDTO(shoppingCartOrder);
+        return orderToOrderDTO(shoppingCartOrder);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class OrderServiceImpl implements IOrderService{
     public List<OrderDTO> getAllOrdersPaid() {
         List<Order> orders= iOrderRepository.findByPaidTrue();
         return orders.stream()
-                    .map(order -> OrderToOrderDTO(order))
+                    .map(order -> orderToOrderDTO(order))
                     .collect(Collectors.toList());
     }
 
