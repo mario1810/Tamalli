@@ -29,7 +29,7 @@ public class CustomerServiceImpl implements ICustomerService{
    public List<CustomerDTO> getAllCustomers() {
       List<Customer> customers= iCustomerRepository.findAll();
       List<CustomerDTO> customersDTO=customers.stream()
-              .map((customer)-> CustomerToCustomerDTO(customer))
+              .map((customer)-> customerToCustomerDTO(customer))
               .collect(Collectors.toList());
       return customersDTO;
    }
@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements ICustomerService{
    @Override
    public CustomerDTO getCustomerById(Long id) {
       Customer customer=  iCustomerRepository.findByCustomerId(id).orElseThrow(()->new CustomerException("there is no customer with id:"+ id));
-      return CustomerToCustomerDTO(customer);
+      return customerToCustomerDTO(customer);
    }
 
    @Transactional
@@ -58,7 +58,7 @@ public class CustomerServiceImpl implements ICustomerService{
       Order emptyOrder = new Order();
       emptyOrder.setCustomer(customer);
       iOrderRepository.saveAndFlush(emptyOrder);
-      return CustomerToCustomerDTO(customer);
+      return customerToCustomerDTO(customer);
    }
 
    /***
@@ -111,7 +111,7 @@ public class CustomerServiceImpl implements ICustomerService{
       //Update him/her
       updatedCustomer.setOrders(currentCustomer.getOrders());
       updatedCustomer= iCustomerRepository.saveAndFlush(updatedCustomer);
-      return CustomerToCustomerDTO(updatedCustomer);
+      return customerToCustomerDTO(updatedCustomer);
    }
 
    @Override
@@ -124,7 +124,7 @@ public class CustomerServiceImpl implements ICustomerService{
       updateCustomerFields(currentCustomer, customerChanges);
       //Commit changes
       Customer customer =iCustomerRepository.saveAndFlush(currentCustomer);
-      return CustomerToCustomerDTO(customer);
+      return customerToCustomerDTO(customer);
    }
 
    private void updateCustomerFields(Customer customer, Map<String,Object>changes){
@@ -166,7 +166,7 @@ public class CustomerServiceImpl implements ICustomerService{
    @Override
    public CustomerDTO getCustomerId(String email, String password) {
       Customer customer= iCustomerRepository.findFistByEmailAndPassword(email,password).orElseThrow(()-> new CustomerException("Email or password  is incorrect"));
-      return CustomerToCustomerDTO(customer);
+      return customerToCustomerDTO(customer);
    }
 
 
@@ -175,7 +175,7 @@ public class CustomerServiceImpl implements ICustomerService{
     * @param customer object to be mapped
     * @return A CustomerDTO Object
     */
-   private CustomerDTO CustomerToCustomerDTO(Customer customer){
+   private CustomerDTO customerToCustomerDTO(Customer customer){
       CustomerDTO filteredCustomer = new CustomerDTO();
       filteredCustomer.setCustomerId(customer.getCustomerId());
       filteredCustomer.setFirstName(customer.getFirstName());
