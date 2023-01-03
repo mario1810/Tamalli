@@ -69,7 +69,7 @@ public class OrderServiceImpl implements IOrderService{
         //get the total cost
         BigDecimal sumCost=new BigDecimal("0.0");
         //Iterate through all products
-        shoppingCartDetail.forEach((product)-> sumCost.add(sumCost).add(product.getProductPriceOrdered()));
+        shoppingCartDetail.forEach((product)-> sumCost.add(sumCost).add(product.getProductPriceOrdered().multiply(new BigDecimal(product.getQuantityOrdered().toString()))));
 
         shoppingCartOrder.setTotalCost(sumCost.setScale(2,RoundingMode.CEILING));
         shoppingCartOrder.setPurchaseDate(LocalDateTime.now());
@@ -93,13 +93,13 @@ public class OrderServiceImpl implements IOrderService{
             throw  new OrderException("Customer with id: "+customer.getCustomerId()+" didn't have a order to be bought, a empty order for adding products has been created for him/her");
         }
         //get shopping list
-        List<OrderDetailDTO> orderDetailDTOS = listOrderDetailToOrderDetailDTO(shoppingCartOrder.getOrdersDetail());
+        List<OrderDetailDTO> shoppingCartDetailDTO = listOrderDetailToOrderDetailDTO(shoppingCartOrder.getOrdersDetail());
         BigDecimal sumCost= new BigDecimal("0.0");
         //Get temporary total cost
-        orderDetailDTOS.forEach(order->sumCost.add(sumCost).add(order.getProductPriceOrdered()));
+        shoppingCartDetailDTO.forEach(orderDetail->sumCost.add(sumCost).add(orderDetail.getProductPriceOrdered().multiply(new BigDecimal(orderDetail.getQuantityOrdered().toString()))));
         //Sets DTO
         ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();
-        shoppingCartDTO.setShoppingCartList(orderDetailDTOS);
+        shoppingCartDTO.setShoppingCartList(shoppingCartDetailDTO);
         shoppingCartDTO.setTotalCost(sumCost);
 
         return  shoppingCartDTO;
