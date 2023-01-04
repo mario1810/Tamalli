@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/get/all/paid")
-    public List<OrderDTO> getApiAllOrdersPaid(@PathVariable Long idCustomer){
+    public List<OrderDTO> getApiAllOrdersPaid(){
         return iOrderService.getAllOrdersPaidStore();
     }
 
