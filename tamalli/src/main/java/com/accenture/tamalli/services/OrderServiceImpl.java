@@ -51,7 +51,7 @@ public class OrderServiceImpl implements IOrderService{
 
     @Transactional
     @Override
-    public OrderDTO changeOrderStatus(Long customerId) {
+    public OrderDTO changeShoppingCartStatusToPaid(Long customerId) {
         Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
         Order shoppingCartOrder = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
@@ -146,7 +146,7 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     @Override
-    public List<OrderDTO> getAllOrdersPaid() {
+    public List<OrderDTO> getAllOrdersPaidStore() {
         List<Order> orders= iOrderRepository.findByPaidTrue();
         return orders.stream()
                     .map(order -> orderToOrderDTO(order))

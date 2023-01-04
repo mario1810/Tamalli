@@ -1,6 +1,5 @@
 package com.accenture.tamalli.controllers;
 
-import com.accenture.tamalli.dto.orderDetails.OrderDetailDTO;
 import com.accenture.tamalli.dto.orders.OrderDTO;
 import com.accenture.tamalli.dto.orders.OrderHistoryDTO;
 import com.accenture.tamalli.dto.orders.ShoppingCartDTO;
@@ -20,7 +19,7 @@ public class OrderController {
 
     @PutMapping("/paid/{idCustomer}")
     public OrderDTO changeOrderPaidStatus(@PathVariable Long idCustomer){
-        return iOrderService.changeOrderStatus(idCustomer);
+        return iOrderService.changeShoppingCartStatusToPaid(idCustomer);
     }
 
     @GetMapping("/shoppingCart/{idCustomer}")
@@ -35,7 +34,7 @@ public class OrderController {
 
     @GetMapping("/all/paid")
     public List<OrderDTO> getAllOrdersPaidApi(@PathVariable Long idCustomer){
-        return iOrderService.getAllOrdersPaid();
+        return iOrderService.getAllOrdersPaidStore();
     }
 
 }
