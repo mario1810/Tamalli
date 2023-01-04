@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -134,6 +135,13 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     private ProductOrderDTO changeOrderDetailQuantity(OrderDetail currentOrderDetail, Integer newQuantity, Long orderId){
         if((int)newQuantity<= 0 || (int)newQuantity>MAX_QUANTITY || newQuantity==null)
             throw new ProductException("Quantity is no valid, please choose a value between 1 and "+MAX_QUANTITY);
+
+        //The product price has been updated at some point in the time?
+        BigDecimal currentPriceAtOrderDetail=currentOrderDetail.getProductPriceOrdered();
+        BigDecimal currentProductPrice=currentOrderDetail.getProduct().getPrice();
+        if(!currentPriceAtOrderDetail.equals(currentProductPrice))
+            throw  new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered. Delete this product with id:"+ currentOrderDetail.getProduct().getProductId()+" if ypu need more.");
+        
         //update orderDetail
         currentOrderDetail.setQuantityOrdered(newQuantity);
         currentOrderDetail=iOrderDetailRepository.saveAndFlush(currentOrderDetail);
