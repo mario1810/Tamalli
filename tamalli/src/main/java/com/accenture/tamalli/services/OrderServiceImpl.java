@@ -65,13 +65,10 @@ public class OrderServiceImpl implements IOrderService{
         List<OrderDetail> shoppingCartDetails=shoppingCart.getOrdersDetail();
         if(shoppingCartDetails==null)
             throw  new OrderException("Order with Id:"+shoppingCart.getOrderId()+ " is empty, please add products");
-
         //get the total cost
-        BigDecimal sumCost=new BigDecimal("0.0");
-        //Iterate through all products
-        shoppingCartDetails.forEach((shoppingCartDetail)-> sumCost.add(sumCost).add(shoppingCartDetail.getProductPriceOrdered().multiply(new BigDecimal(shoppingCartDetail.getQuantityOrdered().toString()))));
+        BigDecimal totalCost= calculateTotalCost(shoppingCartDetails);
 
-        shoppingCart.setTotalCost(sumCost.setScale(2,RoundingMode.CEILING));
+        shoppingCart.setTotalCost(totalCost.setScale(2,RoundingMode.CEILING));
         shoppingCart.setPurchaseDate(LocalDateTime.now());
         shoppingCart.setPaid(true);
         shoppingCart=iOrderRepository.saveAndFlush(shoppingCart);
@@ -94,16 +91,27 @@ public class OrderServiceImpl implements IOrderService{
         }
         //get shopping list
         List<OrderDetailDTO> shoppingCartDetailsDTO = mapOrderDetailsListToOrderDetailsDTOList(shoppingCart.getOrdersDetail());
-        BigDecimal sumCost= new BigDecimal("0.0");
-        //Get temporary total cost
-        shoppingCartDetailsDTO.forEach(shoppingCartDetailDTO->sumCost.add(sumCost).add(shoppingCartDetailDTO.getProductPriceOrdered().multiply(new BigDecimal(shoppingCartDetailDTO.getQuantityOrdered().toString()))));
 
+        //get the total cost
+        BigDecimal totalCost=calculateTotalCost(shoppingCart.getOrdersDetail());
         //Sets DTO
         ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();
         shoppingCartDTO.setShoppingCartList(shoppingCartDetailsDTO);
-        shoppingCartDTO.setTotalCost(sumCost);
+        shoppingCartDTO.setTotalCost(totalCost.setScale(2,RoundingMode.CEILING));
 
         return  shoppingCartDTO;
+    }
+
+    private  BigDecimal calculateTotalCost(List<OrderDetail> list){
+        BigDecimal sumCostBD=new BigDecimal("0.0");
+        //Iterate through all products
+        for(int i=0; i<list.size();i++){
+            BigDecimal quantityBD = new BigDecimal(list.get(i).getQuantityOrdered().toString());
+            BigDecimal priceBD = new BigDecimal(list.get(i).getProductPriceOrdered().toString());
+            BigDecimal auxBD=priceBD.multiply(quantityBD);
+            sumCostBD=sumCostBD.add(sumCostBD).add(auxBD);
+        }
+        return sumCostBD;
     }
 
     private List<OrderDetailDTO> mapOrderDetailsListToOrderDetailsDTOList(List<OrderDetail> orderDetails){
