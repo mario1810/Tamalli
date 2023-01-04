@@ -9,17 +9,17 @@ import javax.persistence.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Drink extends  Product {
 
-    private Double capacityMilliliters;
+    private Double capacityLiters;
 
     public Drink(){
         super.setProductType("Drink");
     }
-    public Double getCapacityMilliliters() {
-        return capacityMilliliters;
+    public Double getCapacityLiters() {
+        return capacityLiters;
     }
 
-    public void setCapacityMilliliters(Double capacityMilliliters) {
-        this.capacityMilliliters = capacityMilliliters;
+    public void setCapacityLiters(Double capacityLiters) {
+        this.capacityLiters = capacityLiters;
     }
 
 
