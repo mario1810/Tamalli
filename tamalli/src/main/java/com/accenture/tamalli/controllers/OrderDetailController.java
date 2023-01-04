@@ -20,13 +20,13 @@ public class OrderDetailController {
     }
 
     @DeleteMapping("/delete/{customerId}/{productId}")
-    void removeApiProductFromShoppingCart(@PathVariable Long customerId,@PathVariable Long productId){
-        iOrderDetailService.removeProductFromShoppingCart(customerId,productId);
+    String removeApiProductFromShoppingCart(@PathVariable Long customerId,@PathVariable Long productId){
+        return iOrderDetailService.removeProductFromShoppingCart(customerId,productId);
     }
 
     @DeleteMapping("/delete/all/{customerId}")
-    void removeApiAllProductsFromShoppingCart(@PathVariable Long customerId){
-        iOrderDetailService.removeAllProductsFromShoppingCart(customerId);
+    String removeApiAllProductsFromShoppingCart(@PathVariable Long customerId){
+        return iOrderDetailService.removeAllProductsFromShoppingCart(customerId);
     }
 
     @PutMapping("/update/{customerId}/{productId}/{newQuantity}")

@@ -75,7 +75,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public void removeProductFromShoppingCart(Long customerId, Long productId) throws RuntimeException{
+    public String removeProductFromShoppingCart(Long customerId, Long productId) throws RuntimeException{
         Order shoppingCart= findShoppingCart(customerId);
 
         //Find the order detail that contain the idProduct
@@ -85,11 +85,12 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
                     .findFirst().orElseThrow(()-> new OrderDetailException("There is no a product with id:"+productId+" in the shopping cart"));
         //Delete de order detail
         iOrderDetailRepository.delete(shoppingCartDetailToDelete);
+        return "the product with Id:"+productId+" has been deleted from your shopping bag";
     }
 
     @Transactional
     @Override
-    public void removeAllProductsFromShoppingCart(Long customerId) throws RuntimeException{
+    public String removeAllProductsFromShoppingCart(Long customerId) throws RuntimeException{
         Order shoppingCart= findShoppingCart(customerId);
         //get all the orders details
         List<OrderDetail> shoppingCartDetails= shoppingCart.getOrdersDetail();
@@ -98,6 +99,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
             throw new OrderDetailException("The shopping cart is already empty");
         //delete each order detail
         shoppingCartDetails.forEach((shoppingDetail -> iOrderDetailRepository.delete(shoppingDetail)));
+         return "All products have been deleted from your shopping bag";
     }
 
     private Order findShoppingCart(Long customerId) throws RuntimeException{
