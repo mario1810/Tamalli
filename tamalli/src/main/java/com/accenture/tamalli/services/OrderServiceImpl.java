@@ -63,8 +63,8 @@ public class OrderServiceImpl implements IOrderService{
         }
         //Is shoppingCartOrder empty?
         List<OrderDetail> shoppingCartDetails=shoppingCart.getOrdersDetail();
-        if(shoppingCartDetails==null)
-            throw  new OrderException("Order with Id:"+shoppingCart.getOrderId()+ " is empty, please add products");
+        if(shoppingCartDetails==null || shoppingCartDetails.size()==0)
+            throw  new OrderException("Your shopping cart with Id:"+shoppingCart.getOrderId()+ " is empty, please add products");
         //get the total cost
         BigDecimal totalCost= calculateTotalCost(shoppingCartDetails);
 
