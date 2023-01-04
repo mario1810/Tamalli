@@ -48,7 +48,7 @@ public class CustomerServiceImpl implements ICustomerService{
             throw  new CustomerException("There  is no enough information about the customer to be created");
       String email=newCustomer.getEmail();
       //Is there a customer with the same email and password?
-      if(!Objects.isNull(iCustomerRepository.findFistByEmail(email).orElse(null)))
+      if(!Objects.isNull(iCustomerRepository.findFirstByEmail(email).orElse(null)))
             throw  new CustomerException("Already exists a customer with the same email");
       //Add the new customer to the database
       newCustomer.setCustomerId(null);
@@ -95,23 +95,28 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public CustomerDTO fullUpdateCustomer(Customer updatedCustomer) throws RuntimeException{
+   public CustomerDTO fullUpdateCustomer(Customer updateCustomer) throws RuntimeException{
       //is there an ID?
-      Long customerId=updatedCustomer.getCustomerId();
+      Long customerId=updateCustomer.getCustomerId();
       if(customerId==null)
          throw new CustomerException("there is no id in the body request to identify a customer");
       //Does the ID exist?
       Customer currentCustomer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
       //validate customer
-      if(!validateNewCustomer(updatedCustomer))
+      if(!validateNewCustomer(updateCustomer))
          throw  new CustomerException("There  is no enough information about the customer to be fully updated");
       //The new email is in use?
-      String email=updatedCustomer.getEmail();
-      iCustomerRepository.findFistByEmail(email).orElseThrow(()->new CustomerException("The new email: "+email+" is already in use"));
-      //Update him/her
-      updatedCustomer.setOrders(currentCustomer.getOrders());
-      updatedCustomer= iCustomerRepository.saveAndFlush(updatedCustomer);
-      return mapCustomerToCustomerDTO(updatedCustomer);
+      String email=updateCustomer.getEmail();
+      Customer emailOwnerCustomer=iCustomerRepository.findFirstByEmail(email).orElse(null);
+      //if updateCustomer is the owner of the email or nobody uses that email, update
+      if((emailOwnerCustomer.getCustomerId().equals(updateCustomer.getCustomerId()) && emailOwnerCustomer!=null) || emailOwnerCustomer==null){
+         //Update him/her
+         updateCustomer.setOrders(currentCustomer.getOrders());
+         currentCustomer= iCustomerRepository.saveAndFlush(updateCustomer);
+      }
+      else
+         throw new CustomerException("The new email: "+email+" is already in use");
+      return mapCustomerToCustomerDTO(currentCustomer);
    }
 
    @Override
@@ -141,8 +146,14 @@ public class CustomerServiceImpl implements ICustomerService{
                break;
             case "email":
                if(value!=null){
-                  iCustomerRepository.findFistByEmail((String)value).orElseThrow(()->new CustomerException("The new email: "+(String) value+" is already in use"));
-                  customer.setEmail((String)value);
+                  Customer emailOwnerCustomer=iCustomerRepository.findFirstByEmail((String)value).orElse(null);
+                  //if updateCustomer is the owner of the email or nobody uses that email, update
+                  if((emailOwnerCustomer.getCustomerId().equals(customer.getCustomerId()) && emailOwnerCustomer!=null) || emailOwnerCustomer==null){
+                     //Update him/her
+                     customer.setEmail((String)value);
+                  }
+                  else
+                     throw new CustomerException("The new email: "+(String)value+" is already in use");
                }
                break;
             case "password":
