@@ -125,6 +125,7 @@ public class OrderServiceImpl implements IOrderService{
                     orderDetailDTO.setProductOrdered(orderDetail.getProductOrdered());
                     orderDetailDTO.setProductPriceOrdered(orderDetail.getProductPriceOrdered());
                     orderDetailDTO.setQuantityOrdered(orderDetail.getQuantityOrdered());
+                    orderDetailDTO.setProductLine(orderDetail.getProductLine());
                     return orderDetailDTO;
                 }))
                 .collect(Collectors.toList());
