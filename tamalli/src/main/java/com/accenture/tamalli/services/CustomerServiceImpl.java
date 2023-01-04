@@ -44,7 +44,7 @@ public class CustomerServiceImpl implements ICustomerService{
    @Override
    public CustomerDTO addNewCustomer(Customer newCustomer) throws RuntimeException{
       //Does a user with the same email and password exist?
-      if(!validateNewCustomer(newCustomer))
+      if(newCustomer==null || !validateNewCustomer(newCustomer))
             throw  new CustomerException("There  is no enough information about the customer to be created");
       String email=newCustomer.getEmail();
       //Is there a customer with the same email and password?
@@ -56,6 +56,7 @@ public class CustomerServiceImpl implements ICustomerService{
       //Create an empty order to the new customer
       Order emptyOrder = new Order();
       emptyOrder.setCustomer(newCustomer);
+      emptyOrder.setPaid(false);
       iOrderRepository.saveAndFlush(emptyOrder);
       return mapCustomerToCustomerDTO(newCustomer);
    }
