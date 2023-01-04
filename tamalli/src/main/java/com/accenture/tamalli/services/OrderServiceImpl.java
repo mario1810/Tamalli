@@ -31,14 +31,14 @@ public class OrderServiceImpl implements IOrderService{
     private ICustomerRepository iCustomerRepository;
 
 
-    private void createEmptyOrder(Customer customer){
-        Order emptyOrder = new Order();
-        emptyOrder.setPaid(false);
-        emptyOrder.setCustomer(customer);
-        iOrderRepository.saveAndFlush(emptyOrder);
+    private void createEmptyShoppingCart(Customer customer){
+        Order emptyShoppingCart = new Order();
+        emptyShoppingCart.setPaid(false);
+        emptyShoppingCart.setCustomer(customer);
+        iOrderRepository.saveAndFlush(emptyShoppingCart);
     }
 
-    private OrderDTO orderToOrderDTO(Order order){
+    private OrderDTO mapOrderToOrderDTO(Order order){
         OrderDTO orderDTO= new OrderDTO();
 
         orderDTO.setOrderId(order.getOrderId());
@@ -54,62 +54,63 @@ public class OrderServiceImpl implements IOrderService{
     public OrderDTO changeShoppingCartStatusToPaid(Long customerId) {
         Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
-        Order shoppingCartOrder = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
+        Order shoppingCart = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
         //Does shopping cart exist?
-        if(shoppingCartOrder==null){
+        if(shoppingCart==null){
             //if not
-            createEmptyOrder(customer);
+            createEmptyShoppingCart(customer);
             throw  new OrderException("Customer with id: "+customer.getCustomerId()+" didn't have a order to be bought, a empty order for adding products has been created for him/her");
         }
         //Is shoppingCartOrder empty?
-        List<OrderDetail> shoppingCartDetail=shoppingCartOrder.getOrdersDetail();
-        if(shoppingCartDetail==null)
-            throw  new OrderException("Order with Id:"+shoppingCartOrder.getOrderId()+ " is empty, please add products");
+        List<OrderDetail> shoppingCartDetails=shoppingCart.getOrdersDetail();
+        if(shoppingCartDetails==null)
+            throw  new OrderException("Order with Id:"+shoppingCart.getOrderId()+ " is empty, please add products");
 
         //get the total cost
         BigDecimal sumCost=new BigDecimal("0.0");
         //Iterate through all products
-        shoppingCartDetail.forEach((product)-> sumCost.add(sumCost).add(product.getProductPriceOrdered().multiply(new BigDecimal(product.getQuantityOrdered().toString()))));
+        shoppingCartDetails.forEach((shoppingCartDetail)-> sumCost.add(sumCost).add(shoppingCartDetail.getProductPriceOrdered().multiply(new BigDecimal(shoppingCartDetail.getQuantityOrdered().toString()))));
 
-        shoppingCartOrder.setTotalCost(sumCost.setScale(2,RoundingMode.CEILING));
-        shoppingCartOrder.setPurchaseDate(LocalDateTime.now());
-        shoppingCartOrder.setPaid(true);
-        shoppingCartOrder=iOrderRepository.saveAndFlush(shoppingCartOrder);
+        shoppingCart.setTotalCost(sumCost.setScale(2,RoundingMode.CEILING));
+        shoppingCart.setPurchaseDate(LocalDateTime.now());
+        shoppingCart.setPaid(true);
+        shoppingCart=iOrderRepository.saveAndFlush(shoppingCart);
         //Assign an empty order ( new shopping cart)
-        createEmptyOrder(customer);
+        createEmptyShoppingCart(customer);
 
-        return orderToOrderDTO(shoppingCartOrder);
+        return mapOrderToOrderDTO(shoppingCart);
     }
 
     @Override
     public ShoppingCartDTO getShoppingCart(Long customerId) {
         Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
-        Order shoppingCartOrder = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
+        Order shoppingCart = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
         //Does shopping cart exist?
-        if(shoppingCartOrder==null){
+        if(shoppingCart==null){
             //if not
-            createEmptyOrder(customer);
+            createEmptyShoppingCart(customer);
             throw  new OrderException("Customer with id: "+customer.getCustomerId()+" didn't have a order to be bought, a empty order for adding products has been created for him/her");
         }
         //get shopping list
-        List<OrderDetailDTO> shoppingCartDetailDTO = listOrderDetailToOrderDetailDTO(shoppingCartOrder.getOrdersDetail());
+        List<OrderDetailDTO> shoppingCartDetailsDTO = mapOrderDetailsListToOrderDetailsDTOList(shoppingCart.getOrdersDetail());
         BigDecimal sumCost= new BigDecimal("0.0");
         //Get temporary total cost
-        shoppingCartDetailDTO.forEach(orderDetail->sumCost.add(sumCost).add(orderDetail.getProductPriceOrdered().multiply(new BigDecimal(orderDetail.getQuantityOrdered().toString()))));
+        shoppingCartDetailsDTO.forEach(shoppingCartDetailDTO->sumCost.add(sumCost).add(shoppingCartDetailDTO.getProductPriceOrdered().multiply(new BigDecimal(shoppingCartDetailDTO.getQuantityOrdered().toString()))));
+
         //Sets DTO
         ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();
-        shoppingCartDTO.setShoppingCartList(shoppingCartDetailDTO);
+        shoppingCartDTO.setShoppingCartList(shoppingCartDetailsDTO);
         shoppingCartDTO.setTotalCost(sumCost);
 
         return  shoppingCartDTO;
     }
 
-    private List<OrderDetailDTO> listOrderDetailToOrderDetailDTO(List<OrderDetail> orderDetails){
+    private List<OrderDetailDTO> mapOrderDetailsListToOrderDetailsDTOList(List<OrderDetail> orderDetails){
 
-        List<OrderDetailDTO> orderDetailDTOs=null;
+        List<OrderDetailDTO> orderDetailsDTO=null;
 
-        orderDetailDTOs=orderDetails.stream()
+        orderDetailsDTO=orderDetails.stream()
                 .map((orderDetail -> {
                     OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
                     orderDetailDTO.setDetailOrderId(orderDetail.getDetailOrderId());
@@ -119,7 +120,7 @@ public class OrderServiceImpl implements IOrderService{
                     return orderDetailDTO;
                 }))
                 .collect(Collectors.toList());
-        return orderDetailDTOs;
+        return orderDetailsDTO;
     }
 
     @Override
@@ -130,16 +131,16 @@ public class OrderServiceImpl implements IOrderService{
                 .stream()
                 .filter(order->order.getPaid())
                 .map((order)->{
-                        OrderHistoryDTO orderHistoryDTO= new OrderHistoryDTO();
+                        OrderHistoryDTO shoppingHistoryDTO= new OrderHistoryDTO();
 
-                        orderHistoryDTO.setOrderId(order.getOrderId());
-                        orderHistoryDTO.setCustomerId(customerId);
-                        orderHistoryDTO.setPurchaseDate(order.getPurchaseDate());
-                        orderHistoryDTO.setTotalCost(order.getTotalCost());
+                        shoppingHistoryDTO.setOrderId(order.getOrderId());
+                        shoppingHistoryDTO.setCustomerId(customerId);
+                        shoppingHistoryDTO.setPurchaseDate(order.getPurchaseDate());
+                        shoppingHistoryDTO.setTotalCost(order.getTotalCost());
                         //I need to transform this OrderDetail list to a OrderDetailDTO list
-                        orderHistoryDTO.setOrderDetails( listOrderDetailToOrderDetailDTO(order.getOrdersDetail()));
+                        shoppingHistoryDTO.setOrderDetails( mapOrderDetailsListToOrderDetailsDTOList(order.getOrdersDetail()));
 
-                        return  orderHistoryDTO;
+                        return  shoppingHistoryDTO;
                         //end  outer map
                 })
                 .collect(Collectors.toList());
@@ -149,7 +150,7 @@ public class OrderServiceImpl implements IOrderService{
     public List<OrderDTO> getAllOrdersPaidStore() {
         List<Order> orders= iOrderRepository.findByPaidTrue();
         return orders.stream()
-                    .map(order -> orderToOrderDTO(order))
+                    .map(order -> mapOrderToOrderDTO(order))
                     .collect(Collectors.toList());
     }
 
