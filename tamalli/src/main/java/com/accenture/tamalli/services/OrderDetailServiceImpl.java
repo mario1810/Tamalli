@@ -48,10 +48,10 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
                 .filter(orderDetail -> productId.equals(orderDetail.getProduct().getProductId()))
                 .findFirst()
                 .orElse(null);
-        //If shoppingCartDetail for that product doesnt exists, add  the product with a new shoppingCartDetail
+        //If shoppingCartDetail for that product does not exist, add  the product with a new shoppingCartDetail
         if(shoppingCartDetail==null){
             //Find the product
-            Product product= iProductRepository.findByProductId(productId).orElseThrow(()->new ProductException("Product has not been found"));
+            Product product= iProductRepository.findByProductId(productId).orElseThrow(()->new ProductException("Product with Id:"+productId+" is not in our system"));
 
             //create the new orderDetail
             OrderDetail newShoppingCartDetail= new OrderDetail();
@@ -68,9 +68,10 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
             return changeProductQuantityAtShoppingCartInternal(newShoppingCartDetail, quantity, shoppingCart.getOrderId());
 
         }
-        //If shoppingCartDetail for that product exists, update quantity
+        //If shoppingCartDetail for that product exists, Optionally: update quantity
         else {
-            return changeProductQuantityAtShoppingCartInternal(shoppingCartDetail, quantity, shoppingCart.getOrderId());
+            throw  new ProductException("There is already a product with id:"+productId+" in your shopping cart. You can remove it or change the quantity");
+            //return changeProductQuantityAtShoppingCartInternal(shoppingCartDetail, quantity, shoppingCart.getOrderId());
         }
     }
 
@@ -141,7 +142,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         BigDecimal currentPriceAtOrderDetail=currentOrderDetail.getProductPriceOrdered();
         BigDecimal currentProductPrice=currentOrderDetail.getProduct().getPrice();
         if(!currentPriceAtOrderDetail.equals(currentProductPrice))
-            throw  new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered. Delete this product with id:"+ currentOrderDetail.getProduct().getProductId()+" if ypu need more.");
+            throw  new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered. Delete this product with id:"+ currentOrderDetail.getProduct().getProductId()+" if yuu need more.");
 
         //update orderDetail
         currentOrderDetail.setQuantityOrdered(newQuantity);
