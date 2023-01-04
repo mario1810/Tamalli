@@ -25,7 +25,7 @@ public interface IProductService {
 
     List<Product> getAllProduct();
 
-    Product changePrice(ProductPriceDTO product);
+    Product changeProductPrice(ProductPriceDTO newProductChanges);
 
     void deleteProduct(Long productId);
 

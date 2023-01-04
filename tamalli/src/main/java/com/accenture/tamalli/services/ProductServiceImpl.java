@@ -82,7 +82,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product changePrice(ProductPriceDTO changesProduct) {
+    public Product changeProductPrice(ProductPriceDTO changesProduct) {
         if(changesProduct.equals(null))
             throw  new ProductException("please, register valid changes");
         Product productToUpdate =iProductRepository.findByProductId(changesProduct.getProductId()).orElseThrow(()->new ProductException("There is no product with id:"+changesProduct.getProductId()));
