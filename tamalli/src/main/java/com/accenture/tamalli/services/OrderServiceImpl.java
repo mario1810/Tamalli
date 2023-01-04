@@ -51,7 +51,7 @@ public class OrderServiceImpl implements IOrderService{
 
     @Transactional
     @Override
-    public OrderDTO changeShoppingCartStatusToPaid(Long customerId) {
+    public OrderDTO changeShoppingCartStatusToPaid(Long customerId) throws RuntimeException{
         Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
         Order shoppingCart = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
@@ -79,7 +79,7 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     @Override
-    public ShoppingCartDTO getShoppingCart(Long customerId) {
+    public ShoppingCartDTO getShoppingCart(Long customerId) throws RuntimeException{
         Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
         Order shoppingCart = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
@@ -132,7 +132,7 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     @Override
-    public List<OrderHistoryDTO> getShoppingHistory(Long customerId) {
+    public List<OrderHistoryDTO> getShoppingHistory(Long customerId) throws RuntimeException{
         Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
         //Transform order objects to orderHistoryDTO
         return customer.getOrders()

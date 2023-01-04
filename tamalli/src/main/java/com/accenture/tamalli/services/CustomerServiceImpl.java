@@ -35,14 +35,14 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public CustomerDTO getCustomerById(Long customerId) {
+   public CustomerDTO getCustomerById(Long customerId) throws RuntimeException {
       Customer customer=  iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
       return mapCustomerToCustomerDTO(customer);
    }
 
    @Transactional
    @Override
-   public CustomerDTO addNewCustomer(Customer newCustomer) {
+   public CustomerDTO addNewCustomer(Customer newCustomer) throws RuntimeException{
       //Does a user with the same email and password exist?
       if(!validateNewCustomer(newCustomer))
             throw  new CustomerException("There  is no enough information about the customer to be created");
@@ -83,7 +83,7 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public void deleteCustomerById(Long customerId) {
+   public void deleteCustomerById(Long customerId) throws RuntimeException{
       Customer customerToDelete= iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
       //It's important to keep information related with the orders of the users, so I am going to eliminate the information about him/her.(Update with null values to eliminate who he/she is but what he/she did)
       //iCustomerRepository.delete(storedCustomer);
@@ -94,7 +94,7 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public CustomerDTO fullUpdateCustomer(Customer updatedCustomer) {
+   public CustomerDTO fullUpdateCustomer(Customer updatedCustomer) throws RuntimeException{
       //is there an ID?
       Long customerId=updatedCustomer.getCustomerId();
       if(customerId==null)
@@ -114,7 +114,7 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public CustomerDTO partialUpdateCustomer(Map<String,Object> customerChanges, Long customerId) {
+   public CustomerDTO partialUpdateCustomer(Map<String,Object> customerChanges, Long customerId) throws RuntimeException{
       if(customerId==null)
          throw new CustomerException("there is no id to identify a customer");
       //Does the ID exist?
@@ -163,7 +163,7 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public CustomerDTO getCustomerId(String email, String password) {
+   public CustomerDTO getCustomerId(String email, String password) throws RuntimeException{
       Customer customer= iCustomerRepository.findFistByEmailAndPassword(email,password).orElseThrow(()-> new CustomerException("Email or password  is incorrect"));
       return mapCustomerToCustomerDTO(customer);
    }

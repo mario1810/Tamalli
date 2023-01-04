@@ -30,7 +30,7 @@ public class ProductServiceImpl implements IProductService {
     IOrderDetailRepository iOrderDetailRepository;
 
     @Override
-    public Drink addDrink(Drink drink) {
+    public Drink addDrink(Drink drink) throws RuntimeException {
         if(drink.equals(null))
             throw  new ProductException("please, register a valid product");
         drink.setProductId(null);
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Tamal addTamal(Tamal tamal) {
+    public Tamal addTamal(Tamal tamal) throws RuntimeException{
         if(tamal.equals(null))
             throw  new ProductException("please, register a valid product");
         tamal.setProductId(null);
@@ -46,21 +46,21 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Drink getDrinkById(Long productId) {
+    public Drink getDrinkById(Long productId) throws RuntimeException{
         if(productId==null)
             throw  new ProductException("Please, choose a valid id product");
         return iDrinkRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
     }
 
     @Override
-    public Tamal getTamalById(Long productId) {
+    public Tamal getTamalById(Long productId) throws RuntimeException{
         if(productId==null)
             throw  new ProductException("Please, choose a valid id product");
         return iTamalRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
     }
 
     @Override
-    public Product getProductById(Long productId) {
+    public Product getProductById(Long productId) throws RuntimeException{
         if(productId==null)
             throw  new ProductException("Please, choose a valid id product");
         return iProductRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
@@ -82,7 +82,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product changeProductPrice(ProductPriceDTO changesProduct) {
+    public Product changeProductPrice(ProductPriceDTO changesProduct) throws RuntimeException{
         if(changesProduct.equals(null))
             throw  new ProductException("please, register valid changes");
         Product productToUpdate =iProductRepository.findByProductId(changesProduct.getProductId()).orElseThrow(()->new ProductException("There is no product with id:"+changesProduct.getProductId()));
@@ -93,7 +93,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Transactional
     @Override
-    public void deleteProduct(Long productId) {
+    public void deleteProduct(Long productId) throws RuntimeException{
         if(productId==null)
             throw  new ProductException("Please, choose a valid id product");
         //Find the product to delete

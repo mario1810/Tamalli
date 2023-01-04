@@ -38,7 +38,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
 
     @Override
-    public ProductOrderDTO addProductToShoppingCart(Long customerId, Long productId, Integer quantity) {
+    public ProductOrderDTO addProductToShoppingCart(Long customerId, Long productId, Integer quantity) throws RuntimeException{
         //find order
         Order shoppingCart = findShoppingCart(customerId);
 
@@ -75,7 +75,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public void removeProductFromShoppingCart(Long customerId, Long productId) {
+    public void removeProductFromShoppingCart(Long customerId, Long productId) throws RuntimeException{
         Order shoppingCart= findShoppingCart(customerId);
 
         //Find the order detail that contain the idProduct
@@ -89,7 +89,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
     @Transactional
     @Override
-    public void removeAllProductsFromShoppingCart(Long customerId) {
+    public void removeAllProductsFromShoppingCart(Long customerId) throws RuntimeException{
         Order shoppingCart= findShoppingCart(customerId);
         //get all the orders details
         List<OrderDetail> shoppingCartDetails= shoppingCart.getOrdersDetail();
@@ -100,7 +100,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         shoppingCartDetails.forEach((shoppingDetail -> iOrderDetailRepository.delete(shoppingDetail)));
     }
 
-    private Order findShoppingCart(Long customerId){
+    private Order findShoppingCart(Long customerId) throws RuntimeException{
         if(customerId==null)
             throw new CustomerException("there is no id to identify a customer");
         //Does the ID exist?
@@ -118,7 +118,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public ProductOrderDTO changeProductQuantityAtShoppingCart(Long customerId, Long productId, Integer newQuantity) {
+    public ProductOrderDTO changeProductQuantityAtShoppingCart(Long customerId, Long productId, Integer newQuantity) throws RuntimeException{
         //find the order
         Order shoppingCart= findShoppingCart(customerId);
         //Find the order detail that contains the idProduct
@@ -131,7 +131,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
 
-    private ProductOrderDTO changeProductQuantityAtShoppingCartInternal(OrderDetail currentOrderDetail, Integer newQuantity, Long orderId){
+    private ProductOrderDTO changeProductQuantityAtShoppingCartInternal(OrderDetail currentOrderDetail, Integer newQuantity, Long orderId) throws RuntimeException{
         if((int)newQuantity<= 0 || (int)newQuantity>MAX_QUANTITY || newQuantity==null)
             throw new ProductException("Quantity is no valid, please choose a value between 1 and "+MAX_QUANTITY);
 
