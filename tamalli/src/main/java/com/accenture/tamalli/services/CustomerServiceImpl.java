@@ -2,6 +2,7 @@ package com.accenture.tamalli.services;
 
 import com.accenture.tamalli.exceptions.CustomerException;
 import com.accenture.tamalli.dto.customers.CustomerDTO;
+import com.accenture.tamalli.exceptions.OrderException;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.models.Order;
 import com.accenture.tamalli.repositories.ICustomerRepository;
@@ -126,7 +127,7 @@ public class CustomerServiceImpl implements ICustomerService{
       String email=updateCustomer.getEmail();
       Customer emailOwnerCustomer=iCustomerRepository.findFirstByEmail(email).orElse(null);
       //if updateCustomer is the owner of the email or nobody uses that email, update
-      if((emailOwnerCustomer.getCustomerId().equals(updateCustomer.getCustomerId()) && emailOwnerCustomer!=null) || emailOwnerCustomer==null){
+      if( emailOwnerCustomer==null || emailOwnerCustomer.getCustomerId().equals(updateCustomer.getCustomerId())){
          //Update him/her
          updateCustomer.setOrders(currentCustomer.getOrders());
          currentCustomer= iCustomerRepository.saveAndFlush(updateCustomer);
@@ -165,7 +166,7 @@ public class CustomerServiceImpl implements ICustomerService{
                if(value!=null){
                   Customer emailOwnerCustomer=iCustomerRepository.findFirstByEmail((String)value).orElse(null);
                   //if updateCustomer is the owner of the email or nobody uses that email, update
-                  if((emailOwnerCustomer.getCustomerId().equals(customer.getCustomerId()) && emailOwnerCustomer!=null) || emailOwnerCustomer==null){
+                  if( emailOwnerCustomer==null || emailOwnerCustomer.getCustomerId().equals(customer.getCustomerId())){
                      //Update him/her
                      customer.setEmail((String)value);
                   }
@@ -214,6 +215,8 @@ public class CustomerServiceImpl implements ICustomerService{
 
       //find order
       Order order = iOrderRepository.findFirstByCustomerCustomerIdAndPaidFalse(customer.getCustomerId()).orElse(null);
+         if(order==null)
+            throw new OrderException("create shopping cart, please");
       filteredCustomer.setOrderId(order.getOrderId());
       return filteredCustomer;
    }
