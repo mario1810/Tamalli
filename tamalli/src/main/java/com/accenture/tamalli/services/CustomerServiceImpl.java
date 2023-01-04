@@ -40,6 +40,13 @@ public class CustomerServiceImpl implements ICustomerService{
       return mapCustomerToCustomerDTO(customer);
    }
 
+   private void createEmptyShoppingCart(Customer customer){
+      Order emptyOrder = new Order();
+      emptyOrder.setCustomer(customer);
+      emptyOrder.setPaid(false);
+      iOrderRepository.saveAndFlush(emptyOrder);
+   }
+
    @Transactional
    @Override
    public CustomerDTO addNewCustomer(Customer newCustomer) throws RuntimeException{
@@ -54,10 +61,7 @@ public class CustomerServiceImpl implements ICustomerService{
       newCustomer.setCustomerId(null);
       newCustomer  =  iCustomerRepository.saveAndFlush(newCustomer);
       //Create an empty order to the new customer
-      Order emptyOrder = new Order();
-      emptyOrder.setCustomer(newCustomer);
-      emptyOrder.setPaid(false);
-      iOrderRepository.saveAndFlush(emptyOrder);
+      createEmptyShoppingCart(newCustomer);
       return mapCustomerToCustomerDTO(newCustomer);
    }
 
