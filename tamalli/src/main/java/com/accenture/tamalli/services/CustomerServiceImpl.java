@@ -87,15 +87,28 @@ public class CustomerServiceImpl implements ICustomerService{
       return true;
    }
 
+   @Transactional
    @Override
-   public void deleteCustomerById(Long customerId) throws RuntimeException{
+   public String deleteCustomerById(Long customerId) throws RuntimeException{
       Customer customerToDelete= iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
       //It's important to keep information related with the orders of the users, so I am going to eliminate the information about him/her.(Update with null values to eliminate who he/she is but what he/she did)
-      //iCustomerRepository.delete(storedCustomer);
-      Customer emptyCustomer= new Customer();
-      //Remember the  customer's id
-      emptyCustomer.setCustomerId(customerToDelete.getCustomerId());
-      iCustomerRepository.saveAndFlush(emptyCustomer);
+      List<Order> customerOrders=customerToDelete.getOrders();
+
+      //Disassociate Orders that have been paid from Customer
+      for(int i=0; i<customerOrders.size();i++){
+         Order customerOrder=customerOrders.get(i);
+         if(customerOrder.getPaid()){
+               customerOrder.setCustomer(null);
+         }
+      }
+
+      //Update customer side relationship with only the shopping cart
+      List<Order> orders= customerOrders.stream().filter(order -> order.getCustomer()!=null).collect(Collectors.toList());
+      customerToDelete.setOrders(orders);
+      iCustomerRepository.saveAndFlush(customerToDelete);
+      //Delete customer and shopping cart (no orders that have been already paid)
+      iCustomerRepository.delete(customerToDelete);
+      return "User has been deleted successfully";
    }
 
    @Override

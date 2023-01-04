@@ -23,11 +23,11 @@ public class Order {
     private BigDecimal totalCost;
     private Boolean paid;
 
-    @ManyToOne (fetch=FetchType.LAZY)
+    @ManyToOne (fetch=FetchType.LAZY,cascade =CascadeType.REMOVE)
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order",cascade = CascadeType.REMOVE)
     private List<OrderDetail> ordersDetail;
 
     public Order(){

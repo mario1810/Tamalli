@@ -15,7 +15,7 @@ public interface ICustomerService {
 
     CustomerDTO addNewCustomer(Customer customer);
 
-    void deleteCustomerById(Long id);
+    String deleteCustomerById(Long id);
 
     CustomerDTO fullUpdateCustomer(Customer newCustomerChanges);
 

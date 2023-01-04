@@ -49,8 +49,8 @@ public class CustomerController {
     }
 
     @DeleteMapping("delete/{id}")
-    public void deleteApiCustomer(@PathVariable Long id){
-        iCustomerService.deleteCustomerById(id);
+    public String deleteApiCustomer(@PathVariable Long id){
+        return iCustomerService.deleteCustomerById(id);
     }
 
     @PostMapping("/add")

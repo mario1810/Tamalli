@@ -22,7 +22,7 @@ public class Customer {
     private String phoneNumber;
     private String address;
 
-    @OneToMany (fetch=FetchType.LAZY, mappedBy = "customer")
+    @OneToMany (fetch=FetchType.LAZY, mappedBy = "customer",cascade = CascadeType.REMOVE)
     private List<Order> orders;
 
     public Customer(){
