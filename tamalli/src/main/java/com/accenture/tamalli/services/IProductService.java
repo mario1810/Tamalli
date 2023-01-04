@@ -27,7 +27,7 @@ public interface IProductService {
 
     Product changeProductPrice(ProductPriceDTO newProductChanges);
 
-    void deleteProduct(Long productId);
+    String deleteProduct(Long productId);
 
 
 }

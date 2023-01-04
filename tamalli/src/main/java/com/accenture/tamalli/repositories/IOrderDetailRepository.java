@@ -7,5 +7,6 @@ import java.util.List;
 
 
 public interface IOrderDetailRepository extends JpaRepository<OrderDetail,Long> {
-    List<OrderDetail> findByProductProductIdAndOrderPaidFalse(Long productId);
+    List<OrderDetail> findByProductIsNullAndOrderPaidFalse();
+    List<OrderDetail> findByProductProductId(Long productId);
 }

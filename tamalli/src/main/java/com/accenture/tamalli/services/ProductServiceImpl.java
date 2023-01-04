@@ -93,15 +93,23 @@ public class ProductServiceImpl implements IProductService {
 
     @Transactional
     @Override
-    public void deleteProduct(Long productId) throws RuntimeException{
+    public String deleteProduct(Long productId) throws RuntimeException{
         if(productId==null)
             throw  new ProductException("Please, choose a valid id product");
         //Find the product to delete
         Product productToDelete =iProductRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
+
+        //Disassociate order details from this product (to store in history which product has been sold)
+        List<OrderDetail> ordersDetail=iOrderDetailRepository.findByProductProductId(productId);
+        for(int i=0; i<ordersDetail.size();i++){
+            ordersDetail.get(i).setProduct(null);
+        }
+
         //delete the product
         iProductRepository.delete(productToDelete);
         //delete from all ordersDetail that has not been paid
-        List<OrderDetail> shoppingCartsDetail=iOrderDetailRepository.findByProductProductIdAndOrderPaidFalse(productId);
+        List<OrderDetail> shoppingCartsDetail=iOrderDetailRepository.findByProductIsNullAndOrderPaidFalse();
         shoppingCartsDetail.forEach((shoppingCartDetail)->iOrderDetailRepository.delete(shoppingCartDetail));
+        return "The product with id:"+productId+" has been deleted";
     }
 }
