@@ -109,7 +109,7 @@ public class CustomerServiceImpl implements ICustomerService{
       iCustomerRepository.saveAndFlush(customerToDelete);
       //Delete customer and shopping cart (no orders that have been already paid)
       iCustomerRepository.delete(customerToDelete);
-      return "User has been deleted successfully";
+      return "Customer with id:"+customerId+" has been deleted successfully";
    }
 
    @Override
