@@ -141,7 +141,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         BigDecimal currentProductPrice=currentOrderDetail.getProduct().getPrice();
         if(!currentPriceAtOrderDetail.equals(currentProductPrice))
             throw  new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered. Delete this product with id:"+ currentOrderDetail.getProduct().getProductId()+" if ypu need more.");
-        
+
         //update orderDetail
         currentOrderDetail.setQuantityOrdered(newQuantity);
         currentOrderDetail=iOrderDetailRepository.saveAndFlush(currentOrderDetail);
