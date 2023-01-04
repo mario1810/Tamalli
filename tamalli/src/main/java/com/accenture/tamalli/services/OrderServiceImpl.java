@@ -109,7 +109,7 @@ public class OrderServiceImpl implements IOrderService{
             BigDecimal quantityBD = new BigDecimal(list.get(i).getQuantityOrdered().toString());
             BigDecimal priceBD = new BigDecimal(list.get(i).getProductPriceOrdered().toString());
             BigDecimal auxBD=priceBD.multiply(quantityBD);
-            sumCostBD=sumCostBD.add(sumCostBD).add(auxBD);
+            sumCostBD=sumCostBD.add(auxBD);
         }
         return sumCostBD;
     }
