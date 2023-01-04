@@ -19,18 +19,7 @@ public class CustomerController {
     @Autowired
     private ICustomerService iCustomerService;
 
-    /*
-
-    @GetMapping("/all")
-    public ResponseEntity getApiAllCustomers(){
-        try{
-            return  new ResponseEntity<List<CustomerDTO>>(iCustomerService.getAllCustomers(), HttpStatus.OK);
-        }catch (Exception e){
-            return  new ResponseEntity<String>(e.getClass()+":"+e.getMessage(), HttpStatus.OK);
-
-        }
-    }
-    */
+  
 
     @GetMapping("/all")
     public List<CustomerDTO> getApiAllCustomers(){
