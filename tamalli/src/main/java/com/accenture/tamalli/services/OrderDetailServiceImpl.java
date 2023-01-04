@@ -38,7 +38,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
 
     @Override
-    public ProductOrderDTO addProduct(Long customerId, Long productId, Integer quantity) {
+    public ProductOrderDTO addProductToShoppingCart(Long customerId, Long productId, Integer quantity) {
         //find order
         Order shoppingCart =findOrder(customerId);
 
@@ -76,7 +76,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public void removeProduct(Long customerId, Long productId) {
+    public void removeProductFromShoppingCart(Long customerId, Long productId) {
         Order shoppingCart=findOrder(customerId);
 
         //Find the order detail that contain the idProduct
@@ -90,7 +90,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
     @Transactional
     @Override
-    public void removeAllProducts(Long customerId) {
+    public void removeAllProductsFromShoppingCart(Long customerId) {
         Order shoppingCart=findOrder(customerId);
         //get all the orders details
         List<OrderDetail> shoppingCartDetails= shoppingCart.getOrdersDetail();
@@ -119,7 +119,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public ProductOrderDTO changeProductQuantity(Long customerId, Long productId, Integer newQuantity) {
+    public ProductOrderDTO changeProductQuantityAtShoppingCart(Long customerId, Long productId, Integer newQuantity) {
         //find the order
         Order shoppingCart=findOrder(customerId);
         //Find the order detail that contains the idProduct
