@@ -7,7 +7,7 @@ import com.accenture.tamalli.models.Tamal;
 
 import java.util.List;
 
-public interface ProductService {
+public interface IProductService {
 
     Drink addDrink(Drink drink);
 

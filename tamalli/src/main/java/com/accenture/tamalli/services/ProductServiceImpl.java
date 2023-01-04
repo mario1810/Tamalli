@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class ProductServiceImpl implements  ProductService {
+public class ProductServiceImpl implements IProductService {
 
 
     @Autowired
@@ -49,14 +49,14 @@ public class ProductServiceImpl implements  ProductService {
     public Drink getDrinkById(Long productId) {
         if(productId==null)
             throw  new ProductException("Please, choose a valid id product");
-        return iDrinkRepository.findByDrinkId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
+        return iDrinkRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
     }
 
     @Override
     public Tamal getTamalById(Long productId) {
         if(productId==null)
             throw  new ProductException("Please, choose a valid id product");
-        return iTamalRepository.findByTamalId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
+        return iTamalRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ProductServiceImpl implements  ProductService {
         //delete the product
         iProductRepository.delete(productToDelete);
         //delete from all ordersDetail that has not been paid
-        List<OrderDetail> shoppingCartsDetail=iOrderDetailRepository.findByProductProductIdAndPaidFalse();
+        List<OrderDetail> shoppingCartsDetail=iOrderDetailRepository.findByProductProductIdAndOrderPaidFalse(productId);
         shoppingCartsDetail.forEach((shoppingCartDetail)->iOrderDetailRepository.delete(shoppingCartDetail));
     }
 }

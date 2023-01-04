@@ -9,6 +9,6 @@ import java.util.Optional;
 
 
 public interface IDrinkRepository extends JpaRepository<Drink, Long> {
-    Optional<Drink> findByDrinkId(Long drinkId);
+    Optional<Drink> findByProductId(Long drinkId);
     List<Drink> findAll();
 }

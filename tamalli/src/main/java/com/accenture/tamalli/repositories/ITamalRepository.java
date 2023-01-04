@@ -8,6 +8,6 @@ import java.util.Optional;
 
 
 public interface ITamalRepository extends JpaRepository<Tamal,Long> {
-    Optional<Tamal> findByTamalId(Long tamalId);
+    Optional<Tamal> findByProductId(Long tamalId);
     List<Tamal> findAll();
 }
