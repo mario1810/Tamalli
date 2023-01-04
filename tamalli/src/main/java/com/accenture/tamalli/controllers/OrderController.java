@@ -17,23 +17,23 @@ public class OrderController {
     @Autowired
     private IOrderService iOrderService;
 
-    @PutMapping("/paid/{idCustomer}")
-    public OrderDTO changeOrderPaidStatus(@PathVariable Long idCustomer){
+    @PutMapping("/update/paid/{idCustomer}")
+    public OrderDTO changeApiShoppingCartStatus(@PathVariable Long idCustomer){
         return iOrderService.changeShoppingCartStatusToPaid(idCustomer);
     }
 
-    @GetMapping("/shoppingCart/{idCustomer}")
-    public ShoppingCartDTO getCustomerShoppingCart(@PathVariable Long idCustomer){
+    @GetMapping("/get/shoppingCart/{idCustomer}")
+    public ShoppingCartDTO getApiCustomerShoppingCart(@PathVariable Long idCustomer){
         return  iOrderService.getShoppingCart(idCustomer);
     }
 
-    @GetMapping("/history/{idCustomer}")
-    public List<OrderHistoryDTO> getCustomerHistory(@PathVariable Long idCustomer){
+    @GetMapping("/get/history/{idCustomer}")
+    public List<OrderHistoryDTO> getApiCustomerHistory(@PathVariable Long idCustomer){
         return  iOrderService.getShoppingHistory(idCustomer);
     }
 
-    @GetMapping("/all/paid")
-    public List<OrderDTO> getAllOrdersPaidApi(@PathVariable Long idCustomer){
+    @GetMapping("/get/all/paid")
+    public List<OrderDTO> getApiAllOrdersPaid(@PathVariable Long idCustomer){
         return iOrderService.getAllOrdersPaidStore();
     }
 

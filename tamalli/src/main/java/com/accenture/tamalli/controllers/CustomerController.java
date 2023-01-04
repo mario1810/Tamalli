@@ -4,6 +4,8 @@ import com.accenture.tamalli.dto.customers.CustomerDTO;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.services.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,11 +19,24 @@ public class CustomerController {
     @Autowired
     private ICustomerService iCustomerService;
 
+    /*
 
     @GetMapping("/all")
-    public List<CustomerDTO> getApiCustomers(){
+    public ResponseEntity getApiAllCustomers(){
+        try{
+            return  new ResponseEntity<List<CustomerDTO>>(iCustomerService.getAllCustomers(), HttpStatus.OK);
+        }catch (Exception e){
+            return  new ResponseEntity<String>(e.getClass()+":"+e.getMessage(), HttpStatus.OK);
+
+        }
+    }
+    */
+
+    @GetMapping("/all")
+    public List<CustomerDTO> getApiAllCustomers(){
         return  iCustomerService.getAllCustomers();
     }
+
 
     @GetMapping("/{id}")
     public CustomerDTO getApiCustomer(@PathVariable Long id){
@@ -49,7 +64,7 @@ public class CustomerController {
     }
 
     @PatchMapping("/partial/update/{id}")
-    public CustomerDTO updateApiPartialCustomer(@RequestBody Map<String, Object> changes, @PathVariable Long id){
+    public CustomerDTO updatePartialApiCustomer(@RequestBody Map<String, Object> changes, @PathVariable Long id){
         return iCustomerService.partialUpdateCustomer(changes,id);
 
     }
