@@ -29,36 +29,35 @@ public class CustomerServiceImpl implements ICustomerService{
    public List<CustomerDTO> getAllCustomers() {
       List<Customer> customers= iCustomerRepository.findAll();
       List<CustomerDTO> customersDTO=customers.stream()
-              .map((customer)-> customerToCustomerDTO(customer))
+              .map((customer)-> mapCustomerToCustomerDTO(customer))
               .collect(Collectors.toList());
       return customersDTO;
    }
 
    @Override
-   public CustomerDTO getCustomerById(Long id) {
-      Customer customer=  iCustomerRepository.findByCustomerId(id).orElseThrow(()->new CustomerException("there is no customer with id:"+ id));
-      return customerToCustomerDTO(customer);
+   public CustomerDTO getCustomerById(Long customerId) {
+      Customer customer=  iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
+      return mapCustomerToCustomerDTO(customer);
    }
 
    @Transactional
    @Override
-   public CustomerDTO addNewCustomer(Customer customer) {
+   public CustomerDTO addNewCustomer(Customer newCustomer) {
       //Does a user with the same email and password exist?
-      if(!validateNewCustomer(customer))
+      if(!validateNewCustomer(newCustomer))
             throw  new CustomerException("There  is no enough information about the customer to be created");
-      String email=customer.getEmail();
+      String email=newCustomer.getEmail();
       //Is there a customer with the same email and password?
       if(!Objects.isNull(iCustomerRepository.findFistByEmail(email).orElse(null)))
             throw  new CustomerException("Already exists a customer with the same email");
       //Add the new customer to the database
-      customer.setCustomerId(null);
-      //Create new user
-      customer  =  iCustomerRepository.saveAndFlush(customer);
-      //Create an empty order to the new user
+      newCustomer.setCustomerId(null);
+      newCustomer  =  iCustomerRepository.saveAndFlush(newCustomer);
+      //Create an empty order to the new customer
       Order emptyOrder = new Order();
-      emptyOrder.setCustomer(customer);
+      emptyOrder.setCustomer(newCustomer);
       iOrderRepository.saveAndFlush(emptyOrder);
-      return customerToCustomerDTO(customer);
+      return mapCustomerToCustomerDTO(newCustomer);
    }
 
    /***
@@ -84,13 +83,13 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public void deleteCustomerById(Long id) {
-      Customer storedCustomer= iCustomerRepository.findByCustomerId(id).orElseThrow(()->new CustomerException("there is no customer with id:"+ id));
+   public void deleteCustomerById(Long customerId) {
+      Customer customerToDelete= iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
       //It's important to keep information related with the orders of the users, so I am going to eliminate the information about him/her.(Update with null values to eliminate who he/she is but what he/she did)
       //iCustomerRepository.delete(storedCustomer);
       Customer emptyCustomer= new Customer();
       //Remember the  customer's id
-      emptyCustomer.setCustomerId(storedCustomer.getCustomerId());
+      emptyCustomer.setCustomerId(customerToDelete.getCustomerId());
       iCustomerRepository.saveAndFlush(emptyCustomer);
    }
 
@@ -111,7 +110,7 @@ public class CustomerServiceImpl implements ICustomerService{
       //Update him/her
       updatedCustomer.setOrders(currentCustomer.getOrders());
       updatedCustomer= iCustomerRepository.saveAndFlush(updatedCustomer);
-      return customerToCustomerDTO(updatedCustomer);
+      return mapCustomerToCustomerDTO(updatedCustomer);
    }
 
    @Override
@@ -124,7 +123,7 @@ public class CustomerServiceImpl implements ICustomerService{
       updateCustomerFields(currentCustomer, customerChanges);
       //Commit changes
       Customer customer =iCustomerRepository.saveAndFlush(currentCustomer);
-      return customerToCustomerDTO(customer);
+      return mapCustomerToCustomerDTO(customer);
    }
 
    private void updateCustomerFields(Customer customer, Map<String,Object>changes){
@@ -166,7 +165,7 @@ public class CustomerServiceImpl implements ICustomerService{
    @Override
    public CustomerDTO getCustomerId(String email, String password) {
       Customer customer= iCustomerRepository.findFistByEmailAndPassword(email,password).orElseThrow(()-> new CustomerException("Email or password  is incorrect"));
-      return customerToCustomerDTO(customer);
+      return mapCustomerToCustomerDTO(customer);
    }
 
 
@@ -175,7 +174,7 @@ public class CustomerServiceImpl implements ICustomerService{
     * @param customer object to be mapped
     * @return A CustomerDTO Object
     */
-   private CustomerDTO customerToCustomerDTO(Customer customer){
+   private CustomerDTO mapCustomerToCustomerDTO(Customer customer){
       CustomerDTO filteredCustomer = new CustomerDTO();
       filteredCustomer.setCustomerId(customer.getCustomerId());
       filteredCustomer.setFirstName(customer.getFirstName());

@@ -17,9 +17,9 @@ public interface ICustomerService {
 
     void deleteCustomerById(Long id);
 
-    CustomerDTO fullUpdateCustomer(Customer updatedCustomer);
+    CustomerDTO fullUpdateCustomer(Customer newCustomerChanges);
 
-    CustomerDTO partialUpdateCustomer(Map<String,Object> customerChanges, Long customerId);
+    CustomerDTO partialUpdateCustomer(Map<String,Object> newCustomerChanges, Long customerId);
 
     CustomerDTO getCustomerId(String email, String password);
 
