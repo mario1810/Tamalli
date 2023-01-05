@@ -57,7 +57,7 @@ public class ProductController{
         return iProductService.getAllProduct();
     }
 
-    @PutMapping("/update/price/")
+    @PutMapping("/update/price")
     Product changeProductPrice(@RequestBody ProductPriceDTO newProductChanges){
         return iProductService.changeProductPrice(newProductChanges);
     }
