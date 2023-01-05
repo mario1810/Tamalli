@@ -54,7 +54,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     public ProductDescription updateProductDescriptionPartially(Map<String, Object> productDescriptionChanges, Long productId) throws RuntimeException{
         if(productId==null)
             throw new ProductDescriptionException("There is no description for a product with id:"+productId);
-        //Doesn't that id product exits?
+        //Does that id product exits?
         ProductDescription currentProductDescription =iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new ProductDescriptionException("There is no a description for a product with id:"+productId));
         updateProductDescriptionFields(currentProductDescription,productDescriptionChanges);
         //Update description
