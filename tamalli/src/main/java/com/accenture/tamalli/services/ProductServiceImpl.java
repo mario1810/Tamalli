@@ -1,6 +1,8 @@
 package com.accenture.tamalli.services;
 
 import com.accenture.tamalli.dto.products.ProductPriceDTO;
+import com.accenture.tamalli.exceptions.BadRequestProductException;
+import com.accenture.tamalli.exceptions.NotFoundProductException;
 import com.accenture.tamalli.exceptions.ProductException;
 import com.accenture.tamalli.models.Drink;
 import com.accenture.tamalli.models.OrderDetail;
@@ -32,7 +34,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Drink addDrink(Drink drink) throws RuntimeException {
         if(drink.equals(null))
-            throw  new ProductException("please, register a valid product");
+            throw  new BadRequestProductException("please, register a valid product");
         drink.setProductId(null);
         return iDrinkRepository.saveAndFlush(drink);
     }
@@ -40,7 +42,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Tamal addTamal(Tamal tamal) throws RuntimeException{
         if(tamal.equals(null))
-            throw  new ProductException("please, register a valid product");
+            throw  new BadRequestProductException("please, register a valid product");
         tamal.setProductId(null);
         return iTamalRepository.saveAndFlush(tamal);
     }
@@ -48,22 +50,22 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Drink getDrinkById(Long productId) throws RuntimeException{
         if(productId==null)
-            throw  new ProductException("Please, choose a valid id product");
-        return iDrinkRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
+            throw  new BadRequestProductException("Please, choose a valid id product");
+        return iDrinkRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("There is no product with id:"+productId));
     }
 
     @Override
     public Tamal getTamalById(Long productId) throws RuntimeException{
         if(productId==null)
-            throw  new ProductException("Please, choose a valid id product");
-        return iTamalRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
+            throw  new BadRequestProductException("Please, choose a valid id product");
+        return iTamalRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("There is no product with id:"+productId));
     }
 
     @Override
     public Product getProductById(Long productId) throws RuntimeException{
         if(productId==null)
-            throw  new ProductException("Please, choose a valid id product");
-        return iProductRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
+            throw  new BadRequestProductException("Please, choose a valid id product");
+        return iProductRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("There is no product with id:"+productId));
     }
 
     @Override
@@ -84,8 +86,8 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Product changeProductPrice(ProductPriceDTO changesProduct) throws RuntimeException{
         if(changesProduct.equals(null))
-            throw  new ProductException("please, register valid changes");
-        Product productToUpdate =iProductRepository.findByProductId(changesProduct.getProductId()).orElseThrow(()->new ProductException("There is no product with id:"+changesProduct.getProductId()));
+            throw  new BadRequestProductException("please, register valid changes");
+        Product productToUpdate =iProductRepository.findByProductId(changesProduct.getProductId()).orElseThrow(()->new NotFoundProductException("There is no product with id:"+changesProduct.getProductId()));
         //Changes price
         productToUpdate.setPrice(changesProduct.getPrice());
         return iProductRepository.saveAndFlush(productToUpdate);
@@ -95,9 +97,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public String deleteProduct(Long productId) throws RuntimeException{
         if(productId==null)
-            throw  new ProductException("Please, choose a valid id product");
+            throw  new BadRequestProductException("Please, choose a valid id product");
         //Find the product to delete
-        Product productToDelete =iProductRepository.findByProductId(productId).orElseThrow(()->new ProductException("There is no product with id:"+productId));
+        Product productToDelete =iProductRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("There is no product with id:"+productId));
 
         //Disassociate order details from this product (to store in history which product has been sold)
         List<OrderDetail> ordersDetail=iOrderDetailRepository.findByProductProductId(productId);

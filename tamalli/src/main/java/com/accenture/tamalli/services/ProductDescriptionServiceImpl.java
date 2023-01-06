@@ -1,5 +1,6 @@
 package com.accenture.tamalli.services;
 
+import com.accenture.tamalli.exceptions.NotFoundProductDescriptionException;
 import com.accenture.tamalli.exceptions.ProductDescriptionException;
 import com.accenture.tamalli.models.ProductDescription;
 import com.accenture.tamalli.repositories.IProductDescriptionRepository;
@@ -18,9 +19,9 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     @Override
     public ProductDescription getProductDescriptionById(Long productId) throws RuntimeException {
         if(productId==null)
-            throw new ProductDescriptionException("There is no description for a product with id:"+productId);
+            throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //find
-        return iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new ProductDescriptionException("There is no a description for a product with id:"+productId));
+        return iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     @Override
     public ProductDescription createProductDescription(Long productId,ProductDescription productDescription) throws RuntimeException{
         if(productId==null)
-            throw new ProductDescriptionException("There is no description for a product with id:"+productId);
+            throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //Does that id product exits?
         if(iProductDescriptionRepository.findByProductId(productDescription.getProductId()).orElse(null)!=null)
             throw new ProductDescriptionException("There already exist a description for a product with id:"+productId);
@@ -41,9 +42,9 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     @Override
     public ProductDescription updateProductDescription(Long productId,ProductDescription productDescriptionChanges) throws RuntimeException{
         if(productId==null)
-            throw new ProductDescriptionException("There is no description for a product with id:"+productId);
+            throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //Doesn't that id product exits?
-        ProductDescription currentProductDescription =iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new ProductDescriptionException("There is no a description for a product with id:"+productId));
+        ProductDescription currentProductDescription =iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId));
         //Update description
         return iProductDescriptionRepository.save(productDescriptionChanges);
     }
@@ -51,9 +52,9 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     @Override
     public ProductDescription updateProductDescriptionPartially(Map<String, Object> productDescriptionChanges, Long productId) throws RuntimeException{
         if(productId==null)
-            throw new ProductDescriptionException("There is no description for a product with id:"+productId);
+            throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //Does that id product exits?
-        ProductDescription currentProductDescription =iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new ProductDescriptionException("There is no a description for a product with id:"+productId));
+        ProductDescription currentProductDescription =iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId));
         updateProductDescriptionFields(currentProductDescription,productDescriptionChanges);
         //Update description
         return iProductDescriptionRepository.save(currentProductDescription);
@@ -81,10 +82,10 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     @Override
     public String deleteProductDescription(Long productId) throws RuntimeException{
         if(productId==null)
-            throw new ProductDescriptionException("There is no a description for a product with id:"+productId);
+            throw new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId);
         //Does that id product exits?
         if(iProductDescriptionRepository.findByProductId(productId).orElse(null)==null)
-            throw new ProductDescriptionException("There is no a description for a product with id:"+productId+" to delete");
+            throw new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId+" to delete");
         //find the description to delete
         ProductDescription productDescription=iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new ProductDescriptionException("There is no a description for a product with id:"+productId));
         //delete it

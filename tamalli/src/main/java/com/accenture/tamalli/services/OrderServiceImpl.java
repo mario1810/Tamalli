@@ -4,7 +4,9 @@ import com.accenture.tamalli.dto.orderDetails.OrderDetailDTO;
 import com.accenture.tamalli.dto.orders.OrderDTO;
 import com.accenture.tamalli.dto.orders.OrderHistoryDTO;
 import com.accenture.tamalli.dto.orders.ShoppingCartDTO;
+import com.accenture.tamalli.exceptions.BadRequestOrderException;
 import com.accenture.tamalli.exceptions.CustomerException;
+import com.accenture.tamalli.exceptions.NotFoundCustomerException;
 import com.accenture.tamalli.exceptions.OrderException;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.models.Order;
@@ -52,7 +54,7 @@ public class OrderServiceImpl implements IOrderService{
     @Transactional
     @Override
     public OrderDTO changeShoppingCartStatusToPaid(Long customerId) throws RuntimeException{
-        Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
+        Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
         Order shoppingCart = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
         //Does shopping cart exist?
@@ -64,7 +66,7 @@ public class OrderServiceImpl implements IOrderService{
         //Is shoppingCartOrder empty?
         List<OrderDetail> shoppingCartDetails=shoppingCart.getOrdersDetail();
         if(shoppingCartDetails==null || shoppingCartDetails.size()==0)
-            throw  new OrderException("Your shopping cart with Id:"+shoppingCart.getOrderId()+ " is empty, please add products");
+            throw  new BadRequestOrderException("Your shopping cart with Id:"+shoppingCart.getOrderId()+ " is empty, please add products");
         //get the total cost
         BigDecimal totalCost= calculateTotalCost(shoppingCartDetails);
 
@@ -80,7 +82,7 @@ public class OrderServiceImpl implements IOrderService{
 
     @Override
     public ShoppingCartDTO getShoppingCart(Long customerId) throws RuntimeException{
-        Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
+        Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException( "There is no a customer with Id:"+customerId));
         //Get the shopping cart order
         Order shoppingCart = customer.getOrders().stream().filter((order)->!order.getPaid()).findFirst().orElse(null);
         //Does shopping cart exist?
@@ -134,7 +136,7 @@ public class OrderServiceImpl implements IOrderService{
 
     @Override
     public List<OrderHistoryDTO> getShoppingHistory(Long customerId) throws RuntimeException{
-        Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException( "There is no a customer with Id:"+customerId));
+        Customer customer =iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException( "There is no a customer with Id:"+customerId));
         //Transform order objects to orderHistoryDTO
         return customer.getOrders()
                 .stream()

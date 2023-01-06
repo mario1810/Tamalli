@@ -1,7 +1,9 @@
 package com.accenture.tamalli.services;
 
+import com.accenture.tamalli.exceptions.BadRequestCustomerException;
 import com.accenture.tamalli.exceptions.CustomerException;
 import com.accenture.tamalli.dto.customers.CustomerDTO;
+import com.accenture.tamalli.exceptions.NotFoundCustomerException;
 import com.accenture.tamalli.exceptions.OrderException;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.models.Order;
@@ -37,7 +39,7 @@ public class CustomerServiceImpl implements ICustomerService{
 
    @Override
    public CustomerDTO getCustomerById(Long customerId) throws RuntimeException {
-      Customer customer=  iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
+      Customer customer=  iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException("there is no customer with id:"+ customerId));
       return mapCustomerToCustomerDTO(customer);
    }
 
@@ -53,7 +55,7 @@ public class CustomerServiceImpl implements ICustomerService{
    public CustomerDTO addNewCustomer(Customer newCustomer) throws RuntimeException{
       //Does a user with the same email and password exist?
       if(newCustomer==null || !validateNewCustomer(newCustomer))
-            throw  new CustomerException("There  is no enough information about the customer to be created");
+            throw  new BadRequestCustomerException("There  is no enough information in the body about the customer to be created");
       String email=newCustomer.getEmail();
       //Is there a customer with the same email and password?
       if(!Objects.isNull(iCustomerRepository.findFirstByEmail(email).orElse(null)))
@@ -91,7 +93,7 @@ public class CustomerServiceImpl implements ICustomerService{
    @Transactional
    @Override
    public String deleteCustomerById(Long customerId) throws RuntimeException{
-      Customer customerToDelete= iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
+      Customer customerToDelete= iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException("there is no customer with id:"+ customerId));
       //It's important to keep information related with the orders of the users, so I am going to eliminate the information about him/her.(Update with null values to eliminate who he/she is but what he/she did)
       List<Order> customerOrders=customerToDelete.getOrders();
 
@@ -117,12 +119,12 @@ public class CustomerServiceImpl implements ICustomerService{
       //is there an ID?
       Long customerId=updateCustomer.getCustomerId();
       if(customerId==null)
-         throw new CustomerException("there is no id in the body request to identify a customer");
+         throw new BadRequestCustomerException("there is no id in the body request to identify a customer");
       //Does the ID exist?
-      Customer currentCustomer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
+      Customer currentCustomer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException("there is no customer with id:"+ customerId));
       //validate customer
       if(!validateNewCustomer(updateCustomer))
-         throw  new CustomerException("There  is no enough information about the customer to be fully updated");
+         throw  new BadRequestCustomerException("There  is no enough information about the customer to be fully updated");
       //The new email is in use?
       String email=updateCustomer.getEmail();
       Customer emailOwnerCustomer=iCustomerRepository.findFirstByEmail(email).orElse(null);
@@ -140,9 +142,9 @@ public class CustomerServiceImpl implements ICustomerService{
    @Override
    public CustomerDTO partialUpdateCustomer(Map<String,Object> customerChanges, Long customerId) throws RuntimeException{
       if(customerId==null)
-         throw new CustomerException("there is no id to identify a customer");
+         throw new BadRequestCustomerException("there is no id to identify a customer");
       //Does the ID exist?
-      Customer currentCustomer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
+      Customer currentCustomer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException("there is no customer with id:"+ customerId));
       //Update fields
       updateCustomerFields(currentCustomer, customerChanges);
       //Commit changes
