@@ -1,5 +1,6 @@
 package com.accenture.tamalli.controllers;
 
+import com.accenture.tamalli.dto.products.ProductAndDescriptionDTO;
 import com.accenture.tamalli.models.ProductDescription;
 import com.accenture.tamalli.services.IProductDescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,36 +10,41 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/descriptions")
+@RequestMapping("/api/tamalli")
 public class ProductDescriptionController {
 
     @Autowired
     IProductDescriptionService iProductDescriptionService;
 
-    @GetMapping("/{productId}")
+    @GetMapping("/descriptions/{productId}")
     ProductDescription getApiProductDescriptionById(@PathVariable Long productId){
         return iProductDescriptionService.getProductDescriptionById(productId);
     }
-    @GetMapping("/")
+    @GetMapping("/descriptions")
     List<ProductDescription> getApiAllProductDescription(){
         return iProductDescriptionService.getAllProductDescription();
     }
-    @PostMapping("/{productId}")
+    @PostMapping("/descriptions/{productId}")
     ProductDescription createApiProductDescription(@PathVariable Long productId, @RequestBody ProductDescription productDescription){
         return  iProductDescriptionService.createProductDescription(productId,productDescription);
     }
-    @PutMapping("/{productId}")
+    @PutMapping("/descriptions/{productId}")
     ProductDescription updateApiProductDescription(@PathVariable Long productId, @RequestBody ProductDescription productDescription){
         return  iProductDescriptionService.updateProductDescription(productId,productDescription);
     }
 
-    @PatchMapping("/{productId}")
+    @PatchMapping("/descriptions/{productId}")
     ProductDescription updateApiProductDescriptionPartially(@RequestBody Map<String,Object> productDescriptionChanges,@PathVariable Long productId){
         return iProductDescriptionService.updateProductDescriptionPartially(productDescriptionChanges ,productId);
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("/descriptions/{productId}")
     String deleteApiProductDescription(@PathVariable Long productId){
         return iProductDescriptionService.deleteProductDescription(productId);
     }
+    @GetMapping("/descriptions/superProducts")
+    List<ProductAndDescriptionDTO> getApiAllProductsAndDescription(){
+        return iProductDescriptionService.getAllProductsAndDescription();
+    }
+
 }

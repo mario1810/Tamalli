@@ -1,5 +1,6 @@
 package com.accenture.tamalli.services;
 
+import com.accenture.tamalli.dto.products.ProductAndDescriptionDTO;
 import com.accenture.tamalli.models.ProductDescription;
 
 import java.util.List;
@@ -16,5 +17,6 @@ public interface IProductDescriptionService {
 
     ProductDescription updateProductDescriptionPartially(Map<String,Object> productDescriptionChanges, Long productId);
     String deleteProductDescription(Long productId);
+    public List<ProductAndDescriptionDTO> getAllProductsAndDescription();
 
 }

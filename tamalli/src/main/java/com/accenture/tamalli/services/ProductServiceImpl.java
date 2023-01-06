@@ -4,10 +4,7 @@ import com.accenture.tamalli.dto.products.ProductPriceDTO;
 import com.accenture.tamalli.exceptions.BadRequestProductException;
 import com.accenture.tamalli.exceptions.NotFoundProductException;
 import com.accenture.tamalli.exceptions.ProductException;
-import com.accenture.tamalli.models.Drink;
-import com.accenture.tamalli.models.OrderDetail;
-import com.accenture.tamalli.models.Product;
-import com.accenture.tamalli.models.Tamal;
+import com.accenture.tamalli.models.*;
 import com.accenture.tamalli.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +28,8 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     IOrderDetailRepository iOrderDetailRepository;
 
+    @Autowired
+    IProductDescriptionRepository iProductDescriptionRepository;
     @Override
     public Drink addDrink(Drink drink) throws RuntimeException {
         if(drink.equals(null))
@@ -112,6 +111,15 @@ public class ProductServiceImpl implements IProductService {
         //delete from all ordersDetail that has not been paid
         List<OrderDetail> shoppingCartsDetail=iOrderDetailRepository.findByProductIsNullAndOrderPaidFalse();
         shoppingCartsDetail.forEach((shoppingCartDetail)->iOrderDetailRepository.delete(shoppingCartDetail));
+
+        //Eliminate any product description
+        try{
+            ProductDescription description=iProductDescriptionRepository.findByProductId(productId).orElse(null);
+            if(description!=null)
+                iProductDescriptionRepository.delete(description);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return "The product with id:"+productId+" has been deleted";
     }
 }
