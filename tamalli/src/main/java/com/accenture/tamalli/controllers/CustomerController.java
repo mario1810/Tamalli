@@ -32,17 +32,18 @@ public class CustomerController {
         return  iCustomerService.getCustomerById(id);
     }
 
+    /*
     @GetMapping("/customers/{email}/{password}")
     public CustomerDTO getApiIdCustomer(@PathVariable String email, @PathVariable String password){
         return iCustomerService.getCustomerId(email, password);
-    }
+    }*/
 
     @DeleteMapping("/customers/{id}")
     public String deleteApiCustomer(@PathVariable Long id){
         return iCustomerService.deleteCustomerById(id);
     }
 
-    @PostMapping("/customers/{id}")
+    @PostMapping("/customers")
     public CustomerDTO addApiNewCustomer(@RequestBody Customer customer){
          return iCustomerService.addNewCustomer(customer);
     }
