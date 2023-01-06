@@ -10,29 +10,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/api/order")
+@RequestMapping(path="/api/tamalli")
 public class OrderController {
-
-
     @Autowired
     private IOrderService iOrderService;
-
-    @PutMapping("/update/paid/{idCustomer}")
+    @PutMapping("/orders/paid/{i1dCustomer}")
     public OrderDTO changeApiShoppingCartStatus(@PathVariable Long idCustomer){
         return iOrderService.changeShoppingCartStatusToPaid(idCustomer);
     }
 
-    @GetMapping("/get/shoppingCart/{idCustomer}")
+    @GetMapping("/orders/shoppingCart/{idCustomer}")
     public ShoppingCartDTO getApiCustomerShoppingCart(@PathVariable Long idCustomer){
         return  iOrderService.getShoppingCart(idCustomer);
     }
 
-    @GetMapping("/get/history/{idCustomer}")
+    @GetMapping("/orders/history/{idCustomer}")
     public List<OrderHistoryDTO> getApiCustomerHistory(@PathVariable Long idCustomer){
         return  iOrderService.getShoppingHistory(idCustomer);
     }
 
-    @GetMapping("/get/all/paid")
+    @GetMapping("/orders")
     public List<OrderDTO> getApiAllOrdersPaid(){
         return iOrderService.getAllOrdersPaidStore();
     }

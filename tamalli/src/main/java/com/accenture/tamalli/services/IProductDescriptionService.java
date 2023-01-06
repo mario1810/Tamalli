@@ -11,8 +11,8 @@ public interface IProductDescriptionService {
 
     ProductDescription getProductDescriptionById(Long productId);
     List<ProductDescription> getAllProductDescription();
-    ProductDescription createProductDescription(ProductDescription productDescription);
-    ProductDescription updateProductDescription(ProductDescription productDescription);
+    ProductDescription createProductDescription(Long productId,ProductDescription productDescription);
+    ProductDescription updateProductDescription(Long productId,ProductDescription productDescription);
 
     ProductDescription updateProductDescriptionPartially(Map<String,Object> productDescriptionChanges, Long productId);
     String deleteProductDescription(Long productId);

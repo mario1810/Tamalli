@@ -29,8 +29,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     }
 
     @Override
-    public ProductDescription createProductDescription(ProductDescription productDescription) throws RuntimeException{
-        Long productId=productDescription.getProductId();
+    public ProductDescription createProductDescription(Long productId,ProductDescription productDescription) throws RuntimeException{
         if(productId==null)
             throw new ProductDescriptionException("There is no description for a product with id:"+productId);
         //Does that id product exits?
@@ -40,8 +39,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     }
 
     @Override
-    public ProductDescription updateProductDescription(ProductDescription productDescriptionChanges) throws RuntimeException{
-        Long productId=productDescriptionChanges.getProductId();
+    public ProductDescription updateProductDescription(Long productId,ProductDescription productDescriptionChanges) throws RuntimeException{
         if(productId==null)
             throw new ProductDescriptionException("There is no description for a product with id:"+productId);
         //Doesn't that id product exits?

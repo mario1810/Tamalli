@@ -9,35 +9,35 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/productDescription")
+@RequestMapping("/api/descriptions")
 public class ProductDescriptionController {
 
     @Autowired
     IProductDescriptionService iProductDescriptionService;
 
-    @GetMapping("/get/{productId}")
+    @GetMapping("/{productId}")
     ProductDescription getApiProductDescriptionById(@PathVariable Long productId){
         return iProductDescriptionService.getProductDescriptionById(productId);
     }
-    @GetMapping("/getAll")
+    @GetMapping("/")
     List<ProductDescription> getApiAllProductDescription(){
         return iProductDescriptionService.getAllProductDescription();
     }
-    @PostMapping("/add")
-    ProductDescription createApiProductDescription(@RequestBody ProductDescription productDescription){
-        return  iProductDescriptionService.createProductDescription(productDescription);
+    @PostMapping("/{productId}")
+    ProductDescription createApiProductDescription(@PathVariable Long productId, @RequestBody ProductDescription productDescription){
+        return  iProductDescriptionService.createProductDescription(productId,productDescription);
     }
-    @PutMapping("/update")
-    ProductDescription updateApiProductDescription(@RequestBody ProductDescription productDescription){
-        return  iProductDescriptionService.updateProductDescription(productDescription);
+    @PutMapping("/{productId}")
+    ProductDescription updateApiProductDescription(@PathVariable Long productId, @RequestBody ProductDescription productDescription){
+        return  iProductDescriptionService.updateProductDescription(productId,productDescription);
     }
 
-    @PatchMapping("/update/{productId}")
+    @PatchMapping("/{productId}")
     ProductDescription updateApiProductDescriptionPartially(@RequestBody Map<String,Object> productDescriptionChanges,@PathVariable Long productId){
         return iProductDescriptionService.updateProductDescriptionPartially(productDescriptionChanges ,productId);
     }
 
-    @DeleteMapping("/delete/{productId}")
+    @DeleteMapping("/{productId}")
     String deleteApiProductDescription(@PathVariable Long productId){
         return iProductDescriptionService.deleteProductDescription(productId);
     }

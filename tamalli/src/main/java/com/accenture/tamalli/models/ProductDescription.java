@@ -13,7 +13,6 @@ public class ProductDescription {
     private String descriptionBody;
     private String urlImage;
 
-
     public Long getProductId() {
         return productId;
     }
