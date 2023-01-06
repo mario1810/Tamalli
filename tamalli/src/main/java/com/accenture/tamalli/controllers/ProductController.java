@@ -11,58 +11,58 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/api/products")
+@RequestMapping(path="/api/tamalli")
 public class ProductController{
 
     @Autowired
     private IProductService iProductService;
 
-    @PostMapping("/drink")
+    @PostMapping("/products/drink")
     Drink addApiDrink(@RequestBody Drink drink){
         return iProductService.addDrink(drink);
     }
 
-    @PostMapping("/tamal")
+    @PostMapping("/products/tamal")
     Tamal addApiTamal(@RequestBody Tamal tamal){
         return iProductService.addTamal(tamal);
     }
 
-    @GetMapping("/drink/{productId}")
+    @GetMapping("/products/drink/{productId}")
     Drink getApiDrinkById(@PathVariable Long productId){
         return iProductService.getDrinkById(productId);
     }
 
-    @GetMapping("/tamal/{productId}")
+    @GetMapping("/products/tamal/{productId}")
     Tamal getApiTamalById(@PathVariable Long productId){
         return iProductService.getTamalById(productId);
     }
 
-    @GetMapping("/product/{productId}")
+    @GetMapping("/products/{productId}")
     Product getApiProductById(@PathVariable Long productId){
         return  iProductService.getProductById(productId);
     }
 
-    @GetMapping("/drinks")
+    @GetMapping("/products/drink")
     List<Drink> getApiAllDrinks(){
         return  iProductService.getAllDrinks();
     }
 
-    @GetMapping("/tamales")
+    @GetMapping("/products/tamal")
     List<Tamal> getApiAllTamales(){
         return iProductService.getAllTamales();
     }
 
-    @GetMapping("/")
+    @GetMapping("/products")
     List<Product> getAllProduct(){
         return iProductService.getAllProduct();
     }
 
-    @PutMapping("/update/price")
+    @PutMapping("/products/price")
     Product changeProductPrice(@RequestBody ProductPriceDTO newProductChanges){
         return iProductService.changeProductPrice(newProductChanges);
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("/products/{productId}")
     String deleteProduct(@PathVariable Long productId){
         return iProductService.deleteProduct(productId);
     }

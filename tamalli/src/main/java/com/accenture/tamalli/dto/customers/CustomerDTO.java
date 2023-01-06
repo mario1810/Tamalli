@@ -69,4 +69,17 @@ public class CustomerDTO implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public CustomerDTO(){
+    }
+
+    public CustomerDTO(Long customerId, String firstName, String lastName, String email, String phoneNumber, String address, Long orderId) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.orderId = orderId;
+    }
 }

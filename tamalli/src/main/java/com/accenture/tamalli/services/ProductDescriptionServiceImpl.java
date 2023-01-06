@@ -39,6 +39,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
 
     @Override
     public ProductDescription createProductDescription(Long productId,ProductDescription productDescription) throws RuntimeException{
+        productDescription.setProductId(productId);
         if(productId==null)
             throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //Does that id product exits?
@@ -51,6 +52,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
 
     @Override
     public ProductDescription updateProductDescription(Long productId,ProductDescription productDescriptionChanges) throws RuntimeException{
+        productDescriptionChanges.setProductId(productId);
         if(productId==null)
             throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //Doesn't that id product description exits?
@@ -61,6 +63,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
 
     @Override
     public ProductDescription updateProductDescriptionPartially(Map<String, Object> productDescriptionChanges, Long productId) throws RuntimeException{
+
         if(productId==null)
             throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //Does that id product description exits?

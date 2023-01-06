@@ -115,9 +115,9 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public CustomerDTO fullUpdateCustomer(Customer updateCustomer) throws RuntimeException{
+   public CustomerDTO fullUpdateCustomer(Customer updateCustomer,Long customerId) throws RuntimeException{
       //is there an ID?
-      Long customerId=updateCustomer.getCustomerId();
+      updateCustomer.setCustomerId(customerId);
       if(customerId==null)
          throw new BadRequestCustomerException("there is no id in the body request to identify a customer");
       //Does the ID exist?

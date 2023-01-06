@@ -48,13 +48,13 @@ public class CustomerController {
          return iCustomerService.addNewCustomer(customer);
     }
 
-    @PutMapping("/customers/{id}")
-    public CustomerDTO updateApiCustomer(@RequestBody Customer customer){
-        return  iCustomerService.fullUpdateCustomer(customer);
+    @PutMapping("/customers/{customerId}")
+    public CustomerDTO updateApiCustomer(@RequestBody Customer customer,@PathVariable Long customerId){
+        return  iCustomerService.fullUpdateCustomer(customer, customerId);
     }
 
-    @PatchMapping("/customers/{id}")
-    public CustomerDTO updatePartialApiCustomer(@RequestBody Map<String, Object> changes, @PathVariable Long id){
-        return iCustomerService.partialUpdateCustomer(changes,id);
+    @PatchMapping("/customers/{customerId}")
+    public CustomerDTO updatePartialApiCustomer(@RequestBody Map<String, Object> changes, @PathVariable Long customerId){
+        return iCustomerService.partialUpdateCustomer(changes,customerId);
     }
 }

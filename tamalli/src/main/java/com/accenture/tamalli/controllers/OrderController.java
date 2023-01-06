@@ -14,19 +14,19 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private IOrderService iOrderService;
-    @PutMapping("/orders/paid/{i1dCustomer}")
-    public OrderDTO changeApiShoppingCartStatus(@PathVariable Long idCustomer){
-        return iOrderService.changeShoppingCartStatusToPaid(idCustomer);
+    @PutMapping("/orders/paid/{customerId}")
+    public OrderDTO changeApiShoppingCartStatus(@PathVariable Long customerId){
+        return iOrderService.changeShoppingCartStatusToPaid(customerId);
     }
 
-    @GetMapping("/orders/shoppingCart/{idCustomer}")
-    public ShoppingCartDTO getApiCustomerShoppingCart(@PathVariable Long idCustomer){
-        return  iOrderService.getShoppingCart(idCustomer);
+    @GetMapping("/orders/shoppingCart/{customerId}")
+    public ShoppingCartDTO getApiCustomerShoppingCart(@PathVariable Long customerId){
+        return  iOrderService.getShoppingCart(customerId);
     }
 
-    @GetMapping("/orders/history/{idCustomer}")
-    public List<OrderHistoryDTO> getApiCustomerHistory(@PathVariable Long idCustomer){
-        return  iOrderService.getShoppingHistory(idCustomer);
+    @GetMapping("/orders/history/{customerId}")
+    public List<OrderHistoryDTO> getApiCustomerHistory(@PathVariable Long customerId){
+        return  iOrderService.getShoppingHistory(customerId);
     }
 
     @GetMapping("/orders")

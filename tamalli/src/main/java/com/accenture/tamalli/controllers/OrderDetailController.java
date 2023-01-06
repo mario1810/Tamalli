@@ -20,9 +20,9 @@ public class OrderDetailController {
             return iOrderDetailService.addProductToShoppingCart(customerId,productToOrder.getProductId(),productToOrder.getQuantity());
     }
 
-    @DeleteMapping("/orderDetail/{customerId}")
-    String removeApiProductFromShoppingCart(@PathVariable Long customerId,@RequestBody ProductToOrderDTO productToOrderDTO){
-        return iOrderDetailService.removeProductFromShoppingCart(customerId,productToOrderDTO.getProductId());
+    @DeleteMapping("/orderDetail/{customerId}/{productId}")
+    String removeApiProductFromShoppingCart(@PathVariable Long customerId,@PathVariable Long productId){
+        return iOrderDetailService.removeProductFromShoppingCart(customerId,productId);
     }
 
     @DeleteMapping("/orderDetail/all/{customerId}")
