@@ -54,4 +54,16 @@ public class OrderHistoryDTO  implements Serializable {
     public void setOrderDetails(List<OrderDetailDTO> orderDetails) {
         this.orderDetails = orderDetails;
     }
+
+    public OrderHistoryDTO (){
+
+    }
+
+    public OrderHistoryDTO(Long orderId, LocalDateTime purchaseDate, BigDecimal totalCost, Long customerId, List<OrderDetailDTO> orderDetails) {
+        this.orderId = orderId;
+        this.purchaseDate = purchaseDate;
+        this.totalCost = totalCost;
+        this.customerId = customerId;
+        this.orderDetails = orderDetails;
+    }
 }

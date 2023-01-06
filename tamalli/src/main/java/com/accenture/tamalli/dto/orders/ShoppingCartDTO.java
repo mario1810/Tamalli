@@ -26,4 +26,13 @@ public class ShoppingCartDTO implements Serializable {
     public void setShoppingCartList(List<OrderDetailDTO> shoppingCartList) {
         this.shoppingCartList = shoppingCartList;
     }
+
+    public  ShoppingCartDTO(){
+
+    }
+
+    public ShoppingCartDTO(BigDecimal totalCost, List<OrderDetailDTO> shoppingCartList) {
+        this.totalCost = totalCost;
+        this.shoppingCartList = shoppingCartList;
+    }
 }

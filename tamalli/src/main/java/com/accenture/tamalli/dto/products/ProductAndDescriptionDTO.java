@@ -25,4 +25,13 @@ public class ProductAndDescriptionDTO implements Serializable {
     public void setDescription(ProductDescription description) {
         this.description = description;
     }
+
+    public ProductAndDescriptionDTO(){
+
+    }
+
+    public ProductAndDescriptionDTO(Product product, ProductDescription description) {
+        this.product = product;
+        this.description = description;
+    }
 }

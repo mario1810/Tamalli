@@ -59,4 +59,15 @@ public class ProductOrderDTO implements Serializable {
     public void setProductLine(String productLine) {
         this.productLine = productLine;
     }
+    public ProductOrderDTO(){
+
+    }
+    public ProductOrderDTO(Long orderId, Long detailOrderId, Integer quantityOrdered, String productOrdered, BigDecimal productPriceOrdered, String productLine) {
+        this.orderId = orderId;
+        this.detailOrderId = detailOrderId;
+        this.quantityOrdered = quantityOrdered;
+        this.productOrdered = productOrdered;
+        this.productPriceOrdered = productPriceOrdered;
+        this.productLine = productLine;
+    }
 }

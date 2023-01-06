@@ -21,4 +21,13 @@ public class ProductToOrderDTO implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public ProductToOrderDTO(){
+
+    }
+
+    public ProductToOrderDTO(Long productId, int quantity) {
+        this.productId = productId;
+        this.quantity = quantity;
+    }
 }
