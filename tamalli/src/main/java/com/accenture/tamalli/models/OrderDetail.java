@@ -15,7 +15,7 @@ public final class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long detailOrderId;
 
-    private Integer quantityOrdered;
+    private int quantityOrdered;
     private String  productOrdered;
     private BigDecimal productPriceOrdered;
     private String  productLine;
@@ -36,11 +36,11 @@ public final class OrderDetail {
         this.detailOrderId = detailOrderId;
     }
 
-    public Integer getQuantityOrdered() {
+    public int getQuantityOrdered() {
         return quantityOrdered;
     }
 
-    public void setQuantityOrdered(Integer quantityOrdered) {
+    public void setQuantityOrdered(int quantityOrdered) {
         this.quantityOrdered = quantityOrdered;
     }
 

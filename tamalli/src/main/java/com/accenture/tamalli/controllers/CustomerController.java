@@ -57,10 +57,7 @@ public class CustomerController {
         return iCustomerService.partialUpdateCustomer(changes,id);
 
     }
-
-
-
-
+    
 
 
 }

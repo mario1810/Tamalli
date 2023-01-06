@@ -106,7 +106,7 @@ public class OrderServiceImpl implements IOrderService{
         BigDecimal sumCostBD=new BigDecimal("0.0");
         //Iterate through all products
         for(int i=0; i<list.size();i++){
-            BigDecimal quantityBD = new BigDecimal(list.get(i).getQuantityOrdered().toString());
+            BigDecimal quantityBD = new BigDecimal(list.get(i).getQuantityOrdered());
             BigDecimal priceBD = new BigDecimal(list.get(i).getProductPriceOrdered().toString());
             BigDecimal auxBD=priceBD.multiply(quantityBD);
             sumCostBD=sumCostBD.add(auxBD);

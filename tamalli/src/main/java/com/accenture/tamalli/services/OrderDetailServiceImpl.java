@@ -38,7 +38,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
 
     @Override
-    public ProductOrderDTO addProductToShoppingCart(Long customerId, Long productId, Integer quantity) throws RuntimeException{
+    public ProductOrderDTO addProductToShoppingCart(Long customerId, Long productId, int quantity) throws RuntimeException{
         //find order
         Order shoppingCart = findShoppingCart(customerId);
 
@@ -121,7 +121,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public ProductOrderDTO changeProductQuantityAtShoppingCart(Long customerId, Long productId, Integer newQuantity) throws RuntimeException{
+    public ProductOrderDTO changeProductQuantityAtShoppingCart(Long customerId, Long productId, int newQuantity) throws RuntimeException{
         //find the order
         Order shoppingCart= findShoppingCart(customerId);
         //Find the order detail that contains the idProduct
@@ -134,8 +134,8 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
 
-    private ProductOrderDTO changeProductQuantityAtShoppingCartInternal(OrderDetail currentOrderDetail, Integer newQuantity, Long orderId) throws RuntimeException{
-        if((int)newQuantity<= 0 || (int)newQuantity>MAX_QUANTITY || newQuantity==null)
+    private ProductOrderDTO changeProductQuantityAtShoppingCartInternal(OrderDetail currentOrderDetail, int newQuantity, Long orderId) throws RuntimeException{
+        if(newQuantity<= 0 || newQuantity>MAX_QUANTITY)
             throw new ProductException("Quantity is no valid, please choose a value between 1 and "+MAX_QUANTITY);
 
         //The product price has been updated at some point in the time?
