@@ -93,7 +93,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         //get all the orders details
         List<OrderDetail> shoppingCartDetails= shoppingCart.getOrdersDetail();
         //is empty?
-        if(shoppingCartDetails==null)
+        if(shoppingCartDetails==null || shoppingCartDetails.isEmpty())
             throw new OrderDetailException("The shopping cart is already empty");
         //delete each order detail
         shoppingCartDetails.forEach((shoppingDetail -> iOrderDetailRepository.delete(shoppingDetail)));
@@ -139,7 +139,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         BigDecimal currentPriceAtOrderDetail=currentOrderDetail.getProductPriceOrdered();
         BigDecimal currentProductPrice=currentOrderDetail.getProduct().getPrice();
         if(!currentPriceAtOrderDetail.equals(currentProductPrice))
-            throw  new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered. Delete this product with id:"+ currentOrderDetail.getProduct().getProductId()+" if yuu need more.");
+            throw  new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered. Delete this product with id:"+ currentOrderDetail.getProduct().getProductId()+" if you need more.");
 
         //update orderDetail
         currentOrderDetail.setQuantityOrdered(newQuantity);
