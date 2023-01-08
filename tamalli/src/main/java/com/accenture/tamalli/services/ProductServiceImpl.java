@@ -54,14 +54,14 @@ public class ProductServiceImpl implements IProductService {
     public Drink getDrinkById(Long productId) throws RuntimeException{
         if(productId==null)
             throw  new BadRequestProductException("Please, choose a valid id product");
-        return iDrinkRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("There is no product with id:"+productId));
+        return iDrinkRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("There is no drink with id:"+productId));
     }
 
     @Override
     public Tamal getTamalById(Long productId) throws RuntimeException{
         if(productId==null)
             throw  new BadRequestProductException("Please, choose a valid id product");
-        return iTamalRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("There is no product with id:"+productId));
+        return iTamalRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("There is no tamal with id:"+productId));
     }
 
     @Override
