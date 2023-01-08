@@ -34,7 +34,7 @@ public class ProductServiceImpl implements IProductService {
     public Drink addDrink(Drink drink) throws RuntimeException {
         if(drink.equals(null) || drink.getProductName()==null || drink.getCapacityLiters()<=0.0 || drink.getPrice()==null)
             throw  new BadRequestProductException("please, register a valid product");
-        if(!iDrinkRepository.findByProductNameAndCapacityLiters(drink.getProductName(),drink.getCapacityLiters()).isEmpty())
+        if(!iDrinkRepository.findByProductNameIgnoreCaseAndCapacityLiters(drink.getProductName(),drink.getCapacityLiters()).isEmpty())
             throw  new BadRequestProductException("This product is already in the database");
         drink.setProductId(null);
         return iDrinkRepository.saveAndFlush(drink);
@@ -44,7 +44,7 @@ public class ProductServiceImpl implements IProductService {
     public Tamal addTamal(Tamal tamal) throws RuntimeException{
         if(tamal.equals(null) || tamal.getProductName()==null || tamal.getWeightKilogram()<=0.0 || tamal.getPrice()==null)
             throw  new BadRequestProductException("please, register a valid product");
-        if(!iTamalRepository.findByProductNameAndWeightKilogram(tamal.getProductName(),tamal.getWeightKilogram()).isEmpty())
+        if(!iTamalRepository.findByProductNameIgnoreCaseAndWeightKilogram(tamal.getProductName(),tamal.getWeightKilogram()).isEmpty())
             throw  new BadRequestProductException("This product is already in the database");
         tamal.setProductId(null);
         return iTamalRepository.saveAndFlush(tamal);
