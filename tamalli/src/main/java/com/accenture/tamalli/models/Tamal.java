@@ -9,16 +9,16 @@ import javax.persistence.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Tamal extends Product {
 
-    private Double weightKilogram;
+    private double weightKilogram;
 
     public Tamal(){
         super.setProductType("Food");
     }
-    public Double getWeightKilogram() {
+    public double getWeightKilogram() {
         return weightKilogram;
     }
 
-    public void setWeightKilogram(Double weightKilogram) {
+    public void setWeightKilogram(double weightKilogram) {
         this.weightKilogram = weightKilogram;
     }
 }
