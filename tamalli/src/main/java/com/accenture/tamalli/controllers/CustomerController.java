@@ -22,39 +22,34 @@ public class CustomerController {
   
 
     @GetMapping("/customers")
-    public List<CustomerDTO> getApiAllCustomers(){
-        return  iCustomerService.getAllCustomers();
+    public ResponseEntity<List<CustomerDTO>> getApiAllCustomers(){
+        return  new ResponseEntity<>(iCustomerService.getAllCustomers(),HttpStatus.OK);
     }
 
 
     @GetMapping("/customers/{id}")
-    public CustomerDTO getApiCustomer(@PathVariable Long id){
-        return  iCustomerService.getCustomerById(id);
+    public ResponseEntity<CustomerDTO> getApiCustomer(@PathVariable Long id){
+        return  new ResponseEntity<>(iCustomerService.getCustomerById(id),HttpStatus.OK);
     }
 
-    /*
-    @GetMapping("/customers/{email}/{password}")
-    public CustomerDTO getApiIdCustomer(@PathVariable String email, @PathVariable String password){
-        return iCustomerService.getCustomerId(email, password);
-    }*/
 
     @DeleteMapping("/customers/{id}")
-    public String deleteApiCustomer(@PathVariable Long id){
-        return iCustomerService.deleteCustomerById(id);
+    public ResponseEntity<String> deleteApiCustomer(@PathVariable Long id){
+        return  new ResponseEntity<>(iCustomerService.deleteCustomerById(id),HttpStatus.OK);
     }
 
     @PostMapping("/customers")
-    public CustomerDTO addApiNewCustomer(@RequestBody Customer customer){
-         return iCustomerService.addNewCustomer(customer);
+    public ResponseEntity<CustomerDTO> addApiNewCustomer(@RequestBody Customer customer){
+        return  new ResponseEntity<>( iCustomerService.addNewCustomer(customer),HttpStatus.CREATED);
     }
 
     @PutMapping("/customers/{customerId}")
-    public CustomerDTO updateApiCustomer(@RequestBody Customer customer,@PathVariable Long customerId){
-        return  iCustomerService.fullUpdateCustomer(customer, customerId);
+    public ResponseEntity<CustomerDTO> updateApiCustomer(@RequestBody Customer customer,@PathVariable Long customerId){
+        return  new ResponseEntity<>(iCustomerService.fullUpdateCustomer(customer, customerId),HttpStatus.OK);
     }
 
     @PatchMapping("/customers/{customerId}")
-    public CustomerDTO updatePartialApiCustomer(@RequestBody Map<String, Object> changes, @PathVariable Long customerId){
-        return iCustomerService.partialUpdateCustomer(changes,customerId);
+    public ResponseEntity<CustomerDTO> updatePartialApiCustomer(@RequestBody Map<String, Object> changes, @PathVariable Long customerId){
+        return  new ResponseEntity<>(iCustomerService.partialUpdateCustomer(changes,customerId),HttpStatus.OK);
     }
 }

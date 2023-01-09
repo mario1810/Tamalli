@@ -6,6 +6,8 @@ import com.accenture.tamalli.models.Product;
 import com.accenture.tamalli.models.Tamal;
 import com.accenture.tamalli.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,38 +20,38 @@ public class ProductController{
     private IProductService iProductService;
 
     @PostMapping("/products/drink")
-    Drink addApiDrink(@RequestBody Drink drink){
-        return iProductService.addDrink(drink);
+    public ResponseEntity<Drink> addApiDrink(@RequestBody Drink drink){
+        return  new ResponseEntity<>(iProductService.addDrink(drink), HttpStatus.CREATED);
     }
 
     @PostMapping("/products/tamal")
-    Tamal addApiTamal(@RequestBody Tamal tamal){
-        return iProductService.addTamal(tamal);
+    public ResponseEntity<Tamal> addApiTamal(@RequestBody Tamal tamal){
+        return  new ResponseEntity<>(iProductService.addTamal(tamal), HttpStatus.CREATED);
     }
 
     @GetMapping("/products/drink/{productId}")
-    Drink getApiDrinkById(@PathVariable Long productId){
-        return iProductService.getDrinkById(productId);
+    public ResponseEntity<Drink> getApiDrinkById(@PathVariable Long productId){
+        return  new ResponseEntity<>(iProductService.getDrinkById(productId),HttpStatus.OK);
     }
 
     @GetMapping("/products/tamal/{productId}")
-    Tamal getApiTamalById(@PathVariable Long productId){
-        return iProductService.getTamalById(productId);
+    public ResponseEntity<Tamal> getApiTamalById(@PathVariable Long productId){
+        return  new ResponseEntity<>(iProductService.getTamalById(productId),HttpStatus.OK);
     }
 
     @GetMapping("/products/{productId}")
-    Product getApiProductById(@PathVariable Long productId){
-        return  iProductService.getProductById(productId);
+    public  ResponseEntity<Product> getApiProductById(@PathVariable Long productId){
+        return  new ResponseEntity<>(iProductService.getProductById(productId),HttpStatus.OK);
     }
 
     @GetMapping("/products/drink")
-    List<Drink> getApiAllDrinks(){
-        return  iProductService.getAllDrinks();
+    public ResponseEntity<List<Drink>> getApiAllDrinks(){
+        return  new ResponseEntity<>(iProductService.getAllDrinks(),HttpStatus.OK);
     }
 
     @GetMapping("/products/tamal")
-    List<Tamal> getApiAllTamales(){
-        return iProductService.getAllTamales();
+    public ResponseEntity<List<Tamal>> getApiAllTamales(){
+        return  new ResponseEntity<>(iProductService.getAllTamales(),HttpStatus.OK);
     }
 
     @GetMapping("/products")
