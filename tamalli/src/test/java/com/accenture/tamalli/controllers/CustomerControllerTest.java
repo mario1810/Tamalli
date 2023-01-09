@@ -1,6 +1,7 @@
 package com.accenture.tamalli.controllers;
 
 import com.accenture.tamalli.dto.customers.CustomerDTO;
+import com.accenture.tamalli.exceptions.BadRequestCustomerException;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.services.ICustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -97,10 +98,13 @@ public class CustomerControllerTest {
 
 
         String json="{\n" +
-                "    \"productName\": \"Tamal Dulce\",\n" +
-                "    \"price\": 13.00,\n" +
-                "    \"productType\": \"Food\",\n" +
-                "    \"weightKilogram\": 0.25\n" +
+                "    \"customerId\":100,\n" +
+                "    \"address\":\"monterrey\",\n" +
+                "    \"email\":\"rola@gmail.com\",\n" +
+                "    \"firstName\":\"Rolando\",\n" +
+                "    \"lastName\":\"Garcia\",\n" +
+                "    \"password\":\"1469o\",\n" +
+                "    \"phoneNumber\":\"16468645\"\n" +
                 "}";
 
         CustomerDTO customer = new CustomerDTO();
@@ -115,6 +119,7 @@ public class CustomerControllerTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isCreated());
     }
+
 
 
     @Test
@@ -165,5 +170,7 @@ public class CustomerControllerTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk()); //check is response status is 200
     }
+
+
 
 }

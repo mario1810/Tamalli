@@ -92,8 +92,8 @@ public class OrderControllerTest {
         shoppingCart=mapper.readValue(json, ShoppingCartDTO.class);
         when(iOrderService.getShoppingCart(anyLong())).thenReturn(shoppingCart);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/orders/shoppingCart/1"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
     @Test
@@ -103,8 +103,8 @@ public class OrderControllerTest {
         List<OrderHistoryDTO> history=mapper.readValue(json,new TypeReference<List<OrderHistoryDTO>>(){});
         when(iOrderService.getShoppingHistory(anyLong())).thenReturn(history);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/orders/history/1"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
 
@@ -115,8 +115,8 @@ public class OrderControllerTest {
         List<OrderDTO> orders =mapper.readValue(json,new TypeReference<List<OrderDTO>>(){});
         when(iOrderService.getAllOrdersPaidStore()).thenReturn(orders);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/orders"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
 
     }
 
