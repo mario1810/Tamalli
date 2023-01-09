@@ -4,7 +4,6 @@ import com.accenture.tamalli.dto.products.ProductAndDescriptionDTO;
 import com.accenture.tamalli.exceptions.NotFoundProductDescriptionException;
 import com.accenture.tamalli.exceptions.NotFoundProductException;
 import com.accenture.tamalli.exceptions.ProductDescriptionException;
-import com.accenture.tamalli.exceptions.ProductException;
 import com.accenture.tamalli.models.Product;
 import com.accenture.tamalli.models.ProductDescription;
 import com.accenture.tamalli.repositories.IProductDescriptionRepository;
@@ -43,9 +42,10 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
         if(productId==null)
             throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //Does that id product exits?
-        iProductRepository.findByProductId(productId).orElseThrow(()-> new NotFoundProductException("There is not a product with id:"+productId));
+        if(!iProductRepository.existsByProductId(productId))
+            throw  new NotFoundProductException("There is not a product with id:"+productId);
         //Does a description exists?
-        if(iProductDescriptionRepository.findByProductId(productDescription.getProductId()).orElse(null)!=null)
+        if(iProductDescriptionRepository.existsByProductId(productDescription.getProductId()))
             throw new ProductDescriptionException("There already exist a description for a product with id:"+productId);
          return iProductDescriptionRepository.save(productDescription);
     }

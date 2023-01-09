@@ -126,7 +126,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
                                                         .filter(shoppingCartDetail ->productId.equals(shoppingCartDetail.getProduct().getProductId() ))
                                                         .findFirst()
                                                         .orElseThrow(()-> new NotFoundOrderDetailException("There is no a product with id:"+productId+" in the shopping cart"));
-        //¨perform the quantity update
+        //perform the quantity update
         return changeProductQuantityAtShoppingCartInternal(currentShoppingCartDetail, newQuantity, shoppingCart.getOrderId());
     }
 

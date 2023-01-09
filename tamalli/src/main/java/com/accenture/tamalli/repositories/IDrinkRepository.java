@@ -13,4 +13,6 @@ public interface IDrinkRepository extends JpaRepository<Drink, Long> {
 
     List<Drink> findByProductNameIgnoreCaseAndCapacityLiters(String productName, double capacity);
     List<Drink> findAll();
+
+    Boolean existsByProductId(Long id);
 }

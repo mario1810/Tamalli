@@ -10,5 +10,8 @@ public interface IProductDescriptionRepository extends MongoRepository<ProductDe
 
     Optional<ProductDescription> findByProductId(Long productId);
 
+    Boolean existsByProductId(Long productId);
+
+
 
 }
