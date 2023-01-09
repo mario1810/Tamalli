@@ -40,7 +40,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
     public ProductDescription createProductDescription(Long productId,ProductDescription productDescription) throws RuntimeException{
         productDescription.setProductId(productId);
         if(productId==null)
-            throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
+            throw new ProductDescriptionException("There is no a valid id product");
         //Does that id product exits?
         if(!iProductRepository.existsByProductId(productId))
             throw  new NotFoundProductException("There is not a product with id:"+productId);
@@ -97,7 +97,7 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
         if(productId==null)
             throw new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId);
         //find the description to delete
-        ProductDescription productDescription=iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new ProductDescriptionException("There is no a description for a product with id:"+productId));
+        ProductDescription productDescription=iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId));
         //delete it
         iProductDescriptionRepository.delete(productDescription);
         return "The description for the product with id:"+productId+" has been deleted";
