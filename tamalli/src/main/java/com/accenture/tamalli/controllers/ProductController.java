@@ -55,18 +55,18 @@ public class ProductController{
     }
 
     @GetMapping("/products")
-    List<Product> getAllProduct(){
-        return iProductService.getAllProduct();
+    public ResponseEntity<List<Product>> getAllProduct(){
+        return  new ResponseEntity<>(iProductService.getAllProduct(),HttpStatus.OK);
     }
 
     @PutMapping("/products/price")
-    Product changeProductPrice(@RequestBody ProductPriceDTO newProductChanges){
-        return iProductService.changeProductPrice(newProductChanges);
+    public ResponseEntity<Product> changeProductPrice(@RequestBody ProductPriceDTO newProductChanges){
+        return  new ResponseEntity<>(iProductService.changeProductPrice(newProductChanges),HttpStatus.OK);
     }
 
     @DeleteMapping("/products/{productId}")
-    String deleteProduct(@PathVariable Long productId){
-        return iProductService.deleteProduct(productId);
+    public ResponseEntity<String> deleteProduct(@PathVariable Long productId){
+        return  new ResponseEntity<>(iProductService.deleteProduct(productId),HttpStatus.OK);
     }
 
 }
