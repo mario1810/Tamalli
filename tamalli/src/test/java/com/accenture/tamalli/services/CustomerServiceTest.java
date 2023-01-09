@@ -1,6 +1,7 @@
 package com.accenture.tamalli.services;
 
 import com.accenture.tamalli.dto.customers.CustomerDTO;
+import com.accenture.tamalli.exceptions.CustomerException;
 import com.accenture.tamalli.exceptions.NotFoundCustomerException;
 import com.accenture.tamalli.models.Customer;
 import org.junit.jupiter.api.BeforeAll;
@@ -94,6 +95,25 @@ public class CustomerServiceTest {
         assertThat(currentCustomer).isNotNull();
         assertEquals(expectedCustomer.get(3).getCustomerId(),currentCustomer.getCustomerId());
         assertEquals(expectedCustomer.get(3).getEmail(),currentCustomer.getEmail());
+    }
+
+    @Test
+    @Transactional
+    void addNewCustomerExceptionTest(){
+
+        //email is already registered
+        inputCustomer = new Customer();
+        inputCustomer.setCustomerId(100L);
+        inputCustomer.setAddress("monterrey");
+        inputCustomer.setEmail("mario@gmail.com");
+        inputCustomer.setFirstName("Rolando");
+        inputCustomer.setLastName("Garcia");
+        inputCustomer.setPassword("14690");
+        inputCustomer.setPhoneNumber("16468645");
+        inputCustomer.setOrders(null);
+
+        Throwable error=assertThrows(CustomerException.class, ()->iCustomerService.addNewCustomer(inputCustomer));
+        assertEquals("Already exists a customer with the same email",error.getMessage());
     }
 
     @Test
