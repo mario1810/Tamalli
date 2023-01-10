@@ -180,4 +180,24 @@ public class CustomerServiceTest {
         assertEquals(expectedCustomer.get(5).getAddress(),currentCustomer.getAddress());
         assertEquals(expectedCustomer.get(5).getLastName(),currentCustomer.getLastName());
     }
+
+    @Test
+    @Transactional
+    void findCustomerTest(){
+
+        CustomerDTO currentCustomer = iCustomerService.findCustomer("mario@gmail.com","123");
+
+        assertEquals(1L,currentCustomer.getCustomerId());
+        assertEquals("Mario",currentCustomer.getFirstName());
+        assertEquals("Alvarez",currentCustomer.getLastName());
+    }
+
+    @Test
+    @Transactional
+    void findCustomerExceptionTest(){
+
+        Throwable error=assertThrows(CustomerException.class, ()->iCustomerService.findCustomer("mario@gmaail.com","123"));
+        assertEquals("Email or password  is incorrect",error.getMessage());
+
+    }
 }

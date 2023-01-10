@@ -21,6 +21,6 @@ public interface ICustomerService {
 
     CustomerDTO partialUpdateCustomer(Map<String,Object> newCustomerChanges, Long customerId);
 
-    CustomerDTO getCustomerId(String email, String password);
+    CustomerDTO findCustomer(String email, String password);
 
 }

@@ -196,8 +196,8 @@ public class CustomerServiceImpl implements ICustomerService{
    }
 
    @Override
-   public CustomerDTO getCustomerId(String email, String password) throws RuntimeException{
-      Customer customer= iCustomerRepository.findFistByEmailAndPassword(email,password).orElseThrow(()-> new CustomerException("Email or password  is incorrect"));
+   public CustomerDTO findCustomer(String email, String password) throws RuntimeException{
+      Customer customer= iCustomerRepository.findFirstByEmailAndPassword(email,password).orElseThrow(()-> new CustomerException("Email or password  is incorrect"));
       return mapCustomerToCustomerDTO(customer);
    }
 

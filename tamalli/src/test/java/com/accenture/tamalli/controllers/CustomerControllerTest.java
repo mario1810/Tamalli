@@ -171,6 +171,32 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk()); //check is response status is 200
     }
 
+    @Test
+    void updatePartialApiCustomer2Test() throws Exception{
+
+        //Update customer 1
+        Map<String, Object> changes = new HashMap<>();
+        changes.put("address","monterrey");
+        changes.put("password","1469o");
+        changes.put("email","roca@gmail.com");
+        changes.put("address","calle nilo");
+        changes.put("phone number", "551213457896");
+        changes.put("FirstName", "Raul");
+        changes.put("LastName","Gom");
+
+
+        when(icustomerService.partialUpdateCustomer(changes,1L)).thenReturn(customer);
+
+        MockHttpServletRequestBuilder mockRequest =
+                MockMvcRequestBuilders.patch("/api/tamalli/customers/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(changes))
+                        .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk()); //check is response status is 200
+    }
+
 
 
 }

@@ -152,7 +152,7 @@ public class ProductDescriptionTest {
 
         ProductDescription expectedUpdateProductDescription= objectMapper.readValue(json, ProductDescription.class);
 
-        when(iProductDescriptionRepository.findByProductId(anyLong())).thenReturn(Optional.of(productsDescription.get(0)));
+        when(iProductDescriptionRepository.findByProductId(1L)).thenReturn(Optional.of(productsDescription.get(0)));
 
         when(iProductDescriptionRepository.save(any(ProductDescription.class))).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0,ProductDescription.class));
 
@@ -201,6 +201,33 @@ public class ProductDescriptionTest {
     }
 
     @Test
+    void updateProductDescriptionPartially2Test() throws  Exception{
+
+        String json="{\"productId\":1,\"descriptionHead\":\"El mejor tamal de Monterrey\",\"descriptionBody\":\"muy rico\",\"urlImage\":\"no available.jpg\"}";
+        String jsonInput="{\"productId\":1,\"descriptionHead\":\"El mejor tamal del norte\",\"descriptionBody\":\"Elaborado  al estilo CDMX\",\"urlImage\":\"https://img.freepik.com/fotos-premium/nacatamal-servido-hoja-platano-cerca-nacatamal-nicaraguense-comida-nicaraguense-nacatamal_550253-296.jpg?w=996\"}";
+
+        ProductDescription expectedProductDescription=objectMapper.readValue(json,ProductDescription.class);
+        ProductDescription inputProductDescription=objectMapper.readValue(jsonInput,ProductDescription.class);
+
+
+
+        when(iProductDescriptionRepository.findByProductId(1L)).thenReturn(Optional.of(inputProductDescription));
+        when(iProductDescriptionRepository.save(any(ProductDescription.class))).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0,ProductDescription.class));
+
+
+        Map<String, Object> changes= new HashMap<>();
+        changes.put("descriptionHead", "El mejor tamal de Monterrey");
+        changes.put("descriptionBody","muy rico");
+        changes.put("urlImage","no available.jpg");
+
+        ProductDescription currentProductDescription=iProductDescriptionService.updateProductDescriptionPartially(changes,1L);
+
+        assertEquals(objectMapper.writeValueAsString(expectedProductDescription),objectMapper.writeValueAsString(currentProductDescription));
+        assertTrue(compareProductsDescription(expectedProductDescription,currentProductDescription));
+
+    }
+
+    @Test
     void deleteProductDescriptionTest(){
 
         when(iProductDescriptionRepository.findByProductId(anyLong())).thenReturn(Optional.of(productsDescription.get(0)));
@@ -218,6 +245,9 @@ public class ProductDescriptionTest {
             String message = iProductDescriptionService.deleteProductDescription(3L);
         });
     }
+
+
+
 
 
 }
