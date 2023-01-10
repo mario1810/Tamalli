@@ -10,5 +10,9 @@ import java.util.Optional;
 
 public interface IDrinkRepository extends JpaRepository<Drink, Long> {
     Optional<Drink> findByProductId(Long drinkId);
+
+    List<Drink> findByProductNameIgnoreCaseAndCapacityLiters(String productName, double capacity);
     List<Drink> findAll();
+
+    Boolean existsByProductId(Long id);
 }

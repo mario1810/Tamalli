@@ -6,65 +6,67 @@ import com.accenture.tamalli.models.Product;
 import com.accenture.tamalli.models.Tamal;
 import com.accenture.tamalli.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/api/product")
+@RequestMapping(path="/api/tamalli/products")
 public class ProductController{
 
     @Autowired
     private IProductService iProductService;
 
-    @PostMapping("add/drink")
-    Drink addApiDrink(@RequestBody Drink drink){
-        return iProductService.addDrink(drink);
+    @PostMapping("/drink")
+    public ResponseEntity<Drink> addApiDrink(@RequestBody Drink drink){
+        return  new ResponseEntity<>(iProductService.addDrink(drink), HttpStatus.CREATED);
     }
 
-    @PostMapping("/add/tamal")
-    Tamal addApiTamal(@RequestBody Tamal tamal){
-        return iProductService.addTamal(tamal);
+    @PostMapping("/tamal")
+    public ResponseEntity<Tamal> addApiTamal(@RequestBody Tamal tamal){
+        return  new ResponseEntity<>(iProductService.addTamal(tamal), HttpStatus.CREATED);
     }
 
-    @GetMapping("get/drink/{productId}")
-    Drink getApiDrinkById(@PathVariable Long productId){
-        return iProductService.getDrinkById(productId);
+    @GetMapping("/drink/{productId}")
+    public ResponseEntity<Drink> getApiDrinkById(@PathVariable Long productId){
+        return  new ResponseEntity<>(iProductService.getDrinkById(productId),HttpStatus.OK);
     }
 
-    @GetMapping("/get/tamal/{productId}")
-    Tamal getApiTamalById(@PathVariable Long productId){
-        return iProductService.getTamalById(productId);
+    @GetMapping("/tamal/{productId}")
+    public ResponseEntity<Tamal> getApiTamalById(@PathVariable Long productId){
+        return  new ResponseEntity<>(iProductService.getTamalById(productId),HttpStatus.OK);
     }
 
-    @GetMapping("/get/product/{productId}")
-    Product getApiProductById(@PathVariable Long productId){
-        return  iProductService.getProductById(productId);
+    @GetMapping("/{productId}")
+    public  ResponseEntity<Product> getApiProductById(@PathVariable Long productId){
+        return  new ResponseEntity<>(iProductService.getProductById(productId),HttpStatus.OK);
     }
 
-    @GetMapping("/get/all/drinks")
-    List<Drink> getApiAllDrinks(){
-        return  iProductService.getAllDrinks();
+    @GetMapping("/drink")
+    public ResponseEntity<List<Drink>> getApiAllDrinks(){
+        return  new ResponseEntity<>(iProductService.getAllDrinks(),HttpStatus.OK);
     }
 
-    @GetMapping("/get/all/tamales")
-    List<Tamal> getApiAllTamales(){
-        return iProductService.getAllTamales();
+    @GetMapping("/tamal")
+    public ResponseEntity<List<Tamal>> getApiAllTamales(){
+        return  new ResponseEntity<>(iProductService.getAllTamales(),HttpStatus.OK);
     }
 
-    @GetMapping("/get/all")
-    List<Product> getAllProduct(){
-        return iProductService.getAllProduct();
+    @GetMapping("")
+    public ResponseEntity<List<Product>> getAllProduct(){
+        return  new ResponseEntity<>(iProductService.getAllProduct(),HttpStatus.OK);
     }
 
-    @PutMapping("/update/price")
-    Product changeProductPrice(@RequestBody ProductPriceDTO newProductChanges){
-        return iProductService.changeProductPrice(newProductChanges);
+    @PutMapping("/price")
+    public ResponseEntity<Product> changeProductPrice(@RequestBody ProductPriceDTO newProductChanges){
+        return  new ResponseEntity<>(iProductService.changeProductPrice(newProductChanges),HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{productId}")
-    String deleteProduct(@PathVariable Long productId){
-        return iProductService.deleteProduct(productId);
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long productId){
+        return  new ResponseEntity<>(iProductService.deleteProduct(productId),HttpStatus.OK);
     }
 
 }

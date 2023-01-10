@@ -23,4 +23,13 @@ public class ProductPriceDTO implements Serializable {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    public ProductPriceDTO(){
+
+    }
+
+    public ProductPriceDTO(Long productId, BigDecimal price) {
+        this.productId = productId;
+        this.price = price;
+    }
 }

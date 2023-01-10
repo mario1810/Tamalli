@@ -42,4 +42,14 @@ public class OrderDTO implements Serializable {
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
+    public OrderDTO(){
+
+    }
+
+    public OrderDTO(Long orderId, LocalDateTime purchaseDate, BigDecimal totalCost, Long customerId) {
+        this.orderId = orderId;
+        this.purchaseDate = purchaseDate;
+        this.totalCost = totalCost;
+        this.customerId = customerId;
+    }
 }

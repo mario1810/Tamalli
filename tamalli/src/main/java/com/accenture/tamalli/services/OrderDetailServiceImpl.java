@@ -2,10 +2,7 @@ package com.accenture.tamalli.services;
 
 import com.accenture.tamalli.dto.orderDetails.ProductOrderDTO;
 
-import com.accenture.tamalli.exceptions.CustomerException;
-import com.accenture.tamalli.exceptions.OrderException;
-import com.accenture.tamalli.exceptions.OrderDetailException;
-import com.accenture.tamalli.exceptions.ProductException;
+import com.accenture.tamalli.exceptions.*;
 import com.accenture.tamalli.models.*;
 import com.accenture.tamalli.repositories.ICustomerRepository;
 import com.accenture.tamalli.repositories.IOrderDetailRepository;
@@ -38,7 +35,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
 
     @Override
-    public ProductOrderDTO addProductToShoppingCart(Long customerId, Long productId, Integer quantity) throws RuntimeException{
+    public ProductOrderDTO addProductToShoppingCart(Long customerId, Long productId, int quantity) throws RuntimeException{
         //find order
         Order shoppingCart = findShoppingCart(customerId);
 
@@ -51,7 +48,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         //If shoppingCartDetail for that product does not exist, add  the product with a new shoppingCartDetail
         if(shoppingCartDetail==null){
             //Find the product
-            Product product= iProductRepository.findByProductId(productId).orElseThrow(()->new ProductException("Product with Id:"+productId+" is not in our system"));
+            Product product= iProductRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductException("Product with Id:"+productId+" is not in our system"));
 
             //create the new orderDetail
             OrderDetail newShoppingCartDetail= new OrderDetail();
@@ -70,7 +67,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         }
         //If shoppingCartDetail for that product exists, Optionally: update quantity
         else {
-            throw  new ProductException("There is already a product with id:"+productId+" in your shopping cart. You can remove it or change the quantity");
+            throw  new OrderDetailException("There is already a product with id:"+productId+" in your shopping cart. You can remove it or change the quantity");
             //return changeProductQuantityAtShoppingCartInternal(shoppingCartDetail, quantity, shoppingCart.getOrderId());
         }
     }
@@ -83,7 +80,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         OrderDetail shoppingCartDetailToDelete=shoppingCart.getOrdersDetail()
                     .stream()
                     .filter(orderDetail -> productId.equals(orderDetail.getProduct().getProductId()))
-                    .findFirst().orElseThrow(()-> new OrderDetailException("There is no a product with id:"+productId+" in the shopping cart"));
+                    .findFirst().orElseThrow(()-> new NotFoundOrderDetailException("There is no a product with id:"+productId+" in the shopping cart"));
         //Delete de order detail
         iOrderDetailRepository.delete(shoppingCartDetailToDelete);
         return "the product with Id:"+productId+" has been deleted from your shopping bag";
@@ -96,7 +93,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         //get all the orders details
         List<OrderDetail> shoppingCartDetails= shoppingCart.getOrdersDetail();
         //is empty?
-        if(shoppingCartDetails==null)
+        if(shoppingCartDetails==null || shoppingCartDetails.isEmpty())
             throw new OrderDetailException("The shopping cart is already empty");
         //delete each order detail
         shoppingCartDetails.forEach((shoppingDetail -> iOrderDetailRepository.delete(shoppingDetail)));
@@ -105,9 +102,9 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
     private Order findShoppingCart(Long customerId) throws RuntimeException{
         if(customerId==null)
-            throw new CustomerException("there is no id to identify a customer");
+            throw new BadRequestCustomerException("there is no id to identify a customer");
         //Does the ID exist?
-        Customer customer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new CustomerException("there is no customer with id:"+ customerId));
+        Customer customer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException("there is no customer with id:"+ customerId));
         //Find the shopping order where paid==false
         Order shoppingCart = customer.getOrders().stream().filter(order->!order.getPaid()).findFirst().orElse(null);
         //There is no shopping cart?
@@ -121,28 +118,28 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public ProductOrderDTO changeProductQuantityAtShoppingCart(Long customerId, Long productId, Integer newQuantity) throws RuntimeException{
+    public ProductOrderDTO changeProductQuantityAtShoppingCart(Long customerId, Long productId, int newQuantity) throws RuntimeException{
         //find the order
         Order shoppingCart= findShoppingCart(customerId);
         //Find the order detail that contains the idProduct
         OrderDetail currentShoppingCartDetail= shoppingCart.getOrdersDetail().stream()
                                                         .filter(shoppingCartDetail ->productId.equals(shoppingCartDetail.getProduct().getProductId() ))
                                                         .findFirst()
-                                                        .orElseThrow(()-> new OrderDetailException("There is no a product with id:"+productId+" in the shopping cart"));
-        //¨perform the quantity update
+                                                        .orElseThrow(()-> new NotFoundOrderDetailException("There is no a product with id:"+productId+" in the shopping cart"));
+        //perform the quantity update
         return changeProductQuantityAtShoppingCartInternal(currentShoppingCartDetail, newQuantity, shoppingCart.getOrderId());
     }
 
 
-    private ProductOrderDTO changeProductQuantityAtShoppingCartInternal(OrderDetail currentOrderDetail, Integer newQuantity, Long orderId) throws RuntimeException{
-        if((int)newQuantity<= 0 || (int)newQuantity>MAX_QUANTITY || newQuantity==null)
-            throw new ProductException("Quantity is no valid, please choose a value between 1 and "+MAX_QUANTITY);
+    private ProductOrderDTO changeProductQuantityAtShoppingCartInternal(OrderDetail currentOrderDetail, int newQuantity, Long orderId) throws RuntimeException{
+        if(newQuantity<= 0 || newQuantity>MAX_QUANTITY)
+            throw new BadRequestProductException("Quantity is no valid, please choose a value between 1 and "+MAX_QUANTITY);
 
         //The product price has been updated at some point in the time?
         BigDecimal currentPriceAtOrderDetail=currentOrderDetail.getProductPriceOrdered();
         BigDecimal currentProductPrice=currentOrderDetail.getProduct().getPrice();
         if(!currentPriceAtOrderDetail.equals(currentProductPrice))
-            throw  new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered. Delete this product with id:"+ currentOrderDetail.getProduct().getProductId()+" if yuu need more.");
+            throw  new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered. Delete this product with id:"+ currentOrderDetail.getProduct().getProductId()+" if you need more.");
 
         //update orderDetail
         currentOrderDetail.setQuantityOrdered(newQuantity);

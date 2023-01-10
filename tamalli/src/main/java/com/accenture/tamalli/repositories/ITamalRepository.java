@@ -9,5 +9,9 @@ import java.util.Optional;
 
 public interface ITamalRepository extends JpaRepository<Tamal,Long> {
     Optional<Tamal> findByProductId(Long tamalId);
+
+    List<Tamal> findByProductNameIgnoreCaseAndWeightKilogram(String productName, double weight);
     List<Tamal> findAll();
+
+    Boolean existsByProductId(Long productId);
 }
