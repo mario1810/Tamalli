@@ -12,39 +12,39 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/tamalli")
+@RequestMapping("/api/tamalli/descriptions")
 public class ProductDescriptionController {
 
     @Autowired
     IProductDescriptionService iProductDescriptionService;
 
-    @GetMapping("/descriptions/{productId}")
+    @GetMapping("/{productId}")
     public ResponseEntity<ProductDescription> getApiProductDescriptionById(@PathVariable Long productId){
         return  new ResponseEntity<>(iProductDescriptionService.getProductDescriptionById(productId), HttpStatus.OK);
     }
-    @GetMapping("/descriptions")
+    @GetMapping("")
     public ResponseEntity<List<ProductDescription>> getApiAllProductDescription(){
         return  new ResponseEntity<>( iProductDescriptionService.getAllProductDescription(),HttpStatus.OK);
     }
-    @PostMapping("/descriptions/{productId}")
+    @PostMapping("/{productId}")
     public ResponseEntity<ProductDescription> createApiProductDescription(@PathVariable Long productId, @RequestBody ProductDescription productDescription){
         return  new ResponseEntity<>(iProductDescriptionService.createProductDescription(productId,productDescription),HttpStatus.CREATED);
     }
-    @PutMapping("/descriptions/{productId}")
+    @PutMapping("/{productId}")
     public ResponseEntity<ProductDescription> updateApiProductDescription(@PathVariable Long productId, @RequestBody ProductDescription productDescription){
         return  new ResponseEntity<>(iProductDescriptionService.updateProductDescription(productId,productDescription),HttpStatus.OK);
     }
 
-    @PatchMapping("/descriptions/{productId}")
+    @PatchMapping("/{productId}")
     public ResponseEntity<ProductDescription> updateApiProductDescriptionPartially(@RequestBody Map<String,Object> productDescriptionChanges,@PathVariable Long productId){
         return  new ResponseEntity<>(iProductDescriptionService.updateProductDescriptionPartially(productDescriptionChanges ,productId),HttpStatus.OK);
     }
 
-    @DeleteMapping("/descriptions/{productId}")
+    @DeleteMapping("/{productId}")
     public ResponseEntity<String> deleteApiProductDescription(@PathVariable Long productId){
         return  new ResponseEntity<>(iProductDescriptionService.deleteProductDescription(productId),HttpStatus.OK);
     }
-    @GetMapping("/descriptions/superProducts")
+    @GetMapping("/superProducts")
     public ResponseEntity<List<ProductAndDescriptionDTO>> getApiAllProductsAndDescription(){
         return  new ResponseEntity<>(iProductDescriptionService.getAllProductsAndDescription(),HttpStatus.OK);
     }

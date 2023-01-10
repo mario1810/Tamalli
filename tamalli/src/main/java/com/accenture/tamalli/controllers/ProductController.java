@@ -13,58 +13,58 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/api/tamalli")
+@RequestMapping(path="/api/tamalli/products")
 public class ProductController{
 
     @Autowired
     private IProductService iProductService;
 
-    @PostMapping("/products/drink")
+    @PostMapping("/drink")
     public ResponseEntity<Drink> addApiDrink(@RequestBody Drink drink){
         return  new ResponseEntity<>(iProductService.addDrink(drink), HttpStatus.CREATED);
     }
 
-    @PostMapping("/products/tamal")
+    @PostMapping("/tamal")
     public ResponseEntity<Tamal> addApiTamal(@RequestBody Tamal tamal){
         return  new ResponseEntity<>(iProductService.addTamal(tamal), HttpStatus.CREATED);
     }
 
-    @GetMapping("/products/drink/{productId}")
+    @GetMapping("/drink/{productId}")
     public ResponseEntity<Drink> getApiDrinkById(@PathVariable Long productId){
         return  new ResponseEntity<>(iProductService.getDrinkById(productId),HttpStatus.OK);
     }
 
-    @GetMapping("/products/tamal/{productId}")
+    @GetMapping("/tamal/{productId}")
     public ResponseEntity<Tamal> getApiTamalById(@PathVariable Long productId){
         return  new ResponseEntity<>(iProductService.getTamalById(productId),HttpStatus.OK);
     }
 
-    @GetMapping("/products/{productId}")
+    @GetMapping("/{productId}")
     public  ResponseEntity<Product> getApiProductById(@PathVariable Long productId){
         return  new ResponseEntity<>(iProductService.getProductById(productId),HttpStatus.OK);
     }
 
-    @GetMapping("/products/drink")
+    @GetMapping("/drink")
     public ResponseEntity<List<Drink>> getApiAllDrinks(){
         return  new ResponseEntity<>(iProductService.getAllDrinks(),HttpStatus.OK);
     }
 
-    @GetMapping("/products/tamal")
+    @GetMapping("/tamal")
     public ResponseEntity<List<Tamal>> getApiAllTamales(){
         return  new ResponseEntity<>(iProductService.getAllTamales(),HttpStatus.OK);
     }
 
-    @GetMapping("/products")
+    @GetMapping("")
     public ResponseEntity<List<Product>> getAllProduct(){
         return  new ResponseEntity<>(iProductService.getAllProduct(),HttpStatus.OK);
     }
 
-    @PutMapping("/products/price")
+    @PutMapping("/price")
     public ResponseEntity<Product> changeProductPrice(@RequestBody ProductPriceDTO newProductChanges){
         return  new ResponseEntity<>(iProductService.changeProductPrice(newProductChanges),HttpStatus.OK);
     }
 
-    @DeleteMapping("/products/{productId}")
+    @DeleteMapping("/{productId}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long productId){
         return  new ResponseEntity<>(iProductService.deleteProduct(productId),HttpStatus.OK);
     }

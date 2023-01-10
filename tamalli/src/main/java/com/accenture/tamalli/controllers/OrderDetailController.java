@@ -10,29 +10,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/api/tamalli")
+@RequestMapping(path="/api/tamalli/orderDetail")
 public class OrderDetailController {
 
     @Autowired
     private IOrderDetailService iOrderDetailService;
 
 
-    @PostMapping("/orderDetail/{customerId}")
+    @PostMapping("/{customerId}")
     public ResponseEntity<ProductOrderDTO> addApiProductToShoppingCart(@PathVariable Long customerId, @RequestBody ProductToOrderDTO productToOrder){
         return  new ResponseEntity<>(iOrderDetailService.addProductToShoppingCart(customerId,productToOrder.getProductId(),productToOrder.getQuantity()), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/orderDetail/{customerId}/{productId}")
+    @DeleteMapping("/{customerId}/{productId}")
     public ResponseEntity<String> removeApiProductFromShoppingCart(@PathVariable Long customerId,@PathVariable Long productId){
         return  new ResponseEntity<>( iOrderDetailService.removeProductFromShoppingCart(customerId,productId),HttpStatus.OK);
     }
 
-    @DeleteMapping("/orderDetail/all/{customerId}")
+    @DeleteMapping("/all/{customerId}")
     public ResponseEntity<String> removeApiAllProductsFromShoppingCart(@PathVariable Long customerId){
         return  new ResponseEntity<>(iOrderDetailService.removeAllProductsFromShoppingCart(customerId),HttpStatus.OK);
     }
 
-    @PutMapping("/orderDetail/{customerId}")
+    @PutMapping("/{customerId}")
     public ResponseEntity<ProductOrderDTO> changeApiProductQuantityAtShoppingCart(@PathVariable Long customerId,@RequestBody ProductToOrderDTO productToOrderDTO){
         return  new ResponseEntity<>(iOrderDetailService.changeProductQuantityAtShoppingCart(customerId,productToOrderDTO.getProductId(),productToOrderDTO.getQuantity()),HttpStatus.OK);
     }
