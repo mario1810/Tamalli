@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -95,8 +96,8 @@ public class ProductControllerTest {
         Drink drink = mapper.readValue(json, Drink.class);
         when(iProductService.getDrinkById(4L)).thenReturn(drink);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/products/drink/4"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
     @Test
@@ -107,8 +108,8 @@ public class ProductControllerTest {
         Tamal tamal = mapper.readValue(json, Tamal.class);
         when(iProductService.getTamalById(2L)).thenReturn(tamal);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/products/1"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
     @Test
@@ -119,8 +120,8 @@ public class ProductControllerTest {
         Product tamal = mapper.readValue(json, Tamal.class);
         when(iProductService.getProductById(1L)).thenReturn(tamal);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/products/1"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
     @Test
@@ -131,8 +132,8 @@ public class ProductControllerTest {
         List<Drink> drinks = mapper.readValue(json, new TypeReference<List<Drink>>() {});
         when(iProductService.getAllDrinks()).thenReturn(drinks);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/products/drink"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
     @Test
@@ -150,8 +151,8 @@ public class ProductControllerTest {
 
         when(iProductService.getAllProduct()).thenReturn(products);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/products"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
     @Test
@@ -162,8 +163,8 @@ public class ProductControllerTest {
         List<Tamal> tamales = mapper.readValue(json, new TypeReference<List<Tamal>>() {});
         when(iProductService.getAllTamales()).thenReturn(tamales);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/products/tamal"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
 
     }
 
@@ -199,6 +200,7 @@ public class ProductControllerTest {
         MvcResult mvcResult=mockMvc.perform(MockMvcRequestBuilders.delete("/api/tamalli/products/1"))
                 .andExpect(status().isOk()) //check is response status is 200
                 .andReturn();
+        assertEquals("The product with id:1 has been deleted", mvcResult.getResponse().getContentAsString());
     }
 
 

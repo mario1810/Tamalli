@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,8 +45,8 @@ public class ProductDescriptionControllerTest {
         ProductDescription productDescription= mapper.readValue(json, ProductDescription.class);
         when(iProductDescriptionService.getProductDescriptionById(1L)).thenReturn(productDescription);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/descriptions/1"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
     @Test
@@ -56,8 +57,8 @@ public class ProductDescriptionControllerTest {
 
         when(iProductDescriptionService.getAllProductDescription()).thenReturn(productDescriptionList);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/descriptions"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
     }
 
     @Test
@@ -130,6 +131,7 @@ public class ProductDescriptionControllerTest {
         MvcResult mvcResult=mockMvc.perform(MockMvcRequestBuilders.delete("/api/tamalli/descriptions/1"))
                 .andExpect(status().isOk()) //check is response status is 200
                 .andReturn();
+        assertEquals("Product has been deleted", mvcResult.getResponse().getContentAsString());
     }
 
 

@@ -65,8 +65,8 @@ public class CustomerControllerTest {
 
         when(icustomerService.getAllCustomers()).thenReturn(customers);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/customers"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
         verify(icustomerService, times(1)).getAllCustomers();
     }
 
@@ -76,8 +76,8 @@ public class CustomerControllerTest {
         when(icustomerService.getCustomerById(1L)).thenReturn(customer);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/tamalli/customers/1"))
-                .andExpect(status().isOk()) //check is response status is 200
-                .andReturn();
+                .andExpect(status().isOk()); //check is response status is 200
+
         verify(icustomerService, times(1)).getCustomerById(1L);
     }
 

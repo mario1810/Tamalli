@@ -59,7 +59,6 @@ public class CustomerServiceImpl implements ICustomerService{
       String email=newCustomer.getEmail();
       //Is there a customer with the same email and password?
       if(iCustomerRepository.existsByEmail(email))
-      //if(!Objects.isNull(iCustomerRepository.findFirstByEmail(email).orElse(null)))
             throw  new CustomerException("Already exists a customer with the same email");
       //Add the new customer to the database
       newCustomer.setCustomerId(null);
@@ -216,12 +215,17 @@ public class CustomerServiceImpl implements ICustomerService{
       filteredCustomer.setPhoneNumber(customer.getPhoneNumber());
       filteredCustomer.setAddress(customer.getAddress());
 
-      //find order
-      Order order = iOrderRepository.findFirstByCustomerCustomerIdAndPaidFalse(customer.getCustomerId()).orElseThrow(()->new OrderException("create shopping cart, please"));
-      /*
+
+
       Order order = iOrderRepository.findFirstByCustomerCustomerIdAndPaidFalse(customer.getCustomerId()).orElse(null);
-         if(order==null)
-            throw new OrderException("create shopping cart, please");*/
+      if(order==null){
+         Order emptyOrder = new  Order();
+         emptyOrder.setCustomer(customer);
+         emptyOrder.setPaid(false);
+         order=iOrderRepository.saveAndFlush(emptyOrder);
+
+      }
+
       filteredCustomer.setOrderId(order.getOrderId());
       return filteredCustomer;
    }

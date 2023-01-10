@@ -65,6 +65,7 @@ public class OrderDetailControllerTest {
         MvcResult mvcResult=mockMvc.perform(MockMvcRequestBuilders.delete("/api/tamalli/orderDetail/1/1"))
                 .andExpect(status().isOk()) //check is response status is 200
                 .andReturn();
+        assertEquals("the product with Id:1L has been deleted from your shopping bag", mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -75,6 +76,7 @@ public class OrderDetailControllerTest {
         MvcResult mvcResult=mockMvc.perform(MockMvcRequestBuilders.delete("/api/tamalli/orderDetail/all/1"))
                 .andExpect(status().isOk()) //check is response status is 200
                 .andReturn();
+        assertEquals("All products have been deleted from your shopping bag", mvcResult.getResponse().getContentAsString());
     }
 
     @Test

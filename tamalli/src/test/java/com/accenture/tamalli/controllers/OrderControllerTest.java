@@ -3,9 +3,6 @@ package com.accenture.tamalli.controllers;
 import com.accenture.tamalli.dto.orders.OrderDTO;
 import com.accenture.tamalli.dto.orders.OrderHistoryDTO;
 import com.accenture.tamalli.dto.orders.ShoppingCartDTO;
-import com.accenture.tamalli.models.Customer;
-import com.accenture.tamalli.models.ProductDescription;
-import com.accenture.tamalli.services.ICustomerService;
 import com.accenture.tamalli.services.IOrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,12 +18,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
