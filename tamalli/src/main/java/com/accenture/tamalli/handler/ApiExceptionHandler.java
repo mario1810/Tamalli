@@ -40,8 +40,8 @@ public class ApiExceptionHandler {
         if (e instanceof NotFoundOrderDetailException)
             status=HttpStatus.NOT_FOUND;
         else
-            status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),HttpStatus.BAD_REQUEST,ZonedDateTime.now().now());
+            status=HttpStatus.BAD_REQUEST;
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
         //return response entity
 
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
@@ -56,7 +56,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.BAD_REQUEST;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),HttpStatus.BAD_REQUEST,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
@@ -70,7 +70,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.NOT_FOUND;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),HttpStatus.BAD_REQUEST,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
@@ -86,7 +86,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.NOT_FOUND;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),HttpStatus.BAD_REQUEST,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
