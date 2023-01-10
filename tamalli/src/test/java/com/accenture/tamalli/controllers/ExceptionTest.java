@@ -1,13 +1,14 @@
 package com.accenture.tamalli.controllers;
 
 import com.accenture.tamalli.dto.customers.CustomerDTO;
-import com.accenture.tamalli.exceptions.BadRequestCustomerException;
-import com.accenture.tamalli.exceptions.CustomerException;
-import com.accenture.tamalli.exceptions.OrderDetailException;
+import com.accenture.tamalli.dto.orderDetails.ProductOrderDTO;
+import com.accenture.tamalli.exceptions.*;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.models.OrderDetail;
+import com.accenture.tamalli.models.ProductDescription;
 import com.accenture.tamalli.services.ICustomerService;
 import com.accenture.tamalli.services.IOrderDetailService;
+import com.accenture.tamalli.services.IProductDescriptionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest({CustomerController.class,OrderDetailController.class})
+@WebMvcTest({CustomerController.class,OrderDetailController.class, ProductDescriptionController.class})
 public class ExceptionTest {
     @Autowired
     private MockMvc mockMvc;
@@ -44,6 +45,9 @@ public class ExceptionTest {
 
     @MockBean
     private  IOrderDetailService iOrderDetailService;
+
+    @MockBean
+    private IProductDescriptionService iProductDescriptionService;
 
     private List<OrderDetail> shoppingList;
 
@@ -62,7 +66,6 @@ public class ExceptionTest {
                 "    \"phoneNumber\":\"16468645\"\n" +
                 "}";
 
-        CustomerDTO customer = new CustomerDTO();
         when(icustomerService.addNewCustomer(any(Customer.class))).thenThrow( new CustomerException("email is in the database"));
 
         MockHttpServletRequestBuilder mockRequest =
@@ -80,7 +83,7 @@ public class ExceptionTest {
     }
 
     @Test
-    void removeApiAllProductsFromShoppingCartTest() throws Exception{
+    void removeApiAllProductsFromShoppingCartExceptionTest() throws Exception{
 
         when(iOrderDetailService.removeAllProductsFromShoppingCart(1L)).thenThrow(new OrderDetailException("The shopping cart is already empty"));
 
@@ -92,7 +95,42 @@ public class ExceptionTest {
                 .andExpect(jsonPath("$.timestamp",Matchers.notNullValue()));
     }
 
+    @Test
+    void changeApiProductQuantityAtShoppingCartExceptionTest() throws Exception{
 
+        String inputJson="{\n" +
+                "    \"productId\":1,\n" +
+                "    \"quantity\":2\n" +
+                "}";
+        when(iOrderDetailService.changeProductQuantityAtShoppingCart(1L,1L,2)).thenThrow( new ProductException("The product's price has changed so we are going to respect the previous price for the quantity you have ordered."));
+
+
+        MockHttpServletRequestBuilder mockRequest =
+                MockMvcRequestBuilders.put("/api/tamalli/orderDetail/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(inputJson)
+                        .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.message", Matchers.equalTo("The product's price has changed so we are going to respect the previous price for the quantity you have ordered.")))
+                .andExpect(jsonPath("$.className",Matchers.equalTo("class com.accenture.tamalli.exceptions.ProductException")))
+                .andExpect(jsonPath("$.httpStatus",Matchers.equalTo("INTERNAL_SERVER_ERROR")))
+                .andExpect(jsonPath("$.timestamp",Matchers.notNullValue()));
+
+    }
+
+    @Test
+    void deleteProductDescriptionNotFoundExceptionTest() throws Exception{
+
+        when(iProductDescriptionService.deleteProductDescription(10L)).thenThrow(new NotFoundProductDescriptionException("There is no a description for a product with that id"));
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/tamalli/descriptions/10"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", Matchers.equalTo("There is no a description for a product with that id")))
+                .andExpect(jsonPath("$.className",Matchers.equalTo("class com.accenture.tamalli.exceptions.NotFoundProductDescriptionException")))
+                .andExpect(jsonPath("$.httpStatus",Matchers.equalTo("NOT_FOUND")))
+                .andExpect(jsonPath("$.timestamp",Matchers.notNullValue()));
+    }
 
 
 }
