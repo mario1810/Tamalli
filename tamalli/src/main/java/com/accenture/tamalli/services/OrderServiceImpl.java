@@ -165,17 +165,11 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     @Override
-    public List<OrderDTO> getAllOrdersFrom(String strFrom){
-        try {
+    public List<OrderDTO> getAllOrdersFrom(String strFrom) throws RuntimeException{
             List<Order> orders = iOrderRepository.findByPaidTrueAndPurchaseDateAfter(LocalDateTime.parse(strFrom+"T00:00:00"));
-            System.out.println(orders.get(0).getOrderId());
             return orders.stream()
                     .map(order -> mapOrderToOrderDTO(order))
                     .collect(Collectors.toList());
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
     }
 
 }
