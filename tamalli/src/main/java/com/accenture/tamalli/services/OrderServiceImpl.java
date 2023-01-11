@@ -5,7 +5,6 @@ import com.accenture.tamalli.dto.orders.OrderDTO;
 import com.accenture.tamalli.dto.orders.OrderHistoryDTO;
 import com.accenture.tamalli.dto.orders.ShoppingCartDTO;
 import com.accenture.tamalli.exceptions.BadRequestOrderException;
-import com.accenture.tamalli.exceptions.CustomerException;
 import com.accenture.tamalli.exceptions.NotFoundCustomerException;
 import com.accenture.tamalli.exceptions.OrderException;
 import com.accenture.tamalli.models.Customer;
@@ -20,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,11 +32,11 @@ public class OrderServiceImpl implements IOrderService{
     private ICustomerRepository iCustomerRepository;
 
 
-    private void createEmptyShoppingCart(Customer customer){
+    private Order createEmptyShoppingCart(Customer customer){
         Order emptyShoppingCart = new Order();
         emptyShoppingCart.setPaid(false);
         emptyShoppingCart.setCustomer(customer);
-        iOrderRepository.saveAndFlush(emptyShoppingCart);
+        return iOrderRepository.saveAndFlush(emptyShoppingCart);
     }
 
     private OrderDTO mapOrderToOrderDTO(Order order){
@@ -161,6 +160,14 @@ public class OrderServiceImpl implements IOrderService{
     public List<OrderDTO> getAllOrdersPaidStore() {
         List<Order> orders= iOrderRepository.findByPaidTrue();
         return orders.stream()
+                    .map(order -> mapOrderToOrderDTO(order))
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDTO> getAllOrdersFrom(String strFrom) throws RuntimeException{
+            List<Order> orders = iOrderRepository.findByPaidTrueAndPurchaseDateAfter(LocalDateTime.parse(strFrom+"T00:00:00"));
+            return orders.stream()
                     .map(order -> mapOrderToOrderDTO(order))
                     .collect(Collectors.toList());
     }

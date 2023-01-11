@@ -1,5 +1,7 @@
 package com.accenture.tamalli.models;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -11,8 +13,9 @@ public abstract class Product {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long productId;
+    @NotNull
     private String productName;
-    //private String productLine;
+    @NotNull
     private BigDecimal price;
     private String productType;
     public String getProductType() {

@@ -1,6 +1,7 @@
 package com.accenture.tamalli.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Drink extends  Product {
 
+    @NotNull
     private double capacityLiters;
 
     public Drink(){

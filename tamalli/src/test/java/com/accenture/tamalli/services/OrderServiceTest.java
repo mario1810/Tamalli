@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -134,6 +136,21 @@ public class OrderServiceTest {
         assertEquals(expectedPaidOrders.size(),currentPaidOrders.size());
         assertEquals(expectedAllPaidOrdersJson,objectMapper.writeValueAsString(currentPaidOrders));
 
+    }
+
+    @Test
+    void getApiAllOrdersPaidFromTest() throws Exception{
+
+        List<OrderDTO> currentPaidOrders= iOrderService.getAllOrdersFrom("2022-01-03");
+        assertEquals(2,currentPaidOrders.size());
+    }
+
+    @Test
+    @Transactional
+    void getApiAllOrdersPaidFromExceptionTest() throws Exception{
+
+        Throwable error=assertThrows(DateTimeException.class, ()->iOrderService.getAllOrdersFrom("2022-31-03"));
+        assertNotNull(error.getMessage());
     }
 
     private static void jsonSetup(){
