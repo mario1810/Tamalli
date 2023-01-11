@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.NOT_FOUND;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),HttpStatus.BAD_REQUEST,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
@@ -91,6 +93,18 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
 
+    @ExceptionHandler(value= DateTimeException.class)
+    public ResponseEntity<Object> handleDateParseException(DateTimeException e, WebRequest request) {
+
+        HttpStatus status=null;
+        if(e instanceof DateTimeParseException)
+            status=HttpStatus.BAD_REQUEST;
+        else
+            status=HttpStatus.INTERNAL_SERVER_ERROR; //Exception used to indicate a problem while calculating a date-time.
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
+        //return response entity
+        return new ResponseEntity<>(apiException, apiException.getHttpStatus());
+    }
 
     private class ApiException{
         private final String message;
