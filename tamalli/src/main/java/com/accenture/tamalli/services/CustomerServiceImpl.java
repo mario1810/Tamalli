@@ -128,7 +128,7 @@ public class CustomerServiceImpl implements ICustomerService{
       Customer currentCustomer=iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException("there is no customer with id:"+ customerId));
       //validate customer
       if(!validateNewCustomer(updateCustomer))
-         throw  new BadRequestCustomerException("There  is no enough information about the customer to be fully updated");
+         throw  new BadRequestCustomerException("There  is no enough information about the customer to be updated");
       //The new email is in use?
       String email=updateCustomer.getEmail();
       Customer emailOwnerCustomer=iCustomerRepository.findFirstByEmail(email).orElse(null);
