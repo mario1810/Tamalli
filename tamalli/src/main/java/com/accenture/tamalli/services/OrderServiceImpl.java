@@ -32,11 +32,11 @@ public class OrderServiceImpl implements IOrderService{
     private ICustomerRepository iCustomerRepository;
 
 
-    private void createEmptyShoppingCart(Customer customer){
+    private Order createEmptyShoppingCart(Customer customer){
         Order emptyShoppingCart = new Order();
         emptyShoppingCart.setPaid(false);
         emptyShoppingCart.setCustomer(customer);
-        iOrderRepository.saveAndFlush(emptyShoppingCart);
+        return iOrderRepository.saveAndFlush(emptyShoppingCart);
     }
 
     private OrderDTO mapOrderToOrderDTO(Order order){

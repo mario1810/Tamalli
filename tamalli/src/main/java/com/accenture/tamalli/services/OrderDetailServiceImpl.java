@@ -32,7 +32,12 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     @Autowired
     IProductRepository iProductRepository;
 
-
+    private Order createEmptyShoppingCart(Customer customer){
+        Order emptyOrder = new Order();
+        emptyOrder.setCustomer(customer);
+        emptyOrder.setPaid(false);
+        return iOrderRepository.saveAndFlush(emptyOrder);
+    }
 
 
     @Override
@@ -110,10 +115,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         Order shoppingCart = customer.getOrders().stream().filter(order->!order.getPaid()).findFirst().orElse(null);
         //There is no shopping cart?
         if(shoppingCart==null){
-            Order emptyOrder = new Order();
-            emptyOrder.setCustomer(customer);
-            iOrderRepository.saveAndFlush(emptyOrder);
-            throw new OrderException("A empty order (shopping cart) has been created for you, try again");
+            shoppingCart=createEmptyShoppingCart(customer);
         }
         return shoppingCart;
     }

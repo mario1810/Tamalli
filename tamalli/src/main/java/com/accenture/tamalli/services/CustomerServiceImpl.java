@@ -39,15 +39,17 @@ public class CustomerServiceImpl implements ICustomerService{
 
    @Override
    public CustomerDTO getCustomerById(Long customerId) throws RuntimeException {
+      if(customerId==null)
+         throw new BadRequestCustomerException("there is no id in the body request to identify a customer");
       Customer customer=  iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException("there is no customer with id:"+ customerId));
       return mapCustomerToCustomerDTO(customer);
    }
 
-   private void createEmptyShoppingCart(Customer customer){
+   private Order createEmptyShoppingCart(Customer customer){
       Order emptyOrder = new Order();
       emptyOrder.setCustomer(customer);
       emptyOrder.setPaid(false);
-      iOrderRepository.saveAndFlush(emptyOrder);
+      return iOrderRepository.saveAndFlush(emptyOrder);
    }
 
    @Transactional
@@ -75,17 +77,17 @@ public class CustomerServiceImpl implements ICustomerService{
     */
    private boolean validateNewCustomer(Customer customer){
 
-      if(customer.getFirstName().isEmpty())
+      if(customer.getFirstName()==null || customer.getFirstName().isEmpty()  )
             return false;
-      if(customer.getLastName().isEmpty())
+      if(customer.getLastName()==null || customer.getLastName().isEmpty())
             return false;
-      if(customer.getEmail().isEmpty())
+      if(customer.getEmail()==null || customer.getEmail().isEmpty())
             return false;
-      if(customer.getPassword().isEmpty())
+      if(customer.getPassword()==null || customer.getPassword().isEmpty())
             return false;
-      if(customer.getPhoneNumber().isEmpty())
+      if(customer.getPhoneNumber()==null|| customer.getPhoneNumber().isEmpty())
             return false;
-      if(customer.getAddress().isEmpty())
+      if(customer.getAddress()==null || customer.getAddress().isEmpty())
             return false;
       return true;
    }
@@ -93,6 +95,8 @@ public class CustomerServiceImpl implements ICustomerService{
    @Transactional
    @Override
    public String deleteCustomerById(Long customerId) throws RuntimeException{
+      if(customerId==null)
+         throw new BadRequestCustomerException("there is no id in the body request to identify a customer");
       Customer customerToDelete= iCustomerRepository.findByCustomerId(customerId).orElseThrow(()->new NotFoundCustomerException("there is no customer with id:"+ customerId));
       //It's important to keep information related with the orders of the users, so I am going to eliminate the information about him/her.(Update with null values to eliminate who he/she is but what he/she did)
       List<Order> customerOrders=customerToDelete.getOrders();
@@ -219,11 +223,7 @@ public class CustomerServiceImpl implements ICustomerService{
 
       Order order = iOrderRepository.findFirstByCustomerCustomerIdAndPaidFalse(customer.getCustomerId()).orElse(null);
       if(order==null){
-         Order emptyOrder = new  Order();
-         emptyOrder.setCustomer(customer);
-         emptyOrder.setPaid(false);
-         order=iOrderRepository.saveAndFlush(emptyOrder);
-
+         order=createEmptyShoppingCart(customer);
       }
 
       filteredCustomer.setOrderId(order.getOrderId());
