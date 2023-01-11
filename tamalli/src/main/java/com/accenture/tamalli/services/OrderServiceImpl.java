@@ -5,7 +5,6 @@ import com.accenture.tamalli.dto.orders.OrderDTO;
 import com.accenture.tamalli.dto.orders.OrderHistoryDTO;
 import com.accenture.tamalli.dto.orders.ShoppingCartDTO;
 import com.accenture.tamalli.exceptions.BadRequestOrderException;
-import com.accenture.tamalli.exceptions.CustomerException;
 import com.accenture.tamalli.exceptions.NotFoundCustomerException;
 import com.accenture.tamalli.exceptions.OrderException;
 import com.accenture.tamalli.models.Customer;
@@ -20,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -163,6 +162,20 @@ public class OrderServiceImpl implements IOrderService{
         return orders.stream()
                     .map(order -> mapOrderToOrderDTO(order))
                     .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDTO> getAllOrdersFrom(String strFrom){
+        try {
+            List<Order> orders = iOrderRepository.findByPaidTrueAndPurchaseDateAfter(LocalDateTime.parse(strFrom+"T00:00:00"));
+            System.out.println(orders.get(0).getOrderId());
+            return orders.stream()
+                    .map(order -> mapOrderToOrderDTO(order))
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.accenture.tamalli.services;
 
+import com.accenture.tamalli.dto.orderDetails.OrderDetailDTO;
 import com.accenture.tamalli.dto.orderDetails.ProductOrderDTO;
 
 import com.accenture.tamalli.exceptions.*;
@@ -129,7 +130,6 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         //perform the quantity update
         return changeProductQuantityAtShoppingCartInternal(currentShoppingCartDetail, newQuantity, shoppingCart.getOrderId());
     }
-
 
     private ProductOrderDTO changeProductQuantityAtShoppingCartInternal(OrderDetail currentOrderDetail, int newQuantity, Long orderId) throws RuntimeException{
         if(newQuantity<= 0 || newQuantity>MAX_QUANTITY)
