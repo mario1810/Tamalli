@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -34,6 +36,11 @@ public class OrderController {
     @GetMapping("")
     public ResponseEntity<List<OrderDTO>> getApiAllOrdersPaid(){
         return  new ResponseEntity<>(iOrderService.getAllOrdersPaidStore(),HttpStatus.OK);
+    }
+
+    @GetMapping("/history/date/{date}")
+    public ResponseEntity<List<OrderDTO>> getApiAllOrdersFrom(@PathVariable String date){
+        return new ResponseEntity<>(iOrderService.getAllOrdersFrom(date),HttpStatus.OK);
     }
 
 }
