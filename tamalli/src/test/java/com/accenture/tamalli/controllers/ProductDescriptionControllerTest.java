@@ -4,6 +4,7 @@ import com.accenture.tamalli.models.ProductDescription;
 import com.accenture.tamalli.services.IProductDescriptionService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,15 @@ public class ProductDescriptionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper mapper;
+    static ObjectMapper mapper;
 
     @MockBean
     private IProductDescriptionService iProductDescriptionService;
+
+    @BeforeAll
+    public static void setup(){
+        mapper = new ObjectMapper();
+    }
 
     @Test
     void getProductDescriptionByIdTest() throws Exception{

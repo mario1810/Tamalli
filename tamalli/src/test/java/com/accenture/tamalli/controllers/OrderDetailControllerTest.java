@@ -3,6 +3,7 @@ package com.accenture.tamalli.controllers;
 import com.accenture.tamalli.dto.orderDetails.ProductOrderDTO;
 import com.accenture.tamalli.services.IOrderDetailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,15 @@ public class OrderDetailControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper mapper;
+
+    static ObjectMapper mapper;
 
     @MockBean
     private IOrderDetailService iOrderDetailService;
+    @BeforeAll
+    public static void setup(){
+        mapper = new ObjectMapper();
+    }
 
     @Test
     void addApiProductToShoppingCartTest() throws Exception{

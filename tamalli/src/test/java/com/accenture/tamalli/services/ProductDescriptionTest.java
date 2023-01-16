@@ -66,7 +66,6 @@ public class ProductDescriptionTest {
     void getProductDescriptionByIdTest(){
 
         when(iProductDescriptionRepository.findByProductId(1L)).thenReturn(Optional.of(productsDescription.get(0)));
-        //doReturn(Optional.of(productsDescription.get(0))).when(iProductDescriptionRepository).findByProductId(1L);
 
         ProductDescription currentProductDescription=iProductDescriptionService.getProductDescriptionById(1L);
         assertNotNull(currentProductDescription);

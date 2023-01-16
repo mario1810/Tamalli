@@ -5,6 +5,9 @@ import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.services.ICustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +23,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +35,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /*we will use @ExtendWIth(SpringExtension.class) annotation to register the test class as a Spring Unit Test
-@WebMvcTest(ProductController.class) annotation that will enable us to write a Spring MVC test that focuses only on Spring MVC components.
-@WebMvcTest(ProductController.class) will also disable full auto-configuration and instead apply only configuration relevant to MVC tests. Without other components like Services or Repositories in ApplicationContext, we will test the controller in isolation.
+@WebMvcTest(CustomerController.class) annotation that will enable us to write a Spring MVC test that focuses only on Spring MVC components.
+@WebMvcTest(CustomerController.class) will also disable full auto-configuration and instead apply only configuration relevant to MVC tests. Without other components like Services or Repositories in ApplicationContext, we will test the controller in isolation.
 */
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CustomerController.class)
@@ -41,13 +46,18 @@ public class CustomerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper mapper;
+
+    static ObjectMapper mapper;
 
     private  CustomerDTO customer;
     private  List<CustomerDTO> customers;
     @MockBean
     private ICustomerService icustomerService; // This will mock a Spring Bean and Inject it where is needed
+
+    @BeforeAll
+    public static void setup(){
+        mapper = new ObjectMapper();
+    }
 
     @BeforeEach
     public void createCustomersDTO(){

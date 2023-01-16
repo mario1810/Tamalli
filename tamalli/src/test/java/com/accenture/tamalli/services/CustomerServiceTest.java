@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 /*
-* The code examples in this tutorial use the @ExtendWith annotation to tell JUnit 5 to enable Spring support.
+* we use the @ExtendWith annotation to tell JUnit 5 to enable Spring support.
 * As of Spring Boot 2.1, we no longer need to load the SpringExtension because it's included as a meta annotation in
 * the Spring Boot test annotations like @DataJpaTest, @WebMvcTest, and @SpringBootTest.
 * */

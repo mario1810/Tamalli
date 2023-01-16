@@ -6,6 +6,9 @@ import com.accenture.tamalli.dto.orders.ShoppingCartDTO;
 import com.accenture.tamalli.services.IOrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -30,14 +35,22 @@ public class OrderControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper mapper;
+
+    static ObjectMapper mapper;
 
 
     private ShoppingCartDTO shoppingCart;
 
     @MockBean
     private IOrderService iOrderService;
+
+    @BeforeAll
+    public static void setup(){
+        mapper = new ObjectMapper();
+        mapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
+        mapper.setDateFormat(df);
+    }
 
     @Test
     void changeApiShoppingCartStatusTest() throws Exception{
