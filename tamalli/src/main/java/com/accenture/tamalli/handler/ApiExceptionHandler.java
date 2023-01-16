@@ -28,7 +28,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.NOT_FOUND;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,LocalDateTime.now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
@@ -43,7 +43,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.NOT_FOUND;
         else
             status=HttpStatus.BAD_REQUEST;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,LocalDateTime.now());
         //return response entity
 
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
@@ -58,7 +58,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.BAD_REQUEST;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,LocalDateTime.now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
@@ -72,7 +72,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.NOT_FOUND;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,LocalDateTime.now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
@@ -88,7 +88,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.NOT_FOUND;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,LocalDateTime.now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
@@ -101,7 +101,7 @@ public class ApiExceptionHandler {
             status=HttpStatus.BAD_REQUEST;
         else
             status=HttpStatus.INTERNAL_SERVER_ERROR; //Exception used to indicate a problem while calculating a date-time.
-        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,ZonedDateTime.now().now());
+        ApiException apiException=new ApiException(e.getMessage(),e.getClass().toString(),status,LocalDateTime.now());
         //return response entity
         return new ResponseEntity<>(apiException, apiException.getHttpStatus());
     }
@@ -110,9 +110,9 @@ public class ApiExceptionHandler {
         private final String message;
         private final String className;
         private final HttpStatus httpStatus;
-        private final ZonedDateTime timestamp;
+        private final LocalDateTime timestamp;
 
-        public ApiException(String message, String className, HttpStatus httpStatus, ZonedDateTime timestamp) {
+        public ApiException(String message, String className, HttpStatus httpStatus, LocalDateTime timestamp) {
             this.message = message;
             this.className = className;
             this.httpStatus = httpStatus;
@@ -131,7 +131,7 @@ public class ApiExceptionHandler {
             return httpStatus;
         }
 
-        public ZonedDateTime getTimestamp() {
+        public LocalDateTime getTimestamp() {
             return timestamp;
         }
 
