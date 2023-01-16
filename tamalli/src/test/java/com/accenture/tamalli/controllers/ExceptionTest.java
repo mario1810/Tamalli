@@ -66,7 +66,7 @@ public class ExceptionTest {
                 "    \"phoneNumber\":\"16468645\"\n" +
                 "}";
 
-        when(icustomerService.addNewCustomer(any(Customer.class))).thenThrow( new CustomerException("email is in the database"));
+        when(icustomerService.addNewCustomer(any(Customer.class))).thenThrow( new BadRequestCustomerException("email is in the database"));
 
         MockHttpServletRequestBuilder mockRequest =
                 MockMvcRequestBuilders.post("/api/tamalli/customers")
@@ -77,7 +77,7 @@ public class ExceptionTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isBadRequest())  //Actual,//expected
                 .andExpect(jsonPath("$.message", Matchers.equalTo("email is in the database")))
-                .andExpect(jsonPath("$.className",Matchers.equalTo("class com.accenture.tamalli.exceptions.CustomerException")))
+                .andExpect(jsonPath("$.className",Matchers.equalTo("class com.accenture.tamalli.exceptions.BadRequestCustomerException")))
                 .andExpect(jsonPath("$.httpStatus",Matchers.equalTo("BAD_REQUEST")))
                 .andExpect(jsonPath("$.timestamp",Matchers.notNullValue()));
     }
