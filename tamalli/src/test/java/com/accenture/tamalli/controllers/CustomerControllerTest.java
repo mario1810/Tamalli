@@ -1,7 +1,6 @@
 package com.accenture.tamalli.controllers;
 
 import com.accenture.tamalli.dto.customers.CustomerDTO;
-import com.accenture.tamalli.exceptions.BadRequestCustomerException;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.services.ICustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +28,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.web.servlet.function.RequestPredicates.accept;
 
 /*we will use @ExtendWIth(SpringExtension.class) annotation to register the test class as a Spring Unit Test
 @WebMvcTest(ProductController.class) annotation that will enable us to write a Spring MVC test that focuses only on Spring MVC components.
@@ -176,7 +174,6 @@ public class CustomerControllerTest {
 
         //Update customer 1
         Map<String, Object> changes = new HashMap<>();
-        changes.put("address","monterrey");
         changes.put("password","1469o");
         changes.put("email","roca@gmail.com");
         changes.put("address","calle nilo");

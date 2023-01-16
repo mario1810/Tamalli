@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -139,7 +138,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    void getApiAllOrdersPaidFromTest() throws Exception{
+    void getApiAllOrdersPaidFromTest(){
 
         List<OrderDTO> currentPaidOrders= iOrderService.getAllOrdersFrom("2022-01-03");
         assertEquals(2,currentPaidOrders.size());
@@ -147,7 +146,7 @@ public class OrderServiceTest {
 
     @Test
     @Transactional
-    void getApiAllOrdersPaidFromExceptionTest() throws Exception{
+    void getApiAllOrdersPaidFromExceptionTest(){
 
         Throwable error=assertThrows(DateTimeException.class, ()->iOrderService.getAllOrdersFrom("2022-31-03"));
         assertNotNull(error.getMessage());

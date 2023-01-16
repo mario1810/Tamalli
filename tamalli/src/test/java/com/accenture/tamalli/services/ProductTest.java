@@ -70,7 +70,7 @@ public class ProductTest {
 
     @Test
     @Transactional
-    void addDrinkExceptionTest() throws Exception {
+    void addDrinkExceptionTest() {
 
         Drink atoleGalleta = new Drink();
         atoleGalleta.setProductName("Atole galleta");
@@ -101,7 +101,7 @@ public class ProductTest {
 
     @Test
     @Transactional
-    void addTamalExceptionTest() throws Exception{
+    void addTamalExceptionTest(){
         Tamal tamalRajas= new Tamal();
         tamalRajas.setProductName("Tamal rajas");
         tamalRajas.setPrice(new BigDecimal("13.00"));
@@ -133,7 +133,7 @@ public class ProductTest {
 
     @Test
     @Transactional
-    void getTamalByIdExceptionTest() throws Exception{
+    void getTamalByIdExceptionTest(){
 
         Throwable error=assertThrows(NotFoundProductException.class, ()->iProductService.getTamalById(21L));
         //add a product that already exists
@@ -161,7 +161,7 @@ public class ProductTest {
 
     @Test
     @Transactional
-    void getDrinkByIdExceptionTest() throws Exception{
+    void getDrinkByIdExceptionTest(){
 
         Throwable error=assertThrows(NotFoundProductException.class, ()->iProductService.getDrinkById(21L));
         //add a product that already exists

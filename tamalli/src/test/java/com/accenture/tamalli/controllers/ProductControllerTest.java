@@ -2,7 +2,6 @@ package com.accenture.tamalli.controllers;
 
 import com.accenture.tamalli.dto.products.ProductPriceDTO;
 import com.accenture.tamalli.models.*;
-import com.accenture.tamalli.services.IOrderService;
 import com.accenture.tamalli.services.IProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,12 +19,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,7 +68,7 @@ public class ProductControllerTest {
     @Test
     void addTamalTest() throws Exception{
 
-        String inputJson="{\"productId\":4,\"productName\":\"Tamal dulce\",\"price\":13.00,\"productType\":\"Food\",\"weightKilogram\":0.25}";;
+        String inputJson="{\"productId\":4,\"productName\":\"Tamal dulce\",\"price\":13.00,\"productType\":\"Food\",\"weightKilogram\":0.25}";
 
         String json= "{\"productId\":8,\"productName\":\"Tamal dulce\",\"price\":13.00,\"productType\":\"Food\",\"weightKilogram\":0.25}";
         Tamal tamal= mapper.readValue(json, Tamal.class);
