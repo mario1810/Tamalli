@@ -3,6 +3,7 @@ package com.accenture.tamalli.services;
 import com.accenture.tamalli.dto.products.ProductPriceDTO;
 import com.accenture.tamalli.exceptions.BadRequestProductException;
 import com.accenture.tamalli.exceptions.NotFoundProductException;
+import com.accenture.tamalli.exceptions.ProductDescriptionException;
 import com.accenture.tamalli.exceptions.ProductException;
 import com.accenture.tamalli.models.*;
 import com.accenture.tamalli.repositories.*;
@@ -123,7 +124,7 @@ public class ProductServiceImpl implements IProductService {
             if(description!=null)
                 iProductDescriptionRepository.delete(description);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            throw  new ProductDescriptionException("Delete the product description with id:"+productId+" manually");
         }
         return "The product with id:"+productId+" has been deleted";
     }
