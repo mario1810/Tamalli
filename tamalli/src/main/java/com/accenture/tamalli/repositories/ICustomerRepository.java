@@ -13,6 +13,6 @@ public interface ICustomerRepository extends JpaRepository<Customer,Long> {
     Optional<Customer> findByCustomerId(Long id);
     Optional<Customer> findFirstByEmailAndPassword(String email, String password);
     Optional<Customer> findFirstByEmail(String email);
-    Boolean existsByEmail(String email);
+    boolean existsByEmail(String email);
 
 }
