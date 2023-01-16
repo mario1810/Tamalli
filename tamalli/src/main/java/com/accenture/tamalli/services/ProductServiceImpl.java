@@ -33,7 +33,7 @@ public class ProductServiceImpl implements IProductService {
     IProductDescriptionRepository iProductDescriptionRepository;
     @Override
     public Drink addDrink(Drink drink) throws RuntimeException {
-        if(drink.equals(null) || drink.getProductName()==null || drink.getCapacityLiters()<=0.0 || drink.getPrice()==null || drink.getPrice().compareTo(new BigDecimal("0.0"))<1)
+        if(drink==null || drink.getProductName()==null || drink.getCapacityLiters()<=0.0 || drink.getPrice()==null || drink.getPrice().compareTo(new BigDecimal("0.0"))<1)
             throw  new BadRequestProductException("please, register a valid product");
         if(!iDrinkRepository.findByProductNameIgnoreCaseAndCapacityLiters(drink.getProductName(),drink.getCapacityLiters()).isEmpty())
             throw  new BadRequestProductException("This product is already in the database");
@@ -43,7 +43,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Tamal addTamal(Tamal tamal) throws RuntimeException{
-        if(tamal.equals(null) || tamal.getProductName()==null || tamal.getWeightKilogram()<=0.0 || tamal.getPrice()==null  || tamal.getPrice().compareTo(new BigDecimal("0.0"))<1)
+        if(tamal==null || tamal.getProductName()==null || tamal.getWeightKilogram()<=0.0 || tamal.getPrice()==null  || tamal.getPrice().compareTo(new BigDecimal("0.0"))<1)
             throw  new BadRequestProductException("please, register a valid product");
         if(!iTamalRepository.findByProductNameIgnoreCaseAndWeightKilogram(tamal.getProductName(),tamal.getWeightKilogram()).isEmpty())
             throw  new BadRequestProductException("This product is already in the database");
@@ -89,7 +89,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Product changeProductPrice(ProductPriceDTO changesProduct) throws RuntimeException{
-        if(changesProduct.equals(null) || changesProduct.getPrice().compareTo(new BigDecimal("0.0"))<1)
+        if(changesProduct==null || changesProduct.getPrice().compareTo(new BigDecimal("0.0"))<1)
             throw  new BadRequestProductException("please, register valid changes");
         Product productToUpdate =iProductRepository.findByProductId(changesProduct.getProductId()).orElseThrow(()->new NotFoundProductException("There is no product with id:"+changesProduct.getProductId()));
         //Changes price
