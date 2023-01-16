@@ -4,7 +4,6 @@ import com.accenture.tamalli.dto.products.ProductPriceDTO;
 import com.accenture.tamalli.exceptions.BadRequestProductException;
 import com.accenture.tamalli.exceptions.NotFoundProductException;
 import com.accenture.tamalli.exceptions.ProductDescriptionException;
-import com.accenture.tamalli.exceptions.ProductException;
 import com.accenture.tamalli.models.*;
 import com.accenture.tamalli.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
