@@ -21,7 +21,7 @@ public class Order {
     private BigDecimal totalCost;
     private Boolean paid;
 
-    @ManyToOne (fetch=FetchType.LAZY,cascade =CascadeType.REMOVE)
+    @ManyToOne (fetch=FetchType.LAZY)
     @JoinColumn(name="customer_id")
     private Customer customer;
 
