@@ -61,7 +61,7 @@ public class CustomerServiceImpl implements ICustomerService{
       String email=newCustomer.getEmail();
       //Is there a customer with the same email and password?
       if(iCustomerRepository.existsByEmail(email))
-            throw  new CustomerException("Already exists a customer with the same email");
+            throw  new BadRequestCustomerException("Already exists a customer with the same email");
       //Add the new customer to the database
       newCustomer.setCustomerId(null);
       newCustomer  =  iCustomerRepository.saveAndFlush(newCustomer);
