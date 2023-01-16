@@ -56,7 +56,8 @@ public class ProductDescriptionServiceImpl implements  IProductDescriptionServic
         if(productId==null)
             throw new NotFoundProductDescriptionException("There is no description for a product with id:"+productId);
         //Doesn't that id product description exits?
-        ProductDescription currentProductDescription =iProductDescriptionRepository.findByProductId(productId).orElseThrow(()->new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId));
+        if(!iProductDescriptionRepository.existsByProductId(productId))
+            throw new NotFoundProductDescriptionException("There is no a description for a product with id:"+productId);
         //Update description
         return iProductDescriptionRepository.save(productDescriptionChanges);
     }
