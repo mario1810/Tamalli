@@ -45,7 +45,10 @@ public class OrderServiceImpl implements IOrderService{
         orderDTO.setOrderId(order.getOrderId());
         orderDTO.setPurchaseDate(order.getPurchaseDate());
         orderDTO.setTotalCost(order.getTotalCost());
-        orderDTO.setCustomerId(order.getCustomer().getCustomerId());
+        if(order.getCustomer()!=null)
+            orderDTO.setCustomerId(order.getCustomer().getCustomerId());
+        else
+            orderDTO.setCustomerId(null);
 
         return orderDTO;
     }
@@ -159,6 +162,8 @@ public class OrderServiceImpl implements IOrderService{
     @Override
     public List<OrderDTO> getAllOrdersPaidStore() {
         List<Order> orders= iOrderRepository.findByPaidTrue();
+        if(orders==null || orders.size()==0)
+            throw new OrderException("There are no orders paid");
         return orders.stream()
                     .map(order -> mapOrderToOrderDTO(order))
                     .collect(Collectors.toList());
@@ -167,6 +172,8 @@ public class OrderServiceImpl implements IOrderService{
     @Override
     public List<OrderDTO> getAllOrdersFrom(String strFrom) throws RuntimeException{
             List<Order> orders = iOrderRepository.findByPaidTrueAndPurchaseDateAfter(LocalDateTime.parse(strFrom+"T00:00:00"));
+            if(orders==null || orders.size()==0)
+                throw new OrderException("There are no orders paid");
             return orders.stream()
                     .map(order -> mapOrderToOrderDTO(order))
                     .collect(Collectors.toList());
