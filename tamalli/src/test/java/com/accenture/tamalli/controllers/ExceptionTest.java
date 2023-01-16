@@ -1,15 +1,11 @@
 package com.accenture.tamalli.controllers;
 
-import com.accenture.tamalli.dto.customers.CustomerDTO;
-import com.accenture.tamalli.dto.orderDetails.ProductOrderDTO;
 import com.accenture.tamalli.exceptions.*;
 import com.accenture.tamalli.models.Customer;
-import com.accenture.tamalli.models.OrderDetail;
-import com.accenture.tamalli.models.ProductDescription;
 import com.accenture.tamalli.services.ICustomerService;
 import com.accenture.tamalli.services.IOrderDetailService;
 import com.accenture.tamalli.services.IProductDescriptionService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -35,11 +30,6 @@ public class ExceptionTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper mapper;
-
-    private  CustomerDTO customer;
-    private List<CustomerDTO> customers;
     @MockBean
     private ICustomerService icustomerService; // This will mock a Spring Bean and Inject it where is needed
 
@@ -49,7 +39,6 @@ public class ExceptionTest {
     @MockBean
     private IProductDescriptionService iProductDescriptionService;
 
-    private List<OrderDetail> shoppingList;
 
 
     @Test
@@ -66,7 +55,7 @@ public class ExceptionTest {
                 "    \"phoneNumber\":\"16468645\"\n" +
                 "}";
 
-        when(icustomerService.addNewCustomer(any(Customer.class))).thenThrow( new CustomerException("email is in the database"));
+        when(icustomerService.addNewCustomer(any(Customer.class))).thenThrow( new BadRequestCustomerException("email is in the database"));
 
         MockHttpServletRequestBuilder mockRequest =
                 MockMvcRequestBuilders.post("/api/tamalli/customers")
@@ -77,7 +66,7 @@ public class ExceptionTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isBadRequest())  //Actual,//expected
                 .andExpect(jsonPath("$.message", Matchers.equalTo("email is in the database")))
-                .andExpect(jsonPath("$.className",Matchers.equalTo("class com.accenture.tamalli.exceptions.CustomerException")))
+                .andExpect(jsonPath("$.className",Matchers.equalTo("class com.accenture.tamalli.exceptions.BadRequestCustomerException")))
                 .andExpect(jsonPath("$.httpStatus",Matchers.equalTo("BAD_REQUEST")))
                 .andExpect(jsonPath("$.timestamp",Matchers.notNullValue()));
     }

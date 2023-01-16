@@ -13,5 +13,4 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetail,Long> 
 
     Optional<OrderDetail> findByDetailOrderId(Long id);
 
-    Boolean existsByDetailOrderId(Long id);
 }

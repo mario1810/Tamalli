@@ -17,5 +17,4 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
     List<Order> findByPaidTrue();
     List<Order> findByPaidTrueAndPurchaseDateAfter(LocalDateTime date);
 
-    Boolean existsByOrderId(long orderId);
 }

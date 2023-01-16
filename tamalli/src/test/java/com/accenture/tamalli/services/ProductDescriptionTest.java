@@ -13,14 +13,13 @@ import com.accenture.tamalli.repositories.IProductDescriptionRepository;
 import com.accenture.tamalli.repositories.IProductRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -152,7 +151,7 @@ public class ProductDescriptionTest {
 
         ProductDescription expectedUpdateProductDescription= objectMapper.readValue(json, ProductDescription.class);
 
-        when(iProductDescriptionRepository.findByProductId(1L)).thenReturn(Optional.of(productsDescription.get(0)));
+        when(iProductDescriptionRepository.existsByProductId(1L)).thenReturn(true);
 
         when(iProductDescriptionRepository.save(any(ProductDescription.class))).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0,ProductDescription.class));
 
@@ -167,7 +166,7 @@ public class ProductDescriptionTest {
 
         String json="{\"productId\":1,\"descriptionHead\":\"El mejor tamal del norte\",\"descriptionBody\":\"Elaborado  al estilo Monterrey\",\"urlImage\":\"https://img.freepik.com/fotos-premium/nacatamal-servido-hoja-platano-cerca-nacatamal-nicaraguense-comida-nicaraguense-nacatamal_550253-296.jpg?w=996\"}";
         ProductDescription expectedUpdateProductDescription= objectMapper.readValue(json, ProductDescription.class);
-        when(iProductDescriptionRepository.findByProductId(anyLong())).thenThrow(NotFoundProductDescriptionException.class);
+        when(iProductDescriptionRepository.existsByProductId(3L)).thenReturn(false);
 
         assertThrows(NotFoundProductDescriptionException.class,()->{
             ProductDescription currentProductDescription= iProductDescriptionService.updateProductDescription(3L, productsDescription.get(1));

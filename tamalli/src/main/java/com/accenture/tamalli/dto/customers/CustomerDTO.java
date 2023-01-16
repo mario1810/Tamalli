@@ -8,7 +8,6 @@ public class CustomerDTO implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    //private String password;
     private String phoneNumber;
     private String address;
 

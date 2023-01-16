@@ -1,7 +1,6 @@
 package com.accenture.tamalli.controllers;
 
 import com.accenture.tamalli.dto.orderDetails.ProductOrderDTO;
-import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.services.IOrderDetailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,7 +39,7 @@ public class OrderDetailControllerTest {
                 "    \"quantity\":2\n" +
                 "}";
 
-        String json="{\"orderId\":5,\"detailOrderId\":9,\"quantityOrdered\":2,\"productOrdered\":\"Tamal verde\",\"productPriceOrdered\":12.50,\"productLine\":\"Food\"}";;
+        String json="{\"orderId\":5,\"detailOrderId\":9,\"quantityOrdered\":2,\"productOrdered\":\"Tamal verde\",\"productPriceOrdered\":12.50,\"productLine\":\"Food\"}";
         ProductOrderDTO product =mapper.readValue(json, ProductOrderDTO.class);
         when(iOrderDetailService.addProductToShoppingCart(1L, 1L,2)).thenReturn(product);
 

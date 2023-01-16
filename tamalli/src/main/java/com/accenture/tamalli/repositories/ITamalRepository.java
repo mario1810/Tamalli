@@ -13,5 +13,4 @@ public interface ITamalRepository extends JpaRepository<Tamal,Long> {
     List<Tamal> findByProductNameIgnoreCaseAndWeightKilogram(String productName, double weight);
     List<Tamal> findAll();
 
-    Boolean existsByProductId(Long productId);
 }

@@ -33,7 +33,6 @@ public class OrderControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    private OrderDTO order;
 
     private ShoppingCartDTO shoppingCart;
 

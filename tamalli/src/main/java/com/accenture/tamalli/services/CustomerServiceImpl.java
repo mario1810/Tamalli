@@ -4,7 +4,6 @@ import com.accenture.tamalli.exceptions.BadRequestCustomerException;
 import com.accenture.tamalli.exceptions.CustomerException;
 import com.accenture.tamalli.dto.customers.CustomerDTO;
 import com.accenture.tamalli.exceptions.NotFoundCustomerException;
-import com.accenture.tamalli.exceptions.OrderException;
 import com.accenture.tamalli.models.Customer;
 import com.accenture.tamalli.models.Order;
 import com.accenture.tamalli.repositories.ICustomerRepository;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,7 +59,7 @@ public class CustomerServiceImpl implements ICustomerService{
       String email=newCustomer.getEmail();
       //Is there a customer with the same email and password?
       if(iCustomerRepository.existsByEmail(email))
-            throw  new CustomerException("Already exists a customer with the same email");
+            throw  new BadRequestCustomerException("Already exists a customer with the same email");
       //Add the new customer to the database
       newCustomer.setCustomerId(null);
       newCustomer  =  iCustomerRepository.saveAndFlush(newCustomer);

@@ -78,7 +78,7 @@ public class OrderDetailServiceTest {
 
     @Test
     @Transactional
-    void removeProductFromShoppingCartTest() throws Exception{
+    void removeProductFromShoppingCartTest(){
 
         //customer 1, product 1
         String result=iOrderDetailService.removeProductFromShoppingCart(1L,1L);
@@ -90,7 +90,7 @@ public class OrderDetailServiceTest {
 
     @Test
     @Transactional
-    void removeProductFromShoppingCartExceptionTest() throws Exception{
+    void removeProductFromShoppingCartExceptionTest(){
 
         //customer 1, product 10
         Throwable error=assertThrows(NotFoundOrderDetailException.class, ()->iOrderDetailService.removeProductFromShoppingCart(1L,10L));
@@ -100,7 +100,7 @@ public class OrderDetailServiceTest {
 
     @Test
     @Transactional
-    void removeAllProductsFromShoppingCartTest() throws Exception{
+    void removeAllProductsFromShoppingCartTest(){
 
         //customer 2
         String result=iOrderDetailService.removeAllProductsFromShoppingCart(2L);
@@ -112,14 +112,11 @@ public class OrderDetailServiceTest {
 
     @Test
     @Transactional
-    void removeAllProductsFromShoppingCartExceptionTest() throws Exception{
+    void removeAllProductsFromShoppingCartExceptionTest(){
 
 
         //customer 2
-        Throwable error=assertThrows(OrderDetailException.class, ()-> {
-            iOrderDetailService.removeAllProductsFromShoppingCart(3L);
-
-        });
+        Throwable error=assertThrows(OrderDetailException.class, ()-> iOrderDetailService.removeAllProductsFromShoppingCart(3L));
         //shopping cart empty
         assertEquals("The shopping cart is already empty",error.getMessage());
     }
@@ -147,7 +144,7 @@ public class OrderDetailServiceTest {
 
     @Test
     @Transactional
-    void changeProductQuantityAtShoppingCartException1Test() throws Exception{
+    void changeProductQuantityAtShoppingCartException1Test(){
 
 
         // customer 10, product 1, quantity 10
@@ -160,7 +157,7 @@ public class OrderDetailServiceTest {
 
     @Test
     @Transactional
-    void changeProductQuantityAtShoppingCartException2Test() throws Exception{
+    void changeProductQuantityAtShoppingCartException2Test() {
 
 
         // customer 1, product 10, quantity 10
@@ -171,7 +168,7 @@ public class OrderDetailServiceTest {
 
     @Test
     @Transactional
-    void changeProductQuantityAtShoppingCartException3Test() throws Exception{
+    void changeProductQuantityAtShoppingCartException3Test(){
 
         // customer 1, product 1, quantity 100
         Throwable error=assertThrows(BadRequestProductException.class, ()->iOrderDetailService.changeProductQuantityAtShoppingCart(1L,1L,100));
@@ -181,7 +178,7 @@ public class OrderDetailServiceTest {
 
     @Test
     @Transactional
-    void changeProductQuantityAtShoppingCartException4Test() throws Exception{
+    void changeProductQuantityAtShoppingCartException4Test(){
 
         //Product price change
         iProductService.changeProductPrice(new ProductPriceDTO(1L, new BigDecimal(20.50)) );

@@ -1,6 +1,5 @@
 package com.accenture.tamalli.services;
 
-import com.accenture.tamalli.dto.orderDetails.OrderDetailDTO;
 import com.accenture.tamalli.dto.orderDetails.ProductOrderDTO;
 
 import com.accenture.tamalli.exceptions.*;

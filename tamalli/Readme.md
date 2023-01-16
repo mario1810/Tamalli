@@ -6,8 +6,8 @@ Although they are usually small, there are a lot of them and are closely linked 
 of employment. The coronavirus pandemic forced PyMEs to implement digital channels to survive what 
 also meant new opportunities of grow and expansion for them.
 
-I this project a Rest API was created to manage the  basic shopping process of  a food shopping e-commerce. A registered user can create an order, add or remove products to it,  and change  the status of the  order  from in progress 
-to paid. Also, we can  add, modify the price or remove products in the database and add a description to 
+I this project a Rest API was created to manage the  basic shopping process of  a food e-commerce. A registered user has an order and can add or remove products to it,  and change  the status of the  order  from in progress 
+to paid. Also, we can  add, modify the price and remove products in the database and add a description to 
 each one of them if it is needed. Both  payment and delivery processes are out the scope of this project.
 
 #### This project is developed with:
