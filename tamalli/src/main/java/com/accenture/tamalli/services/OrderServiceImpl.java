@@ -91,7 +91,7 @@ public class OrderServiceImpl implements IOrderService{
         if(shoppingCart==null){
             //if not
             createEmptyShoppingCart(customer);
-            throw  new OrderException("Customer with id: "+customer.getCustomerId()+" didn't have a order to be bought, a empty order for adding products has been created for him/her");
+            throw  new OrderException("Customer with id: "+customer.getCustomerId()+" didn't have a shopping cart, a empty shopping cart for adding products has been created for him/her");
         }
         //get shopping list
         List<OrderDetailDTO> shoppingCartDetailsDTO = mapOrderDetailsListToOrderDetailsDTOList(shoppingCart.getOrdersDetail());

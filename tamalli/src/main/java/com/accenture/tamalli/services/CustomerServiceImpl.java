@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +30,8 @@ public class CustomerServiceImpl implements ICustomerService{
    @Override
    public List<CustomerDTO> getAllCustomers() {
       List<Customer> customers= iCustomerRepository.findAll();
+      if(customers.isEmpty())
+          throw new CustomerException("There are no customers in the database");
       List<CustomerDTO> customersDTO=customers.stream()
               .map((customer)-> mapCustomerToCustomerDTO(customer))
               .collect(Collectors.toList());
